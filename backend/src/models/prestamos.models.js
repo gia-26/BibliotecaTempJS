@@ -1,5 +1,6 @@
 import db from '../config/db.js';
 
+//Pasar consulta a vista para simplificar el código
 export const getAllEjemplares = async () => {
   const [rows] = await db.query(`
     SELECT 
@@ -33,4 +34,54 @@ export const registrarPrestamo = async (data) => {
     return { success: true, mensaje: result[0].message };
   else
     return { success: false, mensaje: result[0].message };
+}
+
+export const devolverPrestamo = async (idPrestamo) => {
+  const [[result]] = await db.query(`CALL sp_registrar_devolucion(?)`, [idPrestamo]);
+  //PENDIENTE 
+  console.log("RESULTADO SP:", result);
+  if (result.success)
+    return { success: true, mensaje: result.message };
+  else
+    return { success: false, mensaje: result.message };
+}
+
+//Pasar consulta a vista para simplificar el código
+export const getAllPrestamos = async () => {
+  const [rows] = await db.query(`
+      SELECT
+          pres.Id_prestamo,
+          us.Id_usuario,
+          alum.Nombre,
+          lib.Id_libro,
+          lib.Titulo,
+          pres.Fecha_prestamo, 
+          pres.Fecha_devolucion, 
+          estPres.Tipo_estado AS Estado
+          FROM tbl_prestamos pres 
+          INNER JOIN tbl_usuarios us ON pres.Id_usuario = us.Id_usuario 
+          INNER JOIN tbl_ejemplares ejm ON pres.Id_ejemplar = ejm.Id_ejemplar 
+          INNER JOIN tbl_libros lib ON ejm.Id_libro = lib.Id_libro 
+          INNER JOIN tbl_estados_prestamos estPres ON pres.Id_estado_prestamo = estPres.Id_estado_prestamo 
+          INNER JOIN tbl_alumnos alum ON us.Id_usuario = alum.Id_alumno 
+          WHERE us.Id_tipo_usuario = 'TU001' and estPres.Id_estado_prestamo in ('EP001','EP003') 
+      UNION ALL 
+      SELECT
+          pres.Id_prestamo,
+          us.Id_usuario,
+          trab.Nombre,    
+          lib.Id_libro, 
+          lib.Titulo, 
+          pres.Fecha_prestamo, 
+          pres.Fecha_devolucion, 
+          estPres.Tipo_estado AS Estado 
+          FROM tbl_prestamos pres 
+          INNER JOIN tbl_usuarios us ON pres.Id_usuario = us.Id_usuario 
+          INNER JOIN tbl_ejemplares ejm ON pres.Id_ejemplar = ejm.Id_ejemplar 
+          INNER JOIN tbl_libros lib ON ejm.Id_libro = lib.Id_libro 
+          INNER JOIN tbl_estados_prestamos estPres ON pres.Id_estado_prestamo = estPres.Id_estado_prestamo 
+          INNER JOIN tbl_trabajadores trab ON us.Id_usuario = trab.Id_trabajador 
+          WHERE us.Id_tipo_usuario = 'TU002' and estPres.Id_estado_prestamo in ('EP001','EP003');
+  `);
+  return rows;
 }
