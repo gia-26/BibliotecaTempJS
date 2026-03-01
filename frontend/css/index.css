@@ -1,0 +1,605 @@
+/* Estilos específicos para la página principal de la Biblioteca UTHH */
+:root {
+  --modal-bg: #e6d7c8;
+  --texto-marron: #3b2423;
+  --boton-marron: #3b2423;
+  --sombra: rgba(59, 38, 35, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--modal-bg);
+  color: var(--texto-marron);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+header {
+  background-color: var(--boton-marron);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+nav a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  transition: width 0.3s;
+}
+
+nav a:hover:after {
+  width: 100%;
+}
+
+/* HERO SECTION */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  padding: 0 2rem;
+  background: linear-gradient(rgba(59, 38, 35, 0.7), rgba(59, 38, 35, 0.7)), 
+              url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  height: 350px;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  max-width: 800px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  opacity: 0.9;
+}
+
+/* MAIN CONTENT */
+main {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: auto;
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* SECTION HEADER */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-header h2:after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 2px;
+  background-color: var(--boton-marron);
+  bottom: -10px;
+  left: 25%;
+}
+
+.section-header p {
+  color: var(--texto-marron);
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 1rem auto 0;
+}
+
+/* CATALOGO CON GLIDE */
+.catalogo {
+  position: relative;
+  background: linear-gradient(135deg, #f8f3ed 0%, #e6d7c8 100%);
+  padding: 3rem 0;
+  margin-bottom: 3rem;
+  border-radius: 0;
+}
+
+.catalogo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--boton-marron), transparent);
+}
+
+/* ESTILOS PARA GLIDE CARRUSEL */
+.glide {
+  position: relative;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.glide__track {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.glide__slides {
+  display: flex;
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.glide__slide {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 15px;
+  transition: all 0.3s ease;
+}
+
+/* Efecto de escala para el slide activo */
+.glide__slide--active .libro {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px var(--sombra);
+}
+
+/* Botones de navegación Glide */
+.glide__arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glide__arrow {
+  background: var(--boton-marron);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  pointer-events: all;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glide__arrow:hover {
+  background: #2d1d1d;
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glide__arrow--left {
+  margin-left: 20px;
+}
+
+.glide__arrow--right {
+  margin-right: 20px;
+}
+
+/* Bullets de paginación */
+.glide__bullets {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 2rem;
+  list-style: none;
+}
+
+.glide__bullet {
+  width: 12px;
+  height: 12px;
+  background: rgba(59, 38, 35, 0.3);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.glide__bullet:hover,
+.glide__bullet--active {
+  background: var(--boton-marron);
+  transform: scale(1.2);
+}
+
+/* Indicador visual del carrusel */
+.carrusel-indicator {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--texto-marron);
+  opacity: 0.7;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* LIBROS */
+.libro {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px var(--sombra);
+  width: 100%;
+  max-width: 280px;
+  height: 100%;
+}
+
+.libro:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--sombra);
+}
+
+.libro-img {
+  margin-top: 1.5rem;
+  align-self: center;
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.libro:hover .libro-img {
+  transform: scale(1.05);
+}
+
+.libro-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.libro-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+  min-height: 2.8em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.libro-content .autor {
+  color: var(--texto-marron);
+  opacity: 0.7;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.libro-content p {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* BOTONES */
+.btn {
+  display: inline-block;
+  background-color: var(--boton-marron);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #2d1d1d;
+  transform: translateY(-2px);
+}
+
+/* QUIÉNES SOMOS */
+.quienes-somos {
+  background-color: white;
+  border-radius: 8px;
+  padding: 3rem;
+  margin-top: 3rem;
+  box-shadow: 0 5px 15px var(--sombra);
+}
+
+.quienes-somos h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.quienes-somos h3 {
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  color: var(--boton-marron);
+}
+
+.quienes-somos p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.mision-vision {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.mision-vision-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px var(--sombra);
+  text-align: center;
+}
+
+.mision-vision-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--boton-marron);
+}
+
+/* DIRECTORIO */
+.directorio {
+  margin-top: 4rem;
+}
+
+.directorio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.directorio-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 5px 15px var(--sombra);
+  text-align: center;
+  overflow: hidden;
+}
+
+.directorio-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+
+.directorio-card-content {
+  padding: 1.5rem;
+}
+
+.directorio-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.directorio-card .cargo {
+  color: var(--texto-marron);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+/* FOOTER */
+footer {
+  background-color: var(--boton-marron);
+  color: #fff;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  text-align: left;
+}
+
+.footer-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.footer-section p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.copyright {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+}
+
+/* ESTILOS PARA LECTURA POR VOZ */
+.read-on-hover {
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+  }
+  
+  .hero {
+    height: 250px;
+    padding: 0 1rem;
+  }
+  
+  .quienes-somos {
+    padding: 2rem;
+  }
+  
+  .mision-vision {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  /* Responsive para Glide */
+  .glide__arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .glide__arrow--left {
+    margin-left: 10px;
+  }
+  
+  .glide__arrow--right {
+    margin-right: 10px;
+  }
+  
+  .glide__slide {
+    padding: 0 10px;
+  }
+  
+  .glide__bullet {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .catalogo {
+    padding: 2rem 0;
+  }
+  
+  .libro-img {
+    width: 120px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalogo {
+    padding: 1.5rem 0;
+  }
+  
+  .hero h2 {
+    font-size: 1.5rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  /* Responsive móvil para Glide */
+  .glide__arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+  
+  .libro-img {
+    width: 100px;
+    height: 140px;
+  }
+  
+  .libro-content {
+    padding: 1rem;
+  }
+  
+  .libro-content h3 {
+    font-size: 1rem;
+  }
+  
+  .libro-content p {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
+}

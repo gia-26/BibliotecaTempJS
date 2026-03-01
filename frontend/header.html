@@ -1,0 +1,63 @@
+<style>
+    :root {
+        --boton-marron: #3b2626;
+    }
+    header {
+        background-color: var(--boton-marron);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    nav {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    nav a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        position: relative;
+        padding: 0.5rem 0;
+    }
+
+    nav a:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        transition: width 0.3s;
+    }
+
+    nav a:hover:after,
+    nav a.active:after {
+        width: 100%;
+    }
+
+    header h1 {
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+</style>
+
+<header>
+    <h1>Biblioteca UTHH</h1>
+    <nav>
+        <a href="index.php" class="read-on-hover" data-text="Inicio"><i class="fas fa-home"></i> Inicio</a>
+        <a href="catalogo-publico.php" class="read-on-hover" data-text="Ver catálogo"><i class="fas fa-book-open"></i> Ver catálogo</a>
+        <a href="dashboard.php" class="read-on-hover" data-text="Panel de control"><i class="fas fa-tachometer-alt"></i> Panel de control</a>
+        <a href="cerrarSesion.php" class="read-on-hover" data-text="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        <a href="login.php" class="read-on-hover" data-text="Ingresar"><i class="fas fa-sign-in-alt"></i> Ingresar</a>
+    </nav>
+</header>

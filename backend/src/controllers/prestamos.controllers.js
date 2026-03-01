@@ -1,0 +1,31 @@
+import * as prestamosModel from '../models/prestamos.models.js';
+
+export const getAllEjemplares = async (req, res) => {
+  try {
+    const ejemplares = await prestamosModel.getAllEjemplares();
+    res.status(200).json(ejemplares);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const getAllTiposPrestamos = async (req, res) => {
+  try {
+    const tiposPrestamos = await prestamosModel.getAllTiposPrestamos();
+    res.status(200).json(tiposPrestamos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const registrarPrestamo = async (req, res) => {
+  try {
+    console.log(req.body);
+    const data = req.body;
+    const result = await prestamosModel.registrarPrestamo(data);
+    //PENDIENTE: Revisar el resultado del SP para determinar si fue exitoso o no
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

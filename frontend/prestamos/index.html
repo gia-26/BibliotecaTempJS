@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Préstamos - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="header"></div>
+  <section class="hero">
+    <h2>Sistema de Préstamos</h2>
+  </section>
+  <div id="header-dashboard"></div>
+  <main>
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-label">Buscar libro por título:</span>
+        <input type="text" class="search-input" placeholder="Ingresa el título del libro...">
+        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table class="catalog-table">
+        <thead>
+            <tr>
+              <th>ID Libro</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>ID Ejemplar</th>
+              <th>Número de ejemplar</th>
+              <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="tblEjemplares">
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="new-loan-section">
+      <h3 class="section-title">Nuevo préstamo</h3>
+      <div class="loan-form">
+        <div class="form-group">
+          <label class="form-label">
+            Tipo de usuario:
+            <button type="button" class="config-btn" onclick="openModal('modal-tipos-usuario')" title="Configurar tipos de usuario">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select class="form-select" id="slcTipoUsuario"></select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">ID libro:</label>
+          <input type="text" class="form-input" id="idLibro" readonly>
+          <input type="text" class="form-input" id="idEjemplar" hidden>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">ID del usuario:</label>
+          <input type="text" class="form-input" id="inpIdUsuario" placeholder="Ingresa ID del usuario">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Título del libro:</label>
+          <input type="text" class="form-input" id="titLibro" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Nombre del usuario:</label>
+          <input type="text" class="form-input" id="nombreUsuario" placeholder="Nombre completo" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Fecha de préstamo:</label>
+          <input type="text" class="form-input" id="fechaPrestamo" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Tipo de préstamo:
+            <button type="button" class="config-btn" onclick="openModal('modal-tipos-prestamo')" title="Configurar tipos de préstamo">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select class="form-select" id="slcTipoPrestamos"></select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Fecha de devolución:</label>
+          <input type="text" class="form-input" id="fechaDevolucion" readonly>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary">Limpiar</button>
+          <button type="button" id="btnPrestar" class="btn">Registrar Préstamo</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Tipos de Usuario -->
+  <div id="modal-tipos-usuario" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Gestión de Tipos de Usuario</h2>
+        <span class="close" onclick="closeModal('modal-tipos-usuario')">&times;</span>
+      </div>
+      
+      <div class="modal-form-container">
+        <form id="user-type-form">
+          <div class="modal-form-group">
+            <label for="id-user-type">ID Tipo de Usuario</label>
+            <input type="text" id="id-user-type" class="modal-form-control" placeholder="TU001">
+          </div>
+          
+          <div class="modal-form-group">
+            <label for="user-type-name">Tipo de Usuario</label>
+            <input type="text" id="user-type-name" class="modal-form-control" placeholder="Alumno">
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="edit-mode-user-type" checked>
+            <label for="edit-mode-user-type">Habilitar edición</label>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="delete-mode-user-type">
+            <label for="delete-mode-user-type">Habilitar eliminación</label>
+          </div>
+          
+          <button type="submit" class="btn">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </form>
+      </div>
+      
+      <div class="modal-table-container">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th>ID Tipo de Usuario</th>
+              <th>Tipo de Usuario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TU001</td>
+              <td>Alumno</td>
+              <td class="actions">
+                <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn btn-small btn-delete"><i class="fas fa-trash"></i> Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tipos de Préstamo -->
+  <div id="modal-tipos-prestamo" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Gestión de Tipos de Préstamo</h2>
+        <span class="close" onclick="closeModal('modal-tipos-prestamo')">&times;</span>
+      </div>
+      
+      <div class="modal-form-container">
+        <form id="loan-type-form">
+          <div class="modal-form-group">
+            <label for="id-loan-type">ID Tipo de Préstamo</label>
+            <input type="text" id="id-loan-type" class="modal-form-control" placeholder="TP001">
+          </div>
+          
+          <div class="modal-form-group">
+            <label for="loan-type-name">Tipo de Préstamo</label>
+            <input type="text" id="loan-type-name" class="modal-form-control" placeholder="Domicilio">
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="edit-mode-loan-type">
+            <label for="edit-mode-loan-type">Habilitar edición</label>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="delete-mode-loan-type" checked>
+            <label for="delete-mode-loan-type">Habilitar eliminación</label>
+          </div>
+          
+          <button type="submit" class="btn">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </form>
+      </div>
+      
+      <div class="modal-table-container">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID Tipo de Préstamo</th>
+              <th>Tipo de Préstamo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected-row">
+              <td><i class="fas fa-caret-right table-icon"></i></td>
+              <td>TP001</td>
+              <td>Domicilio</td>
+              <td class="actions">
+                <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn btn-small btn-delete"><i class="fas fa-trash"></i> Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+  <script>
+    // Funciones para abrir y cerrar modales
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
+    }
+
+    // Manejo de envío de formularios
+    document.getElementById('user-type-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Tipo de usuario guardado correctamente.');
+      closeModal('modal-tipos-usuario');
+    });
+
+    document.getElementById('loan-type-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Tipo de préstamo guardado correctamente.');
+      closeModal('modal-tipos-prestamo');
+    });
+
+    // Función para manejar la selección de filas en la tabla de tipos de préstamo
+    document.querySelectorAll('#modal-tipos-prestamo table tbody tr').forEach(row => {
+      row.addEventListener('click', function() {
+        // Remover la clase selected-row de todas las filas
+        document.querySelectorAll('#modal-tipos-prestamo table tbody tr').forEach(r => {
+          r.classList.remove('selected-row');
+        });
+        // Agregar la clase selected-row a la fila clickeada
+        this.classList.add('selected-row');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<?php
+    session_start();
+
+    if (!isset($_SESSION['idTipoUsuario'])) 
+    {
+      header("Location: login.php");
+      exit();
+    }
+    // Conexión a la base de datos
+    require_once 'conexion.php';
+
+    // Procesar búsqueda
+    $filtro = $_POST['filter-select'] ?? 'titulo';
+    $termino_busqueda = $_POST['search-input'] ?? '';
+    $where_conditions = ["l.Estado != 0"];
+
+    if (!empty($termino_busqueda)) {
+        switch($filtro) {
+            case 'id_libro':
+                $where_conditions[] = "l.Id_libro LIKE '%$termino_busqueda%'";
+                break;
+            case 'titulo':
+                $where_conditions[] = "l.Titulo LIKE '%$termino_busqueda%'";
+                break;
+            case 'isbn':
+                $where_conditions[] = "l.ISBN LIKE '%$termino_busqueda%'";
+                break;
+            default:
+                $where_conditions[] = "l.Titulo LIKE '%$termino_busqueda%'";
+        }
+    }
+
+    $where_clause = implode(' AND ', $where_conditions);
+
+    // Consulta para obtener los libros
+    $sql = "SELECT 
+                l.Id_libro, 
+                l.Titulo, 
+                a.Nombre AS Autor, 
+                g.Nombre AS Genero,
+                l.Imagen
+            FROM tbl_libros l
+            INNER JOIN tbl_generos g ON g.Id_genero = l.Id_genero
+            INNER JOIN tbl_autores a ON a.Id_autor = l.Id_autor
+            WHERE $where_clause
+            ORDER BY l.Titulo ASC";
+
+    $resultado = $conexion->query($sql);
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Libros - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --modal-bg: #e6d7c8;
+      --texto-marron: #3b2423;
+      --boton-marron: #3b2423;
+      --sombra: rgba(59, 38, 35, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--modal-bg);
+      color: var(--texto-marron);
+      line-height: 1.6;
+      /* Propiedad zoom inicial */
+      zoom: 100%;
+    }
+
+    header {
+      background-color: var(--boton-marron);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    nav a:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+      transition: width 0.3s;
+    }
+
+    nav a:hover:after,
+    nav a.active:after {
+      width: 100%;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: white;
+    }
+
+    .user-details {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-info i {
+      font-size: 1.2rem;
+    }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 150px;
+      background: linear-gradient(rgba(59, 38, 35, 0.7), rgba(59, 38, 35, 0.7)), 
+                  url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      color: white;
+      padding: 0 2rem;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .search-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px var(--sombra);
+    }
+
+    .search-box {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .search-label {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .search-input {
+      flex-grow: 1;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--boton-marron);
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #2d1d1d;
+      transform: translateY(-2px);
+    }
+
+    .table-container {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px var(--sombra);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .catalog-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .catalog-table th {
+      background-color: var(--boton-marron);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .catalog-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+
+    .catalog-table tr:hover {
+      background-color: #f9f5f0;
+    }
+
+    .book-image {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .action-link {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .action-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-edit {
+        background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        color: white;
+    }
+
+    .action-edit:hover {
+        background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+        box-shadow: 0 2px 8px rgba(230, 126, 34, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .action-delete {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+    }
+
+    .action-delete:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--texto-marron);
+      font-weight: 300;
+    }
+
+    .config-btn {
+      background: none;
+      border: none;
+      color: var(--boton-marron);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      padding: 0.2rem;
+      border-radius: 4px;
+    }
+
+    .config-btn:hover {
+      background-color: var(--modal-bg);
+      transform: scale(1.1);
+    }
+
+    .btn-secondary {
+      background-color: #139b3bff;
+      color: var(--texto-marron);
+      border: 1px solid #ddd;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-secondary h1 {
+        color : var(--modal-bg);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0e0e0;
+    }
+
+    footer {
+      background-color: var(--boton-marron);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: left;
+    }
+
+    .footer-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .footer-section p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .copyright {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+    }
+
+    /* ===== Estilos para los modales ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 1000px;
+      max-height: 95vh;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: modalFadeIn 0.3s;
+    }
+
+    .modal-iframe {
+      width: 100%;
+      height: 90vh;
+      border: none;
+      border-radius: 8px;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      background-color: var(--boton-marron);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Estilos para el botón agregar */
+    .btn-agregar {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+        box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;    
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+    }
+
+    .btn-agregar:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        background: linear-gradient(135deg, #1e7e34 0%, #28a745 100%);
+    }
+
+    .btn-agregar:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-agregar i {
+        font-size: 1.3rem;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-agregar:hover i {
+        transform: scale(1.1);
+    }
+
+    /* ===== CONTROLES DE ZOOM ===== */
+    .zoom-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .zoom-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--boton-marron);
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .zoom-btn:hover {
+      background: #2d1d1d;
+      transform: scale(1.1);
+    }
+
+    .zoom-display {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--texto-marron);
+      min-width: 50px;
+      text-align: center;
+    }
+
+    .zoom-reset {
+      background: #6c757d;
+    }
+
+    .zoom-reset:hover {
+      background: #5a6268;
+    }
+
+    .search-label {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .search-section {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px var(--sombra);
+    }
+
+    .search-box {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      background-color: white;
+      min-width: 150px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .hero h2 {
+        font-size: 1.5rem;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 1rem;
+      }
+      
+      /* Ajustes para controles de zoom */
+      .zoom-controls {
+        bottom: 10px;
+        right: 10px;
+        padding: 6px;
+      }
+      
+      .zoom-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+      
+      .zoom-display {
+        font-size: 12px;
+        min-width: 40px;
+      }
+
+      .search-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .personal-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <?php include 'header.php'; ?>
+
+  <!-- Controles de Zoom -->
+  <div class="zoom-controls">
+    <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">
+      <i class="fas fa-search-minus"></i>
+    </button>
+    <span class="zoom-display" id="zoomLevel">100%</span>
+    <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">
+      <i class="fas fa-search-plus"></i>
+    </button>
+    <button class="zoom-btn zoom-reset" onclick="resetZoom()" title="Restablecer Zoom">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+
+  <section class="hero">
+    <h2>Catálogo de Libros</h2>
+  </section>
+
+  <?php include 'header-dashboard.php'; ?>
+
+    <main>
+        <form action="libros-cat.php" method="post">
+            <div class="search-section">
+                <div class="search-box">
+                    <span class="search-label">Buscar libro:</span>
+                    <select class="filter-select" name="filter-select">
+                        <option value="id_libro" <?php echo ($filtro === 'id_libro') ? 'selected' : ''; ?>>ID del libro</option>
+                        <option value="titulo" <?php echo ($filtro === 'titulo') ? 'selected' : ''; ?>>Título</option>
+                        <option value="isbn" <?php echo ($filtro === 'isbn') ? 'selected' : ''; ?>>ISBN</option>
+                    </select>
+                    <input type="text" class="search-input" name="search-input" placeholder="Ingresa término de búsqueda..." value="<?php echo htmlspecialchars($termino_busqueda); ?>">
+                    <button class="btn" type="submit"><i class="fas fa-search"></i> Buscar</button>
+                    <?php if (!empty($termino_busqueda)): ?>
+                        <a href="libros-cat.php" class="btn" style="background-color: #6c757d; width: 100px; height: 40px; text-size: 0.9rem; display: flex; align-items: center; justify-content: center;">
+                            Limpiar
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+
+        <button class="btn-agregar" onclick="openModal('modalLibros', null, false)">
+            <i class="fas fa-plus"></i>
+            <span>Agregar Nuevo Libro</span>
+        </button>
+
+        <div class="table-container">
+            <table class="catalog-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>ID Libro</th>
+                        <th>Nombre</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Verificar si hay resultados y mostrarlos
+                    if ($resultado->num_rows > 0) {
+                        while ($libro = $resultado->fetch_assoc()) {
+                            echo "<tr>
+                                    <td><img src='https://biblioteca.grupoctic.com/libros_img/" . htmlspecialchars($libro['Imagen']) . "' alt='" . htmlspecialchars($libro['Titulo']) . "' class='book-image'></td>
+                                    <td>" . htmlspecialchars($libro['Id_libro']) . "</td>
+                                    <td>" . htmlspecialchars($libro['Titulo']) . "</td>
+                                    <td>" . htmlspecialchars($libro['Autor']) . "</td>
+                                    <td>" . htmlspecialchars($libro['Genero']) . "</td>
+                                    <td class='actions'>
+                                        <button class='action-link action-edit' onclick=\"openModal('modalLibros', '" . $libro['Id_libro'] . "', true)\">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </button>
+                                        <form action='procesar_libro.php' method='post' onsubmit=\"return confirm('¿Estás seguro de que deseas eliminar este libro?')\">
+                                            <input type='hidden' name='id_libro' value='" . $libro['Id_libro'] . "'>
+                                            <input type='hidden' name='accion' value='eliminar'>
+                                            <button class='action-link action-delete' type='submit'>
+                                                <i class='fas fa-trash'></i> Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6'>" . 
+                                (empty($termino_busqueda) ? 'No se encontraron libros.' : 'No se encontraron libros que coincidan con la búsqueda.') . 
+                                "</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+  <!--  Modal para libros  -->
+  <div id="modalLibros" class="modal">
+    <div class="modal-content" style="background: transparent; box-shadow: none; padding: 0;">
+      <iframe id="modalIframe" class="modal-iframe"></iframe>
+    </div>
+  </div>
+
+  <?php include 'footer.html'; ?>
+  <script>
+    //FUNCIONES PARA EL ZOOM
+    let currentZoom = 100;
+    const minZoom = 50;
+    const maxZoom = 200;
+    const zoomStep = 10;
+
+    function updateZoom() {
+      document.body.style.zoom = `${currentZoom}%`;
+      document.getElementById('zoomLevel').textContent = `${currentZoom}%`;
+      
+      // Guardar en localStorage para persistencia
+      localStorage.setItem('pageZoom', currentZoom);
+    }
+
+    function zoomIn() {
+      if (currentZoom < maxZoom) {
+        currentZoom += zoomStep;
+        updateZoom();
+      }
+    }
+
+    function zoomOut() {
+      if (currentZoom > minZoom) {
+        currentZoom -= zoomStep;
+        updateZoom();
+      }
+    }
+
+    function resetZoom() {
+      currentZoom = 100;
+      updateZoom();
+    }
+
+    // Cargar zoom guardado al iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedZoom = localStorage.getItem('pageZoom');
+      if (savedZoom) {
+        currentZoom = parseInt(savedZoom);
+        updateZoom();
+      }
+    });
+    // Funciones para abrir y cerrar modales
+    function openModal(modalId, idLibro, opc) {
+      document.getElementById(modalId).style.display = 'flex';
+      if (opc)
+        document.getElementById("modalIframe").src = "gestionLibros.php?id=" + idLibro;
+      else
+        document.getElementById("modalIframe").src = "gestionLibros.php";
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target === modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
