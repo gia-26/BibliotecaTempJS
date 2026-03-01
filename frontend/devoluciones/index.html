@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devoluciones - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="header"></div>
+  
+  <section class="hero">
+    <h2>Gestión de Devoluciones</h2>
+  </section>
+
+  <div id="header-dashboard"></div>
+  <main>
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-label">Elegir un filtro:</span>
+        <select class="filter-select">
+          <option value="id_usuario">ID de usuario</option>
+          <option value="id_libro">ID del libro</option>
+        </select>
+        <input type="text" class="search-input" placeholder="Buscar...">
+        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table class="catalog-table">
+        <thead>
+          <tr>
+            <th>Id del usuario</th>
+            <th>Nombre</th>
+            <th>Id del libro</th>
+            <th>Título</th>
+            <th>Fecha de préstamo</th>
+            <th>Fecha de devolución</th>
+            <th>Estado</th>
+            <th>Devolver</th>
+            <th>Renovar</th>
+          </tr>
+        </thead>
+        <tbody id="tblPrestamos">
+        </tbody>
+      </table>
+    </div>
+    
+    <h3 class="section-title">Multas</h3>
+    
+    <div class="table-container">
+      <table class="catalog-table">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Apellido paterno</th>
+            <th>Apellido materno</th>
+            <th>Título del libro</th>
+            <th>Fecha de devolución</th>
+            <th>Fecha de entrega</th>
+            <th>Días excedidos</th>
+            <th>Monto</th>
+          </tr>
+        </thead>
+        <tbody id="tblMultas">
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
