@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import prestamosRoutes from './routes/prestamos.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
+import multasRoutes from './routes/multas.routes.js';
 
 //Creamos el objeto de express para nuestra aplicación
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.json());
 //Definimos las rutas de nuestra aplicación
 app.use('/api/prestamos', prestamosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/multas', multasRoutes);
 
 app.listen(port, () => {
     console.log(`Aplicación corriendo en el puerto ${port}`);

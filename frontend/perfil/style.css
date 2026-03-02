@@ -1,0 +1,212 @@
+:root {
+    --modal-bg: #e6d7c8;
+    --texto-marron: #3b2423;
+    --boton-marron: #3b2423;
+    --sombra: rgba(59, 38, 35, 0.1);
+}
+
+/* Fondo general */
+body {
+    background-color: var(--modal-bg);
+    color: var(--texto-marron);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hero igual al index */
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+    background: linear-gradient(rgba(59, 38, 35, 0.7), rgba(59, 38, 35, 0.7)), 
+                url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: white;
+}
+
+.hero h2 {
+    font-size: 2.2rem;
+    font-weight: 300;
+}
+
+/* Sección principal */
+main {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Encabezado */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: "";
+    width: 60%;
+    height: 2px;
+    background-color: var(--boton-marron);
+    position: absolute;
+    left: 20%;
+    bottom: -10px;
+}
+
+/* Layout */
+.profile-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+/* Tarjetas blancas */
+.profile-sidebar,
+.profile-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px var(--sombra);
+}
+
+/* Avatar */
+.profile-avatar {
+    text-align: center;
+}
+
+.avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--boton-marron);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    margin: 0 auto 1rem;
+}
+
+.profile-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.profile-id {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Menú lateral */
+.profile-menu {
+    list-style: none;
+    margin-top: 2rem;
+    padding: 0;
+}
+
+.profile-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    color: var(--texto-marron);
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.profile-menu a.active,
+.profile-menu a:hover {
+    background-color: rgba(59, 38, 35, 0.1);
+}
+
+/* Formularios */
+.content-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--boton-marron);
+    outline: none;
+}
+
+/* Botones */
+.btn {
+    background-color: var(--boton-marron);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #2d1d1d;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background-color: white;
+    border: 1px solid var(--boton-marron);
+    color: var(--boton-marron);
+}
+
+.btn-outline:hover {
+    background-color: rgba(59, 38, 35, 0.1);
+}
+
+/* Password */
+.password-container {
+    position: relative;
+}
+
+.password-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ocultar secciones por defecto */
+.content-section {
+    display: none;
+}
+
+/* Mostrar solo la sección activa */
+.content-section.active {
+    display: block;
+}

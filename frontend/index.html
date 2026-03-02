@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="hero hero-medium">
+    <h2 class="read-on-hover" data-text="Bienvenido a la Biblioteca">Bienvenido a la Biblioteca</h2>
+    <p class="read-on-hover" data-text="Tu espacio para el conocimiento y la investigación en la Universidad Tecnológica de la Huasteca Hidalguense">Tu espacio para el conocimiento y la investigación en la Universidad Tecnológica de la Huasteca Hidalguense</p>
+  </section>
+
+  <main>
+    <div class="section-header" id="nuevas-adquisiciones">
+      <h2 class="read-on-hover" data-text="Nuevas Adquisiciones">Nuevas Adquisiciones</h2>
+      <p class="read-on-hover" data-text="Descubre los últimos títulos incorporados a nuestra colección universitaria">Descubre los últimos títulos incorporados a nuestra colección universitaria</p>
+    </div>
+
+    <div class="catalogo-swiper swiper mySwiper">
+      <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="libro">
+              <img loading="lazy" src="https://biblioteca.grupoctic.com/libros_img/" alt="Titulo del libro" class="libro-img">
+              <div class="libro-content">
+                <h3 class="read-on-hover" data-text='Título: Titulo del libro'>Titulo del libro</h3>
+                <div class="read-on-hover autor" data-text='Autor: Autor del libro'>Autor del libro</div>
+                <p class="read-on-hover" data-text='Sinopsis: Sinopsis del libro'>Sinopsis del libro</p>
+                <a href="catalogo-publico.php" class="btn">Ver más</a>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="swiper-pagination" aria-hidden="false"></div>
+      <div class="swiper-button-prev" aria-label="Anterior"></div>
+      <div class="swiper-button-next" aria-label="Siguiente"></div>
+    </div>
+
+    <div class="read-on-hover quienes-somos" data-text="quienes somos" id="quienes-somos">
+      <h2 class="read-on-hover" data-text="¿Quiénes Somos?">¿Quiénes Somos?</h2>
+      <p class="read-on-hover" data-text="Quienes somos de la biblioteca">Quienes somos de la biblioteca</p>
+      
+      <h3 class="read-on-hover" data-text="Nuestra Historia">Nuestra Historia</h3>
+      <p class="read-on-hover" data-text="Historia de la biblioteca">Historia de la biblioteca</p>
+      
+      <div class="mision-vision">
+        <div class="mision-vision-card">
+          <h3 class="read-on-hover" data-text="Misión">Misión</h3>
+          <p class="read-on-hover" data-text="Mision de la biblioteca">Mision de la biblioteca</p>
+        </div>
+        
+        <div class="mision-vision-card">
+          <h3 class="read-on-hover" data-text="Visión">Visión</h3>
+          <p class="read-on-hover" data-text="Vision de la biblioteca">Vision de la biblioteca</p>
+        </div>
+        
+        <div class="mision-vision-card">
+          <h3 class="read-on-hover" data-text="Objetivo">Objetivo</h3>
+          <p class="read-on-hover" data-text="Objetivo de la biblioteca">Objetivo de la biblioteca</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="directorio" id="directorio">
+      <div class="section-header">
+        <h2 class="read-on-hover" data-text="Directorio">Directorio</h2>
+      </div>
+      <div class="directorio-grid">
+        <div class="directorio-card">
+          <img src="./fotoBibliotecario.png" alt="Directora">
+          <div class="directorio-card-content">
+            <h3 class="read-on-hover" data-text="Giovanni Ibarra Antonio">Giovanni Ibarra Antonio</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Botón Texto a Voz -->
+  <button class="btn-tts" id="btnTTS">🔊</button>
+
+  <div id="footer"></div>
+  
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="main.js"></script>
+  <script>
+    // Variable simple para controlar
+    let ttsActivo = false;
+
+    // Función simple de lectura
+    function speakText(text) {
+        if (!ttsActivo) return;
+        if (!window.speechSynthesis) return;
+        
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'es-ES';
+        window.speechSynthesis.speak(utter);
+    }
+
+    // Control del botón
+    document.getElementById('btnTTS').addEventListener('click', function() {
+        ttsActivo = !ttsActivo;
+        this.textContent = ttsActivo ? '🔇' : '🔊';
+    });
+
+    // Eventos simples para los textos
+    document.querySelectorAll('.read-on-hover').forEach(el => {
+        el.addEventListener('mouseover', () => {
+            const txt = el.getAttribute('data-text') || el.innerText;
+            speakText(txt);
+        });
+        
+        el.addEventListener('mouseout', () => {
+            window.speechSynthesis.cancel();
+        });
+    });
+
+    // Swiper (se mantiene igual)
+    const swiper = new Swiper('.mySwiper', {
+        slidesPerView: 4,
+        spaceBetween: 24,
+        loop: true,
+        autoplay: { delay: 4000 },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        breakpoints: {
+            320:  { slidesPerView: 1, spaceBetween: 12 },
+            640:  { slidesPerView: 2, spaceBetween: 16 },
+            900:  { slidesPerView: 3, spaceBetween: 20 },
+            1200: { slidesPerView: 4, spaceBetween: 24 }
+        }
+    });
+    </script>
+</body>
+</html>
