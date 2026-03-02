@@ -1,159 +1,159 @@
 :root {
-      --modal-bg: #e6d7c8;
-      --texto-marron: #3b2423;
-      --boton-marron: #3b2423;
-      --sombra: rgba(59, 38, 35, 0.1);
-    }
-    body {
-  background-color: var(--modal-bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --modal-bg: #e6d7c8;
+  --texto-marron: #3b2423;
+  --boton-marron: #3b2423;
+  --sombra: rgba(59, 38, 35, 0.1);
 }
 
-    .login-container {
-      align-self: center;
-      margin-top: 3rem;
-      margin-bottom: 3rem;
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px var(--sombra);
-      width: 100%;
-      max-width: 450px;
-      overflow: hidden;
-    }
+body {
+  background-color: var(--modal-bg);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
 
-    .login-header {
-      background-color: var(--boton-marron);
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
-    }
+.login-container {
+   margin: 3rem auto;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px var(--sombra);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+}
 
-    .login-header h1 {
-      font-size: 1.8rem;
-      font-weight: 300;
-      margin-bottom: 0.5rem;
-    }
+.login-header {
+  background-color: var(--boton-marron);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+}
 
-    .login-header p {
-      opacity: 0.9;
-      font-size: 1rem;
-    }
+.login-header h1 {
+  font-size: 1.8rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
 
-    .login-body {
-      padding: 2rem;
-    }
+.login-header p {
+  opacity: 0.9;
+  font-size: 1rem;
+}
 
-    .form-group {
-      position: relative;
-      margin-bottom: 1.5rem;
-    }
+.login-body {
+  padding: 2rem;
+}
 
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--texto-marron);
-    }
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
 
-    .form-input {
-      width: 100%;
-      padding: 0.8rem 3rem 0.8rem 1rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-      box-sizing: border-box;
-    }
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--texto-marron);
+}
 
-    .form-input:focus {
-      outline: none;
-      border-color: var(--boton-marron);
-    }
+.form-input {
+  width: 100%;
+  padding: 0.8rem 3rem 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
 
-    .btn {
-      display: inline-block;
-      background-color: var(--boton-marron);
-      color: #fff;
-      padding: 0.8rem 1.5rem;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 4px;
-      font-weight: 500;
-      transition: all 0.3s;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
-    }
+.form-input:focus {
+  outline: none;
+  border-color: var(--boton-marron);
+}
 
-    .btn:hover {
-      background-color: #2d1d1d;
-      transform: translateY(-2px);
-    }
+.btn {
+  display: inline-block;
+  background-color: var(--boton-marron);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
 
-    .session-select {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-      background-color: white;
-      margin-bottom: 1.5rem;
-      box-sizing: border-box;
-    }
+.btn:hover {
+  background-color: #2d1d1d;
+  transform: translateY(-2px);
+}
 
-    /* ESTILOS PERFECTOS PARA EL TOGGLE PASSWORD */
-    .password-wrapper {
-      position: relative;
-      display: block;
-    }
+.session-select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+}
 
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: #666;
-      opacity: 0.7;
-      transition: all 0.3s ease;
-      background: none;
-      border: none;
-      padding: 0;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+/* ESTILOS PERFECTOS PARA EL TOGGLE PASSWORD */
+.password-wrapper {
+  position: relative;
+  display: block;
+}
 
-    .toggle-password:hover {
-      opacity: 1;
-      color: #333;
-    }
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #666;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    /* Ocultar controles nativos de contraseña */
-    input::-ms-reveal,
-    input::-ms-clear {
-      display: none !important;
-    }
+.toggle-password:hover {
+  opacity: 1;
+  color: #333;
+}
 
-    input[type="password"]::-webkit-textfield-decoration-container,
-    input[type="password"]::-webkit-clear-button {
-      display: none !important;
-    }
+/* Ocultar controles nativos de contraseña */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
 
-    @media (max-width: 480px) {
-      body {
-        padding: 1rem;
-      }
-      
-      .login-body {
-        padding: 1.5rem;
-      }
-    }
+input[type="password"]::-webkit-textfield-decoration-container,
+input[type="password"]::-webkit-clear-button {
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+
+  .login-body {
+    padding: 1.5rem;
+  }
+}
