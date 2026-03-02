@@ -1,0 +1,148 @@
+:root {
+    --bg-crema: #e6d7c8;
+    --texto-oscuro: #3b2423;
+    --marron-uthh: #3b2423;
+    --blanco: #ffffff;
+    --rojo-pdf: #d32f2f;
+    --sombra: rgba(59, 38, 35, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-crema);
+    color: var(--texto-oscuro);
+    line-height: 1.6;
+}
+
+/* Banner Superior */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+    background: linear-gradient(rgba(59, 36, 35, 0.7), rgba(59, 36, 35, 0.7)), 
+                url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    color: var(--blanco);
+    margin-bottom: 2rem;
+}
+
+.hero h2 {
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Tarjetas de Estadísticas */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--sombra);
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--marron-uthh);
+    margin: 0.5rem 0;
+}
+
+.stat-description {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Sección de Filtros */
+.filters-section {
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--sombra);
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.form-input, .form-select {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+}
+
+/* Botones */
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.8rem 1.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background-color: #f8f9fa;
+    color: var(--texto-oscuro);
+    border: 1px solid #ddd;
+}
+
+.btn-pdf {
+    background-color: var(--rojo-pdf);
+    color: var(--blanco);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
