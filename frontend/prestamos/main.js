@@ -123,7 +123,7 @@ btnPrestar.addEventListener('click', () => {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            alert(`Préstamo registrado exitosamente: ${result.mensaje}`);
+            alert(result.mensaje);
         } else {
             alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
         }

@@ -1228,3 +1228,51 @@ footer {
 .read-on-hover {
   cursor: pointer;
 }
+
+.catalogo-swiper {
+  padding: 2rem 0;
+}
+.catalogo-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+.catalogo-swiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  height: auto;
+  padding: 0.25rem;
+}
+.catalogo-swiper .libro {
+  max-width: 320px;
+  width: 100%;
+  margin: 0;
+}
+.catalogo-swiper .libro-img {
+  width: 60%;
+  height: auto;
+}
+.swiper-button-next, .swiper-button-prev {
+  color: var(--boton-marron);
+}
+.swiper-pagination-bullet {
+  background: rgba(59,38,35,0.2);
+}
+.swiper-pagination-bullet-active {
+  background: var(--boton-marron);
+}
+
+/* Botón simple de texto a voz */
+.btn-tts {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--boton-marron);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  font-size: 1.2rem;
+}

@@ -24,12 +24,12 @@ export const getAllTiposPrestamos = async () => {
 }
 
 export const registrarPrestamo = async (data) => {
-  const [result] = await db.query(`CALL sp_registrar_prestamo(?, ?, ?, ?, ?)`, 
+  const [[result]] = await db.query(`CALL sp_registrar_prestamo(?, ?, ?, ?, ?)`, 
     [data.idUsuario, data.idEjemplar, data.idBibliotecario, data.idTipoPrestamo, data.idTipoUsuario]
   );
 
   //PENDIENTE 
-  console.log("RESULTADO SP:", result[0]);
+  console.log("RESULTADO SP:", result);
   if (result[0].success)
     return { success: true, mensaje: result[0].message };
   else
@@ -40,10 +40,10 @@ export const devolverPrestamo = async (idPrestamo) => {
   const [[result]] = await db.query(`CALL sp_registrar_devolucion(?)`, [idPrestamo]);
   //PENDIENTE 
   console.log("RESULTADO SP:", result);
-  if (result.success)
-    return { success: true, mensaje: result.message };
+  if (result[0].success)
+    return { success: true, mensaje: result[0].message };
   else
-    return { success: false, mensaje: result.message };
+    return { success: false, mensaje: result[0].message };
 }
 
 //Pasar consulta a vista para simplificar el código
