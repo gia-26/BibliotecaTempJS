@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Libros - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="hero">
+    <h2>Catálogo de Libros</h2>
+    <p>Explora nuestra completa colección bibliográfica</p>
+  </section>
+
+  <main>
+    <div class="section-header">
+      <h2>Nuestro Acervo Bibliográfico</h2>
+    </div>
+
+    <div class="search-section">
+      <div class="search-box">
+        <select class="filter-select" id="criterio-busqueda">
+            <option value="titulo">Título</option>
+            <option value="autor">Autor</option>
+            <option value="genero">Género</option>
+        </select>
+        <input type="text" class="search-input" id="input-busqueda" placeholder="Buscar por título, autor o género...">
+      </div>
+    </div>
+    
+    <div class="catalogo" id="contenedor-libros">
+      <div class="libro" style="position: relative;">
+        <div class="libro-popular-indicador">Más popular</div>
+        <img src="https://biblioteca.grupoctic.com/libros_img/" class="libro-img">
+        <div class="libro-content">
+          <h3>Titulo del libro</h3>
+          <div class="autor">Nombre del autor</div>
+          <span class="estado disponible">Disponible</span>
+          <p>Descripción breve del libro...</p>
+          <a href="libro-detalle.php?id=1&estado=Disponible" class="btn">Ver más</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="paginacion" id="paginacion-container">
+      <span class="pagina-actual"></span>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

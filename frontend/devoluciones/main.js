@@ -60,7 +60,7 @@ const devolver = (idPrestamo) => {
     .then(result => {
       console.log("RESULTADO DEVOLUCIÓN:", result);
       if (result.success)
-        alert("Préstamo devuelto exitosamente: " + result.mensaje);
+        alert(result.mensaje);
       else
           alert("Error al devolver el préstamo: " + result.mensaje);
     })

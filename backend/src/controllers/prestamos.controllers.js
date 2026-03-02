@@ -24,6 +24,7 @@ export const registrarPrestamo = async (req, res) => {
     console.log(req.body);
     const data = req.body;
     const result = await prestamosModel.registrarPrestamo(data);
+    console.log("RESULTADO CONTROLADOR:", result);
     //PENDIENTE: Revisar el resultado del SP para determinar si fue exitoso o no
     res.status(200).json(result);
   } catch (error) {
