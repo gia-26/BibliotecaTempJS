@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Multas - Biblioteca UTHH</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="hero">
+    <h2>Historial de Multas</h2>
+    <p>Consulta el estado de tus multas y cargos en la biblioteca</p>
+  </section>
+
+  <div id="header-dashboard"></div>
+
+  <main>
+
+    <div class="section-header">
+      <h2>Mis Multas</h2>
+      <p>Revisa el detalle de las multas aplicadas a tu cuenta</p>
+    </div>
+
+    <!-- INFORMACIÓN DEL USUARIO -->
+    <div class="user-info-card">
+      <div class="user-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="user-details">
+        <h3 id="nombreUsuario"></h3>
+        <p id="tipoUsuario"></p>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="resumen-multas">
+      <div class="resumen-card totales">
+        <div class="resumen-number" id="montoTotal">$0.00</div>
+        <div class="resumen-label">Multas Totales</div>
+      </div>
+    </div>
+
+    <!-- LISTA DE MULTAS -->
+    <div class="multas-grid" id="listaMultas">
+    </div>
+
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+  
+</body>
+</html>

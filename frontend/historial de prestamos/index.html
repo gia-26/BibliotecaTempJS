@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de Préstamos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+<header>
+  <h1>Biblioteca UTHH</h1>
+  <nav>
+    <a href="dashboard.html">Inicio</a>
+    <a href="#">Cerrar sesión</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Historial de Préstamos</h2>
+  <p>Consulta tu historial de libros prestados</p>
+</section>
+
+<div id="header-dashboard"></div>
+
+<main>
+
+  <div class="user-info-card">
+    <div class="user-avatar">
+      <i class="fas fa-user"></i>
+    </div>
+    <div class="user-details">
+      <h3 id="nombreUsuario"></h3>
+      <p id="tipoUsuario"></p>
+    </div>
+  </div>
+
+  <div class="stats-cards">
+    <div class="stat-card">
+      <div class="stat-number" id="prestamosTotales">0</div>
+      <div class="stat-label">Préstamos Totales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="librosActivos">0</div>
+      <div class="stat-label">Libros Activos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="librosDevueltos">0</div>
+      <div class="stat-label">Libros Devueltos</div>
+    </div>
+  </div>
+
+  <div class="prestamos-grid" id="prestamosContainer"></div>
+
+</main>
+
+<div id="footer"></div>
+
+<script src="../main.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

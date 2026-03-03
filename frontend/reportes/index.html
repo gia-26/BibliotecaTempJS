@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes - Biblioteca UTHH</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <!--link rel="stylesheet" href="../styles.css"-->
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="hero">
+    <h2>Reportes del sistema</h2>
+  </section>
+
+  <div id="header-dashboard"></div>
+
+  <main>
+    <!-- TARJETAS DASHBOARD -->
+    <div class="stats-cards">
+      <div class="stat-card">
+        <h3>MONTO TOTAL MULTAS</h3>
+        <div class="stat-value" id="totalMultas">$0.00</div>
+        <div class="stat-description">Suma total de multas</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>PRÉSTAMOS</h3>
+        <div class="stat-value" id="totalPrestamos">0</div>
+        <div class="stat-description">Libros prestados</div>
+      </div>
+
+      <div class="stat-card">
+        <h3>DEVOLUCIONES PENDIENTES</h3>
+        <div class="stat-value" id="librosPendientes">0</div>
+        <div class="stat-description">Libros por devolver</div>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filters-section">
+      <div class="filters-grid">
+
+        <div class="form-group">
+          <label class="form-label">Tipo de Reporte</label>
+          <select class="form-select" id="tipo_reporte">
+            <option value="multas">Multas</option>
+            <option value="prestamos">Préstamos</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Fecha Inicio</label>
+          <input type="date" class="form-input" id="fecha_inicio">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Fecha Fin</label>
+          <input type="date" class="form-input" id="fecha_fin">
+        </div>
+
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-secondary" id="btnLimpiar">
+          <i class="fas fa-sync-alt"></i> Limpiar Filtros
+        </button>
+
+        <button class="btn btn-pdf" id="btnGenerar">
+          <i class="fas fa-file-pdf"></i> Generar PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA -->
+    <h3 class="section-title" id="tituloReporte"></h3>
+
+    <div class="table-container">
+      <table class="catalog-table">
+        <thead id="theadReporte"></thead>
+        <tbody id="tbodyReporte"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>

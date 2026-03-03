@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Libros - Biblioteca UTHH</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <!-- CONTROLES ZOOM -->
+  <div class="zoom-controls">
+    <button class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+    <span class="zoom-display" id="zoomLevel">100%</span>
+    <button class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+    <button class="zoom-btn zoom-reset" id="zoomReset">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+
+  <section class="hero">
+    <h2>Catálogo de Libros</h2>
+  </section>
+
+  <div id="header-dashboard"></div>
+
+  <main>
+
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-label">Buscar libro:</span>
+
+        <select class="filter-select" id="filterSelect">
+          <option value="id_libro">ID del libro</option>
+          <option value="titulo">Título</option>
+          <option value="isbn">ISBN</option>
+        </select>
+
+        <input type="text" class="search-input" id="searchInput"
+               placeholder="Ingresa término de búsqueda...">
+
+        <button class="btn" id="btnBuscar">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+
+        <button class="btn" id="btnLimpiar"
+                style="background-color:#6c757d;width:100px;height:40px;">
+          Limpiar
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-agregar" id="btnAgregar">
+      <i class="fas fa-plus"></i>
+      <span>Agregar Nuevo Libro</span>
+    </button>
+
+    <div class="table-container">
+      <table class="catalog-table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>ID Libro</th>
+            <th>Nombre</th>
+            <th>Autor</th>
+            <th>Género</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaLibros"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="modalLibros" class="modal">
+    <div class="modal-content" style="background: transparent; box-shadow: none; padding: 0;">
+      <iframe id="modalIframe" class="modal-iframe"></iframe>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>

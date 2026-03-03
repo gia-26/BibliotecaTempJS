@@ -1,0 +1,92 @@
+:root {
+  --modal-bg: #e6d7c8;
+  --texto-marron: #3b2423;
+  --boton-marron: #3b2626;
+  --sombra: rgba(59, 38, 35, 0.1);
+  --dorado: #b8860b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: var(--modal-bg); color: var(--texto-marron); line-height: 1.6; }
+
+.hero {
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  height: 300px;
+  background: linear-gradient(rgba(59, 38, 35, 0.7), rgba(59, 38, 35, 0.7)),
+  url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da');
+  background-size: cover; background-position: center;
+  text-align: center; color: white; padding: 0 2rem;
+}
+.hero h2 { font-size: 2.5rem; font-weight: 300; margin-bottom: 1rem; }
+
+main { padding: 3rem 2rem; max-width: 1200px; margin: auto; }
+
+.section-header { text-align: center; margin-bottom: 3rem; }
+
+.content-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px var(--sombra);
+}
+
+.admin-panel {
+  background-color: rgba(59, 38, 35, 0.05);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-left: 4px solid var(--dorado);
+}
+
+textarea.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 150px;
+  resize: vertical;
+}
+
+select.form-control {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn {
+  background-color: var(--boton-marron);
+  color: #fff;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover { background-color: #2d1d1d; }
+
+.mision-vision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.mv-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px var(--sombra);
+  text-align: center;
+  border-top: 4px solid var(--dorado);
+}
+
+/* Íconos de los títulos (color dorado como en el PHP original) */
+.content-card h3 i {
+  color: var(--dorado);
+}
+
+.admin-panel h4 i {
+  color: var(--dorado);
+}
