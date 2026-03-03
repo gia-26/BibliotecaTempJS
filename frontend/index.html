@@ -7,6 +7,55 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .catalogo-swiper {
+      padding: 2rem 0;
+    }
+    .catalogo-swiper .swiper-wrapper {
+      align-items: stretch;
+    }
+    .catalogo-swiper .swiper-slide {
+      display: flex;
+      justify-content: center;
+      height: auto;
+      padding: 0.25rem;
+    }
+    .catalogo-swiper .libro {
+      max-width: 320px;
+      width: 100%;
+      margin: 0;
+    }
+    .catalogo-swiper .libro-img {
+      width: 60%;
+      height: auto;
+    }
+    .swiper-button-next, .swiper-button-prev {
+      color: var(--boton-marron);
+    }
+    .swiper-pagination-bullet {
+      background: rgba(59,38,35,0.2);
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--boton-marron);
+    }
+
+    /* Botón simple de texto a voz */
+    .btn-tts {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--boton-marron);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      z-index: 1000;
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -24,18 +73,7 @@
     </div>
 
     <div class="catalogo-swiper swiper mySwiper">
-      <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="libro">
-              <img loading="lazy" src="https://biblioteca.grupoctic.com/libros_img/" alt="Titulo del libro" class="libro-img">
-              <div class="libro-content">
-                <h3 class="read-on-hover" data-text='Título: Titulo del libro'>Titulo del libro</h3>
-                <div class="read-on-hover autor" data-text='Autor: Autor del libro'>Autor del libro</div>
-                <p class="read-on-hover" data-text='Sinopsis: Sinopsis del libro'>Sinopsis del libro</p>
-                <a href="catalogo-publico.php" class="btn">Ver más</a>
-              </div>
-            </div>
-          </div>
+      <div class="swiper-wrapper" id="catalogoLibs">
       </div>
       <div class="swiper-pagination" aria-hidden="false"></div>
       <div class="swiper-button-prev" aria-label="Anterior"></div>
@@ -44,25 +82,25 @@
 
     <div class="read-on-hover quienes-somos" data-text="quienes somos" id="quienes-somos">
       <h2 class="read-on-hover" data-text="¿Quiénes Somos?">¿Quiénes Somos?</h2>
-      <p class="read-on-hover" data-text="Quienes somos de la biblioteca">Quienes somos de la biblioteca</p>
+      <p class="read-on-hover" id="quienesSomos" data-text=""></p>
       
       <h3 class="read-on-hover" data-text="Nuestra Historia">Nuestra Historia</h3>
-      <p class="read-on-hover" data-text="Historia de la biblioteca">Historia de la biblioteca</p>
+      <p class="read-on-hover" id="nuestraHistoria" data-text=""></p>
       
       <div class="mision-vision">
         <div class="mision-vision-card">
           <h3 class="read-on-hover" data-text="Misión">Misión</h3>
-          <p class="read-on-hover" data-text="Mision de la biblioteca">Mision de la biblioteca</p>
+          <p class="read-on-hover" id="mision" data-text=""></p>
         </div>
         
         <div class="mision-vision-card">
           <h3 class="read-on-hover" data-text="Visión">Visión</h3>
-          <p class="read-on-hover" data-text="Vision de la biblioteca">Vision de la biblioteca</p>
+          <p class="read-on-hover" id="vision" data-text=""></p>
         </div>
         
         <div class="mision-vision-card">
           <h3 class="read-on-hover" data-text="Objetivo">Objetivo</h3>
-          <p class="read-on-hover" data-text="Objetivo de la biblioteca">Objetivo de la biblioteca</p>
+          <p class="read-on-hover" id="objetivo" data-text=""></p>
         </div>
       </div>
     </div>
@@ -71,24 +109,16 @@
       <div class="section-header">
         <h2 class="read-on-hover" data-text="Directorio">Directorio</h2>
       </div>
-      <div class="directorio-grid">
-        <div class="directorio-card">
-          <img src="./fotoBibliotecario.png" alt="Directora">
-          <div class="directorio-card-content">
-            <h3 class="read-on-hover" data-text="Giovanni Ibarra Antonio">Giovanni Ibarra Antonio</h3>
-          </div>
-        </div>
-      </div>
+      <div class="directorio-grid" id="personalContainer"></div>
     </div>
   </main>
-  <!-- Botón Texto a Voz -->
+  
   <button class="btn-tts" id="btnTTS">🔊</button>
-
   <div id="footer"></div>
   
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script src="main.js"></script>
+  <script src="inicio.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script>
     // Variable simple para controlar
     let ttsActivo = false;
@@ -120,22 +150,6 @@
         el.addEventListener('mouseout', () => {
             window.speechSynthesis.cancel();
         });
-    });
-
-    // Swiper (se mantiene igual)
-    const swiper = new Swiper('.mySwiper', {
-        slidesPerView: 4,
-        spaceBetween: 24,
-        loop: true,
-        autoplay: { delay: 4000 },
-        pagination: { el: '.swiper-pagination', clickable: true },
-        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-        breakpoints: {
-            320:  { slidesPerView: 1, spaceBetween: 12 },
-            640:  { slidesPerView: 2, spaceBetween: 16 },
-            900:  { slidesPerView: 3, spaceBetween: 20 },
-            1200: { slidesPerView: 4, spaceBetween: 24 }
-        }
     });
     </script>
 </body>
