@@ -13,5 +13,9 @@ fetch("/Biblioteca/frontend/footer.html")
 fetch("/Biblioteca/frontend/header-dashboard.html")
   .then(res => res.text())
   .then(data => {
-    document.getElementById("header-dashboard").innerHTML = data;
+    const headerDashboard = document.getElementById("header-dashboard");
+    if(headerDashboard) {
+      headerDashboard.innerHTML = data;
+    }
+
   });

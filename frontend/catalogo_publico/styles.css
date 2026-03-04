@@ -83,7 +83,7 @@ nav a:hover:after {
 }
 
 main {
-    padding: 3rem 2rem;
+    padding: 0rem 2rem;
     max-width: 1200px;
     margin: auto;
 }
@@ -239,7 +239,7 @@ main {
     color: #ef6c00;
 }
 
-/* Estilos para la paginación */
+/* Estilos para la paginación *//*
 .paginacion {
     display: flex;
     justify-content: center;
@@ -272,7 +272,7 @@ main {
     width: 200px;
     margin: 3rem auto 0;
     text-align: center;
-}
+}*/
 
 footer {
     background-color: var(--boton-marron);
@@ -362,6 +362,68 @@ footer {
 /* Efecto sutil de brillo */
 .libro-popular-indicador {
     animation: suave-brillo 3s infinite alternate;
+}
+
+/* El contenedor principal estilo píldora */
+.paginacion-contenedor {
+  display: flex;
+  width: 400px;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  margin-top: 2.5rem;
+  padding: 12px 24px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  gap: 16px;
+}
+
+/* Estilos para el texto "Página 1 de 20" */
+.paginacion-texto {
+  font-size: 15px;
+  color: #4b5563;
+}
+
+.paginacion-texto .numero {
+  color: #111827;
+  font-weight: 500;
+  margin: 0 4px;
+}
+
+/* Estilos base para ambos botones */
+.btn {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+/* Botón "Anterior" */
+.btn-anterior {
+  background-color: #ffffff;
+  color: var(--boton-marron);
+  border: 1px solid #e5e7eb;
+}
+
+.btn-anterior:hover {
+  background-color: var(--boton-marron);
+  color: #ffffff;
+}
+
+/* Botón "Siguiente" */
+.btn-siguiente {
+  background-color: #ffffff;
+  color: var(--boton-marron);
+  border: 1px solid #e5e7eb;
+}
+
+.btn-siguiente:hover {
+  background-color: var(--boton-marron);
+  color: #ffffff;
 }
 
 @keyframes suave-brillo {
