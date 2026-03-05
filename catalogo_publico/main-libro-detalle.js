@@ -20,7 +20,7 @@ const libroPopular = `
     </div>
 `;
 
-fetch(`http://localhost:3000/api/libros/${idLibro}`)
+fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
   .then(response => response.json())
   .then(libro => {
     console.log('Detalles del libro:', libro);

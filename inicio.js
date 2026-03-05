@@ -6,7 +6,7 @@ const vision = document.getElementById('vision');
 const objetivo = document.getElementById('objetivo');
 const personalContainer = document.getElementById('personalContainer');
 
-fetch('http://localhost:3000/api/inicio/libros')
+fetch('https://backend-biblioteca-two.vercel.app/api/inicio/libros')
   .then(response => response.json())
   .then(libros => {
     
@@ -60,7 +60,7 @@ fetch('http://localhost:3000/api/inicio/libros')
     console.error('Error al obtener los libros:', error);
   });
 
-fetch('http://localhost:3000/api/inicio/info-biblioteca')
+fetch('https://backend-biblioteca-two.vercel.app/api/inicio/info-biblioteca')
   .then(response => response.json())
   .then(info => {
     if (info.length > 0) {
@@ -78,7 +78,7 @@ fetch('http://localhost:3000/api/inicio/info-biblioteca')
     }
   })
 
-fetch('http://localhost:3000/api/inicio/personal')
+fetch('https://backend-biblioteca-two.vercel.app/api/inicio/personal')
   .then(response => response.json())
   .then(personales => {
     personalContainer.innerHTML = '';

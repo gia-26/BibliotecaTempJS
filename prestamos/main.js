@@ -7,7 +7,7 @@ const btnPrestar = document.getElementById('btnPrestar');
 document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
 document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
 
-fetch('http://localhost:3000/api/prestamos/ejemplares')
+fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/ejemplares')
   .then(response => response.json())
   .then(ejemplares => {
     tblEjemplares.innerHTML = "";
@@ -29,7 +29,7 @@ fetch('http://localhost:3000/api/prestamos/ejemplares')
     console.error('Error fetching ejemplares:', error);
   });
 
-fetch('http://localhost:3000/api/usuarios/tipos')
+fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
   .then(response => response.json())
   .then(tipos => {
     tipos.forEach(tipo => {
@@ -40,7 +40,7 @@ fetch('http://localhost:3000/api/usuarios/tipos')
     console.error('Error fetching tipos de usuario:', error);
   });
 
-fetch('http://localhost:3000/api/prestamos/tipos')
+fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
   .then(response => response.json())
   .then(tipos => {
     tipos.forEach(tipo => {
@@ -88,7 +88,7 @@ function fechaConDiasExtra(dias = 0) {
 
 inpIdUsuario.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
-    fetch(`http://localhost:3000/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
+    fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
       .then(response => response.json())
       .then(usuario => {
         if (usuario && usuario.Nombre) {
@@ -115,7 +115,7 @@ btnPrestar.addEventListener('click', () => {
 
     console.log('Datos del préstamo:', prestamoData);
     
-    fetch('http://localhost:3000/api/prestamos/registrar', {
+    fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/registrar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(prestamoData)

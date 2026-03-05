@@ -1,7 +1,7 @@
 const tblPrestamos = document.getElementById("tblPrestamos");
 const tblMultas = document.getElementById("tblMultas");
 
-fetch("http://localhost:3000/api/prestamos")
+fetch("https://backend-biblioteca-two.vercel.app/api/prestamos")
   .then(response => response.json())
   .then(data => {
     tblPrestamos.innerHTML = "";
@@ -25,7 +25,7 @@ fetch("http://localhost:3000/api/prestamos")
     console.error("Error al obtener los préstamos:", error);
   });
 
-fetch("http://localhost:3000/api/multas")
+fetch("https://backend-biblioteca-two.vercel.app/api/multas")
   .then(response => response.json())
   .then(data => {
     tblMultas.innerHTML = "";
@@ -51,7 +51,7 @@ fetch("http://localhost:3000/api/multas")
 const devolver = (idPrestamo) => {
   if (!confirm("¿Está seguro de que desea devolver este préstamo?"))
       return;
-  fetch("http://localhost:3000/api/prestamos/devolver", {
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/devolver", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: idPrestamo })

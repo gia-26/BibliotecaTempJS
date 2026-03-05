@@ -52,10 +52,10 @@ const actualizarLibros = (url) => {
 const cargarLibros = () => {
     const tipo = slcCriterioBusqueda.value;
     const busqueda = inputBusqueda.value.trim();
-    let url = `http://localhost:3000/api/catalogo?limit=${limit}&skip=${skip}`;
+    let url = `https://backend-biblioteca-two.vercel.app/api/catalogo?limit=${limit}&skip=${skip}`;
 
     if(busqueda && tipo) {
-        url = `http://localhost:3000/api/catalogo/buscar?q=${busqueda}&tipo=${tipo}&limit=${limit}&skip=${skip}`;
+        url = `https://backend-biblioteca-two.vercel.app/api/catalogo/buscar?q=${busqueda}&tipo=${tipo}&limit=${limit}&skip=${skip}`;
     }
 
     actualizarLibros(url);
