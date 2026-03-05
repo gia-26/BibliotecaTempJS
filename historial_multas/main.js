@@ -5,7 +5,7 @@ const listaMultas = document.getElementById("listaMultas");
 
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
-  fetch("http://localhost:3000/api/usuarios/buscar?id=ALU001&tipo=TU001")
+  fetch("https://backend-biblioteca-two.vercel.app/usuarios/buscar?id=ALU001&tipo=TU001")
     .then(res => res.json())
     .then(data => {
       console.log(data); // Esto te permitirá ver en la consola si viene como 'Nombre'
@@ -17,7 +17,7 @@ function cargarUsuario() {
 
 // CARGAR RESUMEN DE MULTAS
 function cargarResumen() {
-  fetch("http://localhost:3000/api/usuarios/resumen")
+  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/resumen")
     .then(res => res.json())
     .then(data => {
       // Si el backend devuelve un objeto directo: { MontoTotal: 123 }
@@ -30,7 +30,7 @@ function cargarResumen() {
 
 // CARGAR LISTA DE MULTAS
 function cargarMultas() {
-  fetch("http://localhost:3000/api/multas")
+  fetch("https://backend-biblioteca-two.vercel.app/api/multas")
     .then(res => res.json())
     .then(data => {
 
