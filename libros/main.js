@@ -7,7 +7,7 @@ const filterSelect = document.getElementById("filterSelect");
 // CARGAR LIBROS
 function cargarLibros(filtro = "titulo", termino = "") {
 
-  fetch(`http://localhost:3000/api/libros?filtro=${filtro}&termino=${termino}`)
+  fetch(`https://backend-biblioteca-two.vercel.app/api/libros?filtro=${filtro}&termino=${termino}`)
     .then(res => res.json())
     .then(data => {
 
@@ -66,7 +66,7 @@ function eliminarLibro(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar este libro?"))
     return;
 
-  fetch(`http://localhost:3000/api/libros/${id}`, {
+  fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${id}`, {
     method: "DELETE"
   })
   .then(res => res.json())
