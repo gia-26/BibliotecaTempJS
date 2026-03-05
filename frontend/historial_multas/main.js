@@ -5,21 +5,27 @@ const listaMultas = document.getElementById("listaMultas");
 
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
-  fetch("http://localhost:3000/api/usuario")
+  fetch("http://localhost:3000/api/usuarios/buscar?id=ALU001&tipo=TU001")
     .then(res => res.json())
     .then(data => {
-      nombreUsuario.textContent = data.nombre;
-      tipoUsuario.textContent = data.tipo;
-    });
+      console.log(data); // Esto te permitirá ver en la consola si viene como 'Nombre'
+            nombreUsuario.textContent = data.Nombre || "Nombre no encontrado";
+            tipoUsuario.textContent = "Ingeniería en TI"; 
+    })
+    .catch(error => console.error("Error al obtener usuario:", error));
 }
 
 // CARGAR RESUMEN DE MULTAS
 function cargarResumen() {
-  fetch("http://localhost:3000/api/multas/resumen")
+  fetch("http://localhost:3000/api/usuarios/resumen")
     .then(res => res.json())
     .then(data => {
-      montoTotal.textContent = `$${parseFloat(data.MontoTotal).toFixed(2)}`;
-    });
+      // Si el backend devuelve un objeto directo: { MontoTotal: 123 }
+      // Si devuelve un array: data[0].MontoTotal
+      const total = data.MontoTotal !== undefined ? data.MontoTotal : (data[0] ? data[0].MontoTotal : 0);
+      montoTotal.textContent = `$${parseFloat(total).toFixed(2)}`;
+    })
+    .catch(err => console.error("Error cargando resumen:", err));
 }
 
 // CARGAR LISTA DE MULTAS

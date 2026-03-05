@@ -5,7 +5,7 @@ const inputPassword = document.getElementById("password");
 const togglePasswordBtn = document.getElementById("togglePassword");
 const iconToggle = togglePasswordBtn.querySelector("i");
 
-// EVENTO MOSTRAR / OCULTAR CONTRASEÑA
+// MOSTRAR / OCULTAR CONTRASEÑA
 togglePasswordBtn.addEventListener("click", () => {
 
     const esPassword = inputPassword.type === "password";
@@ -22,7 +22,7 @@ togglePasswordBtn.addEventListener("click", () => {
 
 });
 
-// EVENTO ENVÍO DE FORMULARIO
+// ENVÍO DEL FORMULARIO
 loginForm.addEventListener("submit", (e) => {
 
     e.preventDefault();
@@ -33,23 +33,66 @@ loginForm.addEventListener("submit", (e) => {
         password: loginForm.password.value
     };
 
-    console.log("Datos del login:", datosLogin);
+    console.log("Datos enviados:", datosLogin);
+
+    fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datosLogin)
+    })
+    .then(response => response.json())
+    .then(result => {
+
+        console.log("Respuesta del servidor:", result);
+
+        if (result.success) {
+
+            alert(result.mensaje);
+
+            // Guardar datos en localStorage si quieres
+            localStorage.setItem("usuario", result.usuario);
+            localStorage.setItem("rol", result.rol);
+
+            // Redireccionar según rol
+            redirigirSegunRol(result.rol);
+
+        } else {
+            alert(result.mensaje);
+        }
+
+    })
+    .catch(error => {
+        console.error("Error en login:", error);
+        alert("Error al conectar con el servidor.");
+    });
 
 });
 
-//MENSAJE
-loginForm.addEventListener("submit", (e) => {
+// FUNCIÓN PARA REDIRIGIR SEGÚN ROL
+function redirigirSegunRol(rol) {
 
-    e.preventDefault();
+    switch (rol) {
 
-    const datosLogin = {
-        sesion: slcSesion.value,
-        usuario: loginForm.usuario.value,
-        password: loginForm.password.value
-    };
+        case "ROL001":
+            window.location.href = "../dashboard_bibliotecario/index.html";
+            break;
 
-    console.log("Datos del login:", datosLogin);
+        case "ROL002":
+            window.location.href = "../dashboard_coordinador/index.html";
+            break;
 
-    alert("Login listo para conectarse al backend.");
+        case "ROL003":
+            window.location.href = "../dashboard_jefe/index.html";
+            break;
 
-});
+        case "Miembro":
+            window.location.href = "../catalogo/index.html";
+            break;
+
+        default:
+            window.location.href = "../index.html";
+            break;
+    }
+}

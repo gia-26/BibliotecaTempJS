@@ -7,6 +7,15 @@ import usuariosRoutes from './routes/usuarios.routes.js';
 import multasRoutes from './routes/multas.routes.js';
 import inicioRoutes from './routes/inicio.routes.js';
 
+import historialMultasRoutes from './routes/multas.routes.js';
+
+import reportesRoutes from './routes/reportes.routes.js';
+
+import loginRoutes from './routes/login.routes.js';
+
+
+
+
 //Creamos el objeto de express para nuestra aplicación
 const app = express();
 
@@ -28,6 +37,11 @@ app.use('/api/prestamos', prestamosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/multas', multasRoutes);
 app.use('/api/inicio', inicioRoutes);
+app.use('/api/historialmultas', historialMultasRoutes);
+
+app.use('/api/reportes', reportesRoutes);
+
+app.use('/api/login', loginRoutes);
 
 app.listen(port, () => {
     console.log(`Aplicación corriendo en el puerto ${port}`);
