@@ -6,6 +6,8 @@ import prestamosRoutes from './routes/prestamos.routes.js';
 import usuariosRoutes from './routes/usuarios.routes.js';
 import multasRoutes from './routes/multas.routes.js';
 import inicioRoutes from './routes/inicio.routes.js';
+import catalogoRoutes from './routes/catalogo.routes.js';
+import librosRoutes from './routes/libros.routes.js';
 
 import historialMultasRoutes from './routes/multas.routes.js';
 
@@ -37,11 +39,16 @@ app.use('/api/prestamos', prestamosRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/multas', multasRoutes);
 app.use('/api/inicio', inicioRoutes);
+<<<<<<< HEAD
 app.use('/api/historialmultas', historialMultasRoutes);
 
 app.use('/api/reportes', reportesRoutes);
 
 app.use('/api/login', loginRoutes);
+=======
+app.use('/api/catalogo', catalogoRoutes);
+app.use('/api/libros', librosRoutes);
+>>>>>>> 4ddb56d9ae09d943bf607f2ceda8ae395ef74963
 
 app.listen(port, () => {
     console.log(`Aplicación corriendo en el puerto ${port}`);
