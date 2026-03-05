@@ -7,20 +7,17 @@ const librosDevueltos = document.getElementById("librosDevueltos");
 
 const prestamosContainer = document.getElementById("prestamosContainer");
 
-// =============================
 // CARGAR USUARIO
-// =============================
-fetch("http://localhost:3000/api/usuarios/perfil")
+
+fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/perfil")
   .then(res => res.json())
   .then(data => {
     nombreUsuario.textContent = data.nombre;
     tipoUsuario.textContent = data.tipo;
   });
 
-// =============================
 // CARGAR ESTADÍSTICAS
-// =============================
-fetch("http://localhost:3000/api/prestamos/estadisticas")
+fetch("https://backend-biblioteca-two.vercel.app/prestamos/estadisticas")
   .then(res => res.json())
   .then(data => {
     prestamosTotales.textContent = data.prestamosTotales;
@@ -28,10 +25,8 @@ fetch("http://localhost:3000/api/prestamos/estadisticas")
     librosDevueltos.textContent = data.librosDevueltos;
   });
 
-// =============================
 // CARGAR HISTORIAL DE PRÉSTAMOS
-// =============================
-fetch("http://localhost:3000/api/prestamos/mis-prestamos")
+fetch("https://backend-biblioteca-two.vercel.app/prestamos/mis-prestamos")
   .then(res => res.json())
   .then(data => {
     data.forEach(prestamo => {
