@@ -21,8 +21,7 @@ function cargarResumen() {
   fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/resumen")
     .then(res => res.json())
     .then(data => {
-      // Si el backend devuelve un objeto directo: { MontoTotal: 123 }
-      // Si devuelve un array: data[0].MontoTotal
+    
       const total = data.MontoTotal !== undefined ? data.MontoTotal : (data[0] ? data[0].MontoTotal : 0);
       montoTotal.textContent = `$${parseFloat(total).toFixed(2)}`;
     })
