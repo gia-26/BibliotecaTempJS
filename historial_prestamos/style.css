@@ -388,3 +388,36 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Estilos para el menú dashboard - Copiados del perfil */
+    #header-dashboard {
+        background-color: #f9f5f0;
+        border-bottom: 1px solid #e0d5c8;
+        padding: 0.5rem 2rem;
+        box-shadow: 0 2px 5px var(--sombra);
+    }
+
+    #header-dashboard ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    #header-dashboard ul li a {
+        color: var(--texto-marron);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        padding: 0.5rem 0;
+        display: inline-block;
+        transition: color 0.3s;
+    }
+
+    #header-dashboard ul li a:hover {
+        color: var(--boton-marron);
+        border-bottom: 2px solid var(--boton-marron);
+    }
