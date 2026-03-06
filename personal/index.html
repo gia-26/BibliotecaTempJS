@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="hero">
+    <h2>Gestión de Personal</h2>
+  </section>
+
+  <div id="header-dashboard"></div>
+
+  <main>
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-label">Buscar personal ID:</span>
+        <input type="text" class="search-input" placeholder="Ingresa ID del personal...">
+        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <div class="tabla-scroll">
+        <table class="catalog-table">
+          <thead>
+            <tr>
+              <th>Id personal</th>
+              <th>Nombre</th>
+              <th>Apellido paterno</th>
+              <th>Apellido materno</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PEB002</td>
+              <td>María</td>
+              <td>Gómez</td>
+              <td>Sánchez</td>
+              <td>Jefe de Departamento</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>PEB003</td>
+              <td>Carlos</td>
+              <td>Martínez</td>
+              <td>García</td>
+              <td>Jefe de Departamento</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>PEB004</td>
+              <td>Ana</td>
+              <td>Rodríguez</td>
+              <td>Fernández</td>
+              <td>Bibliotecario</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>PEB006</td>
+              <td>Juan</td>
+              <td>Pérez</td>
+              <td>López</td>
+              <td>Jefe de Departamento</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <h3 class="section-title">Personal bibliotecario</h3>
+      <form class="personal-form">
+        <div class="form-group">
+          <label class="form-label">No. Trabajador</label>
+          <input type="text" class="form-input">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">ID personal</label>
+          <input type="text" class="form-input" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-input" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Apellido paterno</label>
+          <input type="text" class="form-input" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Apellido materno</label>
+          <input type="text" class="form-input" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Tipo de rol:
+            <button type="button" class="config-btn" onclick="openModal('modal-tipos-rol')" title="Configurar tipos de rol">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select class="form-select">
+            <option>Jefe de Departamento</option>
+            <option>Bibliotecario</option>
+            <option>Coordinador/a bibliotecario</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-input" placeholder="Ingresa contraseña">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Confirmar contraseña</label>
+          <input type="password" class="form-input" placeholder="Confirma contraseña">
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary">Eliminar</button>
+          <button type="button" class="btn btn-secondary">Editar</button>
+          <button type="submit" class="btn">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Modal Tipos de Rol -->
+  <div id="modal-tipos-rol" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Gestión de Tipos de Rol</h2>
+        <span class="close" onclick="closeModal('modal-tipos-rol')">&times;</span>
+      </div>
+      
+      <div class="modal-form-container">
+        <form id="role-type-form">
+          <div class="modal-form-group">
+            <label for="id-role-type">ID Tipo de Rol</label>
+            <input type="text" id="id-role-type" class="modal-form-control" placeholder="TR001">
+          </div>
+          
+          <div class="modal-form-group">
+            <label for="role-type-name">Tipo de Rol</label>
+            <input type="text" id="role-type-name" class="modal-form-control" placeholder="Jefe de Departamento">
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="edit-mode-role-type" checked>
+            <label for="edit-mode-role-type">Habilitar edición</label>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="delete-mode-role-type">
+            <label for="delete-mode-role-type">Habilitar eliminación</label>
+          </div>
+          
+          <button type="submit" class="btn">
+            <i class="fas fa-save"></i> Guardar
+          </button>
+        </form>
+      </div>
+      
+      <div class="modal-table-container">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th>ID Tipo de Rol</th>
+              <th>Tipo de Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TR001</td>
+              <td>Jefe de Departamento</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>TR002</td>
+              <td>Bibliotecario</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>TR003</td>
+              <td>Coordinador/a bibliotecario</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>TR004</td>
+              <td>Téc. Bibliotecario</td>
+              <td class="actions">
+                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="../main.js"></script>
+  <script>
+    // Funciones para abrir y cerrar modales
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
+    }
+
+    // Manejo de envío de formularios
+    document.getElementById('role-type-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Tipo de rol guardado correctamente.');
+      closeModal('modal-tipos-rol');
+    });
+  </script>
+</body>
+</html>

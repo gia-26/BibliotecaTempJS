@@ -5,12 +5,13 @@ const listaMultas = document.getElementById("listaMultas");
 
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
-  fetch("https://backend-biblioteca-two.vercel.app/usuarios/buscar?id=ALU001&tipo=TU001")
+  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=ALU001&tipo=TU001")
     .then(res => res.json())
     .then(data => {
-      console.log(data); // Esto te permitirá ver en la consola si viene como 'Nombre'
-            nombreUsuario.textContent = data.Nombre || "Nombre no encontrado";
-            tipoUsuario.textContent = "Ingeniería en TI"; 
+      console.log(data);
+
+      nombreUsuario.textContent = data.Nombre || "Nombre no encontrado";
+      tipoUsuario.textContent = "Ingeniería en TI";
     })
     .catch(error => console.error("Error al obtener usuario:", error));
 }
@@ -43,43 +44,47 @@ function cargarMultas() {
 
       data.forEach(multa => {
 
-        listaMultas.innerHTML += `
-          <div class="multa-card">
-            <div class="multa-header">
-              <div class="multa-concepto">Devolución Tardía</div>
-              <div class="multa-monto">$${parseFloat(multa.Monto).toFixed(2)}</div>
-            </div>
+  listaMultas.innerHTML += `
+    <div class="multa-card">
+      <div class="multa-header">
+        <div class="multa-concepto">Devolución Tardía</div>
+        <div class="multa-monto">$${parseFloat(multa.Monto).toFixed(2)}</div>
+      </div>
 
-            <div class="multa-body">
-              <div class="multa-info">
+      <div class="multa-body">
+        <div class="multa-info">
 
-                <div class="info-item">
-                  <span class="info-label">Libro:</span>
-                  <span class="info-value">${multa.Titulo}</span>
-                </div>
-
-                <div class="info-item">
-                  <span class="info-label">Fecha de Devolución:</span>
-                  <span class="info-value">
-                    ${multa.Fecha_devolucion_real ?? 'No se ha devuelto'}
-                  </span>
-                </div>
-
-                <div class="info-item">
-                  <span class="info-label">Fecha Límite:</span>
-                  <span class="info-value">${multa.Fecha_devolucion}</span>
-                </div>
-
-                <div class="info-item">
-                  <span class="info-label">Días de Retraso:</span>
-                  <span class="info-value">${multa.Dias_excedidos} días</span>
-                </div>
-
-              </div>
-            </div>
+          <div class="info-item">
+            <span class="info-label">Libro:</span>
+            <span class="info-value">${multa.Titulo}</span>
           </div>
-        `;
-      });
+
+          <div class="info-item">
+            <span class="info-label">Fecha de Devolución:</span>
+            <span class="info-value">
+              ${multa.Fecha_devolucion_real 
+                ? multa.Fecha_devolucion_real.split('T')[0] 
+                : 'No se ha devuelto'}
+            </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Fecha Límite:</span>
+            <span class="info-value">
+              ${multa.Fecha_devolucion.split('T')[0]}
+            </span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Días de Retraso:</span>
+            <span class="info-value">${multa.Dias_excedidos} días</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  `;
+});
 
     });
 }

@@ -74,18 +74,6 @@ nav a.active:after {
     color: white;
 }
 
-.account-btn {
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
 .user-details {
     display: flex;
     align-items: center;
@@ -218,30 +206,6 @@ main {
     background-color: #f9f5f0;
 }
 
-.status-badge {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.status-Disponible {
-    background-color: #e8f5e8;
-    color: #2e7d32;
-}
-
-.status-Prestado {
-    background-color: #fff3e0;
-    color: #ef6c00;
-}
-
-.new-loan-section {
-    background-color: white;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 5px 15px var(--sombra);
-}
-
 .section-title {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
@@ -249,7 +213,14 @@ main {
     font-weight: 300;
 }
 
-.loan-form {
+.form-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px var(--sombra);
+}
+
+.personal-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -462,13 +433,49 @@ main {
     gap: 0.5rem;
 }
 
-.selected-row {
-    background-color: #f0f7ff;
+/* Estilos para los enlaces de acción en la tabla */
+.action-link {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s;
 }
 
-.table-icon {
-    color: var(--boton-marron);
-    margin-right: 0.5rem;
+.action-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.action-edit {
+    background-color: #4a7c59;
+}
+
+.action-edit:hover {
+    background-color: #3a6548;
+}
+
+.action-delete {
+    background-color: #c94c4c;
+}
+
+.action-delete:hover {
+    background-color: #b03a3a;
+}
+
+.account-btn {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 footer {
@@ -547,12 +554,16 @@ footer {
     align-items: stretch;
     }
     
-    .loan-form {
+    .personal-form {
     grid-template-columns: 1fr;
     }
     
     .modal-content {
     width: 95%;
     padding: 1.5rem;
+    }
+    
+    .actions {
+    flex-direction: column;
     }
 }

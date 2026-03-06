@@ -13,7 +13,7 @@ const totalPrestamos = document.getElementById('totalPrestamos');
 const librosPendientes = document.getElementById('librosPendientes');
 
 // DASHBOARD
-fetch('http://localhost:3000/api/reportes/dashboard')
+fetch('https://backend-biblioteca-two.vercel.app/api/reportes/dashboard')
   .then(res => res.json())
   .then(data => {
     totalMultas.textContent = `$${parseFloat(data.TotalMultas).toFixed(2)}`;
@@ -34,7 +34,7 @@ btnGenerar.addEventListener('click', () => {
     return;
   }
 
-  fetch(`http://localhost:3000/api/reportes?tipo=${tipoReporte.value}&inicio=${fechaInicio.value}&fin=${fechaFin.value}`)
+  fetch(`https://backend-biblioteca-two.vercel.app/api/reportes?tipo=${tipoReporte.value}&inicio=${fechaInicio.value}&fin=${fechaFin.value}`)
     .then(res => res.json())
     .then(data => {
 

@@ -72,7 +72,46 @@
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody id="tablaLibros"></tbody>
+        <tbody id="tablaLibros">
+          <tr>
+              <td><img src="https://biblioteca.grupoctic.com/libros_img/cartas_a_milena.jpg" alt="Cartas a Milena" class="book-image"></td>
+              <td>LIB0023</td>
+              <td>Cartas a Milena</td>
+              <td>Franz kafka</td>
+              <td>Histórico</td>
+              <td class="actions">
+                  <button class="action-link action-edit" onclick="openModal('modalLibros', 'LIB0023', true)">
+                      <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <form action="" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este libro?')">
+                      <input type="hidden" name="id_libro" value="LIB0023">
+                      <input type="hidden" name="accion" value="eliminar">
+                      <button class="action-link action-delete" type="submit">
+                          <i class="fas fa-trash"></i> Eliminar
+                      </button>
+                  </form>
+              </td>
+          </tr>
+          <tr>
+            <td><img src="https://biblioteca.grupoctic.com/libros_img/cien_anios_de_soledad.jpg" alt="Cien años de soledad" class="book-image"></td>
+            <td>LIB001</td>
+            <td>Cien años de soledad</td>
+            <td>Gabriel García Márquez</td>
+            <td>Literatura</td>
+            <td class="actions">
+                <button class="action-link action-edit" onclick="openModal('modalLibros', 'LIB001', true)">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <form action="" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este libro?')">
+                    <input type="hidden" name="id_libro" value="LIB001">
+                    <input type="hidden" name="accion" value="eliminar">
+                    <button class="action-link action-delete" type="submit">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
       </table>
     </div>
 
