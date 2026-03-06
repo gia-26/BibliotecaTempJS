@@ -1,17 +1,14 @@
-// Datos simulados (antes venían de sesión PHP)
 const usuario = {
     id: "0001",
     nombre: "Cristhian Hernandez",
     categoria: "Alumno",
     telefono: "7711234567"
 };
-
 // Cargar datos en pantalla
 document.getElementById("nombreUser").textContent = usuario.nombre;
 document.getElementById("idUser").textContent = usuario.id;
 document.getElementById("categoriaUser").textContent = usuario.categoria;
 document.getElementById("telefono").value = usuario.telefono;
-
 
 // Cambiar secciones
 document.querySelectorAll('.profile-menu a').forEach(link => {
@@ -24,7 +21,6 @@ document.querySelectorAll('.profile-menu a').forEach(link => {
         document.getElementById(this.dataset.target).classList.add('active');
     });
 });
-
 
 // VALIDACIÓN TELÉFONO
 document.getElementById('profile-form').addEventListener('submit', function(e){
@@ -40,7 +36,6 @@ document.getElementById('profile-form').addEventListener('submit', function(e){
     usuario.telefono = tel;
     alert("Teléfono actualizado correctamente.");
 });
-
 
 // VALIDACIÓN CONTRASEÑA
 document.getElementById('password-form').addEventListener('submit', function(e){
@@ -61,7 +56,6 @@ document.getElementById('password-form').addEventListener('submit', function(e){
 
     alert("Contraseña actualizada correctamente.");
 });
-
 
 // Mostrar / ocultar contraseña
 document.querySelectorAll('.toggle-password').forEach(icon => {
