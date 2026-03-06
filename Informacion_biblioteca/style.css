@@ -11,7 +11,7 @@ body { background-color: var(--modal-bg); color: var(--texto-marron); line-heigh
 
 .hero {
   display: flex; flex-direction: column; justify-content: center; align-items: center;
-  height: 300px;
+  height: 150px;
   background: linear-gradient(rgba(59, 38, 35, 0.7), rgba(59, 38, 35, 0.7)),
   url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da');
   background-size: cover; background-position: center;
