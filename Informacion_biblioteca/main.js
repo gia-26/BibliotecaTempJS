@@ -1,4 +1,3 @@
-// Simulación de base de datos usando localStorage
 const defaultData = {
   quienesSomos: 'La Biblioteca "Mtro. Sergio Saúl Figueroa Balderas"...',
   historia: 'La historia de la Biblioteca inicia en 1997...',
