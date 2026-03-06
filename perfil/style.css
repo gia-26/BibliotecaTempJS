@@ -30,6 +30,12 @@ body {
 .hero h2 {
     font-size: 2.2rem;
     font-weight: 300;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
 }
 
 /* Sección principal */
@@ -42,7 +48,7 @@ main {
 /* Encabezado */
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .section-header h2 {
@@ -50,6 +56,7 @@ main {
     font-weight: 300;
     position: relative;
     display: inline-block;
+    margin-bottom: 1.5rem;
 }
 
 .section-header h2::after {
@@ -60,6 +67,13 @@ main {
     position: absolute;
     left: 20%;
     bottom: -10px;
+}
+
+.section-header p {
+    font-size: 1.1rem;
+    color: var(--texto-marron);
+    opacity: 0.8;
+    margin-top: 0.5rem;
 }
 
 /* Layout */
