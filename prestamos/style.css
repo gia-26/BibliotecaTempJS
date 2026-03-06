@@ -509,6 +509,18 @@ footer {
     font-size: 0.9rem;
 }
 
+.tabla-scroll {
+    max-height: 420px; /* altura máxima */
+    overflow-y: auto;  /* activa el scroll vertical */
+    border: 1px solid #ccc;
+}
+
+.tabla-scroll thead tr {
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
 @media (max-width: 768px) {
     header {
     flex-direction: column;

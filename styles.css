@@ -1109,45 +1109,6 @@ main {
   opacity: 0.8;
 }
 
-/* ===== FOOTER ===== */
-footer {
-  background-color: var(--boton-marron);
-  color: #fff;
-  text-align: center;
-  padding: 2.5rem 1rem;
-  margin-top: auto;
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  text-align: left;
-}
-
-.footer-section h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  font-weight: 500;
-}
-
-.footer-section p {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0.8rem;
-  display: block;
-}
-
-.copyright {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-}
-
 /* ===== MEDIA QUERIES ===== */
 @media (max-width: 768px) {
   header {
