@@ -7,27 +7,30 @@ const btnPrestar = document.getElementById('btnPrestar');
 document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
 document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
 
-fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/ejemplares')
-  .then(response => response.json())
-  .then(ejemplares => {
-    tblEjemplares.innerHTML = "";
-
-    ejemplares.forEach(ejemplar => {
-        tblEjemplares.innerHTML += `
-            <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}')" style="cursor: pointer;">
-                <td>${ejemplar.Id_libro}</td>
-                <td>${ejemplar.Titulo}</td>
-                <td>${ejemplar.Autor}</td>
-                <td>${ejemplar.Id_Ejemplar}</td>
-                <td>${ejemplar.Numero_de_ejemplar}</td>
-                <td><span class="status-badge status-${ejemplar.Estado}">${ejemplar.Estado}</span></td>
-            </tr>
-        `;
+const mostrarPrestamos = () => {
+  fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/ejemplares')
+    .then(response => response.json())
+    .then(ejemplares => {
+      tblEjemplares.innerHTML = "";
+  
+      ejemplares.forEach(ejemplar => {
+          tblEjemplares.innerHTML += `
+              <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}')" style="cursor: pointer;">
+                  <td>${ejemplar.Id_libro}</td>
+                  <td>${ejemplar.Titulo}</td>
+                  <td>${ejemplar.Autor}</td>
+                  <td>${ejemplar.Id_Ejemplar}</td>
+                  <td>${ejemplar.Numero_de_ejemplar}</td>
+                  <td><span class="status-badge status-${ejemplar.Estado}">${ejemplar.Estado}</span></td>
+              </tr>
+          `;
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching ejemplares:', error);
     });
-  })
-  .catch(error => {
-    console.error('Error fetching ejemplares:', error);
-  });
+}
+
 
 fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
   .then(response => response.json())
@@ -123,12 +126,15 @@ btnPrestar.addEventListener('click', () => {
     .then(response => response.json())
     .then(result => {
         if (result.success) {
-            alert(result.mensaje);
+          mostrarPrestamos();
+          alert(result.mensaje);
         } else {
-            alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
+          alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
         }
     })
     .catch(error => {
         console.error('Error registrando el préstamo:', error);
     });
 });
+
+mostrarPrestamos();
