@@ -1,29 +1,31 @@
 const tblPrestamos = document.getElementById("tblPrestamos");
 const tblMultas = document.getElementById("tblMultas");
 
-fetch("https://backend-biblioteca-two.vercel.app/api/prestamos")
-  .then(response => response.json())
-  .then(data => {
-    tblPrestamos.innerHTML = "";
-    data.forEach(prestamo => {
-      tblPrestamos.innerHTML += `
-        <tr>
-          <td>${prestamo.Id_usuario}</td>
-          <td>${prestamo.Nombre}</td>
-          <td>${prestamo.Id_libro}</td>
-          <td>${prestamo.Titulo}</td>
-          <td>${new Date(prestamo.Fecha_prestamo).toLocaleDateString()}</td>
-          <td>${new Date(prestamo.Fecha_devolucion).toLocaleDateString()}</td>
-          <td>${prestamo.Estado}</td>
-          <td><button class="btn btn-small btn-danger" onclick="devolver('${prestamo.Id_prestamo}')">Devolver</button></td>
-          <td><button class="btn btn-small btn-warning">Renovar</button></td>
-        </tr>
-      `;
+const mostrarDevolcuiones = () => {
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos")
+    .then(response => response.json())
+    .then(data => {
+      tblPrestamos.innerHTML = "";
+      data.forEach(prestamo => {
+        tblPrestamos.innerHTML += `
+          <tr>
+            <td>${prestamo.Id_usuario}</td>
+            <td>${prestamo.Nombre}</td>
+            <td>${prestamo.Id_libro}</td>
+            <td>${prestamo.Titulo}</td>
+            <td>${new Date(prestamo.Fecha_prestamo).toLocaleDateString()}</td>
+            <td>${new Date(prestamo.Fecha_devolucion).toLocaleDateString()}</td>
+            <td>${prestamo.Estado}</td>
+            <td><button class="btn btn-small btn-danger" onclick="devolver('${prestamo.Id_prestamo}')">Devolver</button></td>
+            <td><button class="btn btn-small btn-warning">Renovar</button></td>
+          </tr>
+        `;
+      });
+    })
+    .catch(error => {
+      console.error("Error al obtener los préstamos:", error);
     });
-  })
-  .catch(error => {
-    console.error("Error al obtener los préstamos:", error);
-  });
+}
 
 fetch("https://backend-biblioteca-two.vercel.app/api/multas")
   .then(response => response.json())
@@ -59,12 +61,16 @@ const devolver = (idPrestamo) => {
     .then(response => response.json())
     .then(result => {
       console.log("RESULTADO DEVOLUCIÓN:", result);
-      if (result.success)
+      if (result.success){
+        mostrarDevolcuiones();
         alert(result.mensaje);
+      }
       else
-          alert("Error al devolver el préstamo: " + result.mensaje);
+        alert("Error al devolver el préstamo: " + result.mensaje);
     })
     .catch(error => {
       console.error("Error al devolver el préstamo:", error);
     });
 }
+
+mostrarDevolcuiones();
