@@ -1,132 +1,84 @@
-const quienesSomosTexto = document.getElementById("quienesSomos-texto");
-const historiaTexto = document.getElementById("historia-texto");
-const misionTexto = document.getElementById("mision-texto");
-const visionTexto = document.getElementById("vision-texto");
-const objetivoTexto = document.getElementById("objetivo-texto");
+const defaultData = {
+  quienesSomos: 'La Biblioteca "Mtro. Sergio Saúl Figueroa Balderas"...',
+  historia: 'La historia de la Biblioteca inicia en 1997...',
+  mision: '',
+  vision: '',
+  objetivo: ''
+};
 
-const totalLibros = document.getElementById("totalLibros");
-const totalUsuarios = document.getElementById("totalUsuarios");
-const anoFundacion = document.getElementById("anoFundacion");
+let data = JSON.parse(localStorage.getItem("bibliotecaInfo")) || defaultData;
 
-// CARGAR INFORMACIÓN DE LA BIBLIOTECA
-fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/informacion")
-  .then(res => res.json())
-  .then(data => {
-    quienesSomosTexto.textContent = data.quienesSomos;
-    historiaTexto.textContent = data.historia;
-  })
-  .catch(error => console.error('Error cargando información:', error));
+// Mostrar datos en pantalla
+function renderData() {
+  document.getElementById("presentacion-texto").innerHTML = data.quienesSomos.replace(/\n/g, "<br>");
+  document.getElementById("historia-texto").innerHTML = data.historia.replace(/\n/g, "<br>");
+  document.getElementById("mision-texto").innerHTML = data.mision.replace(/\n/g, "<br>");
+  document.getElementById("vision-texto").innerHTML = data.vision.replace(/\n/g, "<br>");
+  document.getElementById("objetivo-texto").innerHTML = data.objetivo.replace(/\n/g, "<br>");
 
-// CARGAR MISIÓN, VISIÓN Y OBJETIVO
-fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/mvo")
-  .then(res => res.json())
-  .then(data => {
-    misionTexto.textContent = data.mision;
-    visionTexto.textContent = data.vision;
-    objetivoTexto.textContent = data.objetivo;
-  })
-  .catch(error => console.error('Error cargando MVO:', error));
+  document.getElementById("presentacion-contenido").value = data.quienesSomos;
+  document.getElementById("historia-contenido").value = data.historia;
+  document.getElementById("mvo-contenido").value = data.mision;
+}
 
-// CARGAR ESTADÍSTICAS
-fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/estadisticas")
-  .then(res => res.json())
-  .then(data => {
-    totalLibros.textContent = data.totalLibros;
-    totalUsuarios.textContent = data.totalUsuarios;
-    anoFundacion.textContent = data.anoFundacion;
-  })
-  .catch(error => console.error('Error cargando estadísticas:', error));
+function guardarDatos() {
+  localStorage.setItem("bibliotecaInfo", JSON.stringify(data));
+}
 
-// ACTUALIZAR INFORMACIÓN GENERAL
-document.getElementById("update-info-form").addEventListener("submit", function(e) {
+// Validación genérica
+function validarCampo(valor, nombre) {
+  if (valor.trim() === "") {
+    alert(`⚠ El campo "${nombre}" no puede estar vacío.`);
+    return false;
+  }
+  return true;
+}
+
+// Presentación
+document.getElementById("update-presentacion-form").addEventListener("submit", function(e) {
   e.preventDefault();
+  const valor = document.getElementById("presentacion-contenido").value;
+  if (!validarCampo(valor, "¿Quiénes Somos?")) return;
+  if (!confirm("¿Guardar cambios?")) return;
 
-  const nuevasQuienesSomos = document.getElementById("quienesSomos-input").value;
-  const nuevaHistoria = document.getElementById("historia-input").value;
-
-  if (!confirm("¿Guardar cambios en la información general?")) return;
-
-  fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/informacion", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quienesSomos: nuevasQuienesSomos,
-      historia: nuevaHistoria
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert("Información general actualizada correctamente");
-    
-    // Recargar datos
-    fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/informacion")
-      .then(res => res.json())
-      .then(data => {
-        quienesSomosTexto.textContent = data.quienesSomos;
-        historiaTexto.textContent = data.historia;
-      });
-    
-    // Limpiar textareas
-    document.getElementById("quienesSomos-input").value = "";
-    document.getElementById("historia-input").value = "";
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert("Error al actualizar la información");
-  });
+  data.quienesSomos = valor.trim();
+  guardarDatos();
+  renderData();
+  alert("Presentación actualizada correctamente.");
 });
 
-// ACTUALIZAR MISIÓN, VISIÓN U OBJETIVO
+// Historia
+document.getElementById("update-historia-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const valor = document.getElementById("historia-contenido").value;
+  if (!validarCampo(valor, "Nuestra Historia")) return;
+  if (!confirm("¿Guardar cambios?")) return;
+
+  data.historia = valor.trim();
+  guardarDatos();
+  renderData();
+  alert("Historia actualizada correctamente.");
+});
+
+// Misión / Visión / Objetivo
 document.getElementById("update-mvo-form").addEventListener("submit", function(e) {
   e.preventDefault();
 
   const seleccion = document.getElementById("seleccion-mvo").value;
-  const nuevoContenido = document.getElementById("mvo-input").value;
+  const valor = document.getElementById("mvo-contenido").value;
 
-  if (!nuevoContenido.trim()) {
-    alert("El campo no puede estar vacío");
-    return;
-  }
+  if (!validarCampo(valor, seleccion)) return;
+  if (!confirm("¿Guardar cambios?")) return;
 
-  if (!confirm(`¿Guardar cambios en ${seleccion}?`)) return;
-
-  fetch(`https://backend-biblioteca-two.vercel.app/api/biblioteca/${seleccion}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      [seleccion]: nuevoContenido
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    alert(`${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`);
-    
-    // Recargar datos
-    fetch("https://backend-biblioteca-two.vercel.app/api/biblioteca/mvo")
-      .then(res => res.json())
-      .then(data => {
-        misionTexto.textContent = data.mision;
-        visionTexto.textContent = data.vision;
-        objetivoTexto.textContent = data.objetivo;
-      });
-    
-    // Limpiar textarea
-    document.getElementById("mvo-input").value = "";
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert(`Error al actualizar ${seleccion}`);
-  });
+  data[seleccion] = valor.trim();
+  guardarDatos();
+  renderData();
+  alert("Actualizado correctamente.");
 });
 
-// Cambiar placeholder según selección
+// Cambiar contenido del textarea según selección
 document.getElementById("seleccion-mvo").addEventListener("change", function() {
-  const seleccion = this.value;
-  const inputField = document.getElementById("mvo-input");
-  
-  inputField.placeholder = `Escribe el nuevo contenido para ${seleccion}...`;
+  document.getElementById("mvo-contenido").value = data[this.value];
 });
+
+document.addEventListener("DOMContentLoaded", renderData);
