@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <!--link rel="stylesheet" href="../styles.css"-->
 </head>
 <body>
 
@@ -20,7 +19,6 @@
   <div id="header-dashboard"></div>
 
   <main>
-    <!-- TARJETAS DASHBOARD -->
     <div class="stats-cards">
       <div class="stat-card">
         <h3>MONTO TOTAL MULTAS</h3>
@@ -41,7 +39,6 @@
       </div>
     </div>
 
-    <!-- FILTROS -->
     <div class="filters-section">
       <div class="filters-grid">
 
@@ -66,20 +63,20 @@
       </div>
 
       <div class="filter-actions">
-        <button class="btn btn-secondary" id="btnLimpiar">
+        <button class="btn btn-secondary" id="btnLimpiar" type="button">
           <i class="fas fa-sync-alt"></i> Limpiar Filtros
         </button>
 
-        <button class="btn btn-pdf" id="btnGenerar">
+        <button class="btn btn-pdf" id="btnGenerar" type="button">
           <i class="fas fa-file-pdf"></i> Generar PDF
         </button>
       </div>
     </div>
 
-    <!-- TABLA -->
-    <h3 class="section-title" id="tituloReporte"></h3>
+    <!-- Se deja oculto para que ya no aparezca nada abajo -->
+    <h3 class="section-title" id="tituloReporte" style="display: none;"></h3>
 
-    <div class="table-container">
+    <div class="table-container" style="display: none;">
       <table class="catalog-table">
         <thead id="theadReporte"></thead>
         <tbody id="tbodyReporte"></tbody>
@@ -92,6 +89,5 @@
 
   <script src="../main.js"></script>
   <script src="main.js"></script>
-
 </body>
 </html>
