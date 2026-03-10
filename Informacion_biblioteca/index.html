@@ -1,96 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiénes Somos - Biblioteca UTHH</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="../styles.css">
+<head>
+  <meta charset="UTF-8">
+  <title>Información de la Biblioteca</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../styles.css">
 </head>
+
 <body>
 
-<div id="header"></div>
+  <div id="header"></div>
 
-<section class="hero">
-  <h2>¿Quiénes Somos?</h2>
-</section>
+  <section class="hero">
+    <h2>Información de la Biblioteca</h2>
+    <p>Conoce más sobre nuestra biblioteca y sus servicios</p>
+  </section>
 
-<div id="header-dashboard"></div>
+  <div id="header-dashboard"></div>
 
-<main>
-<div class="section-header">
-  <h2>Nuestra Biblioteca</h2>
-  <p>Un espacio dedicado al conocimiento y desarrollo académico</p>
-</div>
+  <main>
+    <div class="section-header">
+      <h2>Nuestra Biblioteca</h2>
+      <p>Un espacio dedicado al conocimiento y desarrollo académico</p>
+    </div>
 
-<div class="content-card">
-  <h3><i class="fas fa-info-circle"></i> ¿Quiénes Somos?</h3>
-  <p id="presentacion-texto"></p>
+    <!-- Información General -->
+    <div class="content-card">
+      <h3><i class="fas fa-info-circle"></i> ¿Quiénes Somos?</h3>
+      <p id="quienesSomos-texto"></p>
 
-  <div class="admin-panel">
-    <h4><i class="fas fa-edit"></i> Modificar Presentación</h4>
-    <form id="update-presentacion-form">
-      <div class="form-group">
-        <label>Contenido de "¿Quiénes Somos?"</label>
-        <textarea id="presentacion-contenido" class="form-control"></textarea>
+      <div class="admin-panel">
+        <h4><i class="fas fa-edit"></i> Modificar Información General</h4>
+        <form id="update-info-form">
+          <div class="form-group">
+            <label>Contenido de "¿Quiénes Somos?"</label>
+            <textarea id="quienesSomos-input" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Contenido de "Nuestra Historia"</label>
+            <textarea id="historia-input" class="form-control"></textarea>
+          </div>
+          <button type="submit" class="btn">Guardar Cambios</button>
+        </form>
       </div>
-      <button type="submit" class="btn">Guardar Cambios</button>
-    </form>
-  </div>
-</div>
+    </div>
 
-<div class="content-card">
-  <h3><i class="fas fa-history"></i> Nuestra Historia</h3>
-  <p id="historia-texto"></p>
+    <!-- Historia -->
+    <div class="content-card">
+      <h3><i class="fas fa-history"></i> Nuestra Historia</h3>
+      <p id="historia-texto"></p>
+    </div>
 
-  <div class="admin-panel">
-    <h4><i class="fas fa-edit"></i> Modificar Nuestra Historia</h4>
-    <form id="update-historia-form">
-      <div class="form-group">
-        <label>Contenido de Nuestra Historia</label>
-        <textarea id="historia-contenido" class="form-control"></textarea>
+    <!-- Misión, Visión y Objetivo -->
+    <div class="content-card">
+      <h3><i class="fas fa-bullseye"></i> Misión, Visión y Objetivo</h3>
+
+      <div class="mision-vision-grid">
+        <div class="mv-card"><h4>Misión</h4><p id="mision-texto"></p></div>
+        <div class="mv-card"><h4>Visión</h4><p id="vision-texto"></p></div>
+        <div class="mv-card"><h4>Objetivo</h4><p id="objetivo-texto"></p></div>
       </div>
-      <button type="submit" class="btn">Guardar Cambios</button>
-    </form>
-  </div>
-</div>
 
-<div class="content-card">
-  <h3><i class="fas fa-bullseye"></i> Misión, Visión y Objetivo</h3>
-
-  <div class="mision-vision-grid">
-    <div class="mv-card"><h4>Misión</h4><p id="mision-texto"></p></div>
-    <div class="mv-card"><h4>Visión</h4><p id="vision-texto"></p></div>
-    <div class="mv-card"><h4>Objetivo</h4><p id="objetivo-texto"></p></div>
-  </div>
-
-  <div class="admin-panel">
-    <h4><i class="fas fa-edit"></i> Modificar Misión, Visión u Objetivo</h4>
-    <form id="update-mvo-form">
-      <div class="form-group">
-        <label>Seleccionar qué modificar</label>
-        <select id="seleccion-mvo" class="form-control">
-          <option value="mision">Misión</option>
-          <option value="vision">Visión</option>
-          <option value="objetivo">Objetivo</option>
-        </select>
+      <div class="admin-panel">
+        <h4><i class="fas fa-edit"></i> Modificar Misión, Visión u Objetivo</h4>
+        <form id="update-mvo-form">
+          <div class="form-group">
+            <label>Seleccionar qué modificar</label>
+            <select id="seleccion-mvo" class="form-control">
+              <option value="mision">Misión</option>
+              <option value="vision">Visión</option>
+              <option value="objetivo">Objetivo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contenido</label>
+            <textarea id="mvo-input" class="form-control"></textarea>
+          </div>
+          <button type="submit" class="btn">Guardar Cambios</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label>Contenido</label>
-        <textarea id="mvo-contenido" class="form-control"></textarea>
+    </div>
+
+    <!-- Estadísticas (igual que en historial_prestamos pero con datos diferentes) -->
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="stat-number" id="totalLibros">-</div>
+        <div class="stat-label">Libros en Catálogo</div>
       </div>
-      <button type="submit" class="btn">Guardar Cambios</button>
-    </form>
-  </div>
-</div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalUsuarios">-</div>
+        <div class="stat-label">Usuarios Registrados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="anoFundacion">1997</div>
+        <div class="stat-label">Año de Fundación</div>
+      </div>
+    </div>
+  </main>
 
-</main>
+  <div id="footer"></div>
 
-<div id="footer"></div>
-
-<script src="../main.js"></script>
-<script src="main.js"></script>
+  <script src="../main.js"></script>
+  <script src="main.js"></script>
 </body>
+
 </html>
