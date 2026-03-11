@@ -23,7 +23,9 @@ fetch(`${BASE_URL}/dashboard`)
   });
 
 // GENERAR PDF DESDE BACKEND
-btnGenerar.addEventListener('click', () => {
+btnGenerar.addEventListener('click', (e) => {
+  e.preventDefault();
+
   const t = tipoReporte.value;
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
@@ -33,16 +35,9 @@ btnGenerar.addEventListener('click', () => {
     return;
   }
 
-  const fecha1 = new Date(fIni);
-  const fecha2 = new Date(fFin);
-
-  if (isNaN(fecha1.getTime()) || isNaN(fecha2.getTime())) {
-    alert("Las fechas ingresadas no son válidas");
-    return;
-  }
-
-  // inicio no puede ser mayor que fin
-  if (fecha1 < fecha2) {
+  // Como input type="date" devuelve YYYY-MM-DD,
+  // se pueden comparar directamente como texto
+  if (fIni > fFin) {
     alert("La fecha de inicio no puede ser mayor que la fecha fin");
     return;
   }
