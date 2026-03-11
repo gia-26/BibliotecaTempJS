@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar Editoriales</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+</head>
+
+<body>
+
+    <div class="modal-container">
+
+        <div class="modal-card">
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <h2>Configurar Editoriales Principales</h2>
+
+                <button class="cerrar-modal" onclick="window.parent.closeModal('modalEditoriales')">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+                <p class="label-strong">
+                    Editoriales existentes:
+                </p>
+
+                <!-- LISTA -->
+
+                <div id="listaEditoriales" class="lista-items"></div>
+
+                <!-- FORMULARIO -->
+
+                <form id="formEditorial" class="form-principal">
+
+                    <label class="label-strong">
+                        Nombre de la editorial:
+                    </label>
+
+                    <input type="text" id="nombreEditorial" placeholder="Nueva editorial">
+
+                    <label class="label-strong">
+                        País:
+                    </label>
+
+                    <input type="text" id="paisEditorial" placeholder="País">
+
+                    <input type="hidden" id="idEditorial">
+
+                    <div class="botones">
+
+                        <button type="button" id="cancelarBtn" class="btn btn-secundario">
+
+                            Cancelar
+
+                        </button>
+
+                        <button type="submit" class="btn btn-primario">
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:"Segoe UI", Arial, sans-serif;
+}
+
+body{
+background:transparent;
+}
+
+.modal-container{
+width:100%;
+padding:20px;
+display:flex;
+justify-content:center;
+}
+
+.modal-card{
+width:500px;
+max-height:90vh;
+background:#fff;
+border-radius:4px;
+box-shadow:0 2px 8px rgba(0,0,0,.25);
+overflow-y:auto;
+}
+
+/* HEADER */
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#3B2423;
+color:#fff;
+padding:14px 18px;
+}
+
+.modal-header h2{
+font-size:18px;
+font-weight:600;
+}
+
+.cerrar-modal{
+background:transparent;
+border:none;
+color:#fff;
+font-size:22px;
+cursor:pointer;
+}
+
+.cerrar-modal:hover{
+color:#ddd;
+}
+
+/* BODY */
+
+.modal-body{
+padding:16px 18px 20px;
+}
+
+.label-strong{
+font-size:16px;
+font-weight:600;
+margin-bottom:6px;
+display:block;
+}
+
+/* LISTA */
+
+.lista-anios{
+margin:6px 0 18px;
+border-top:1px solid #ddd;
+}
+
+.fila-anio{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:6px 0;
+border-bottom:1px solid #ddd;
+}
+
+.anio-texto{
+font-size:16px;
+color:#333;
+}
+
+/* ACCIONES */
+
+.acciones{
+display:flex;
+gap:6px;
+}
+
+.icon-btn{
+border:none;
+background:transparent;
+cursor:pointer;
+font-size:16px;
+}
+
+.icon-btn.delete i{
+color:#d11a1a;
+}
+
+/* FORM */
+
+.form-principal{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.form-principal input{
+width:100%;
+padding:7px 8px;
+border:1px solid #ccc;
+border-radius:3px;
+font-size:16px;
+}
+
+/* BOTONES */
+
+.botones{
+display:flex;
+gap:10px;
+margin-top:8px;
+}
+
+.btn{
+flex:1;
+padding:8px 0;
+font-size:16px;
+border-radius:3px;
+cursor:pointer;
+border:1px solid transparent;
+}
+
+.btn-secundario{
+background:#fff;
+color:#444;
+border-color:#ccc;
+}
+
+.btn-primario{
+background:#3B2423;
+color:#fff;
+border-color:#3B2423;
+}
+
+.btn:hover{
+opacity:.9;
+}
