@@ -1,7 +1,7 @@
 //  CARGAR AREAS
 
 async function cargarAreas() {
-  const res = await fetch("https://backend-biblioteca-two.vercel.app/areas");
+  const res = await fetch("https://backend-biblioteca-two.vercel.app/api/areas");
 
   const data = await res.json();
 
@@ -66,10 +66,10 @@ document.getElementById("formArea").addEventListener("submit", async (e) => {
     return;
   }
 
-  let url = "https://backend-biblioteca-two.vercel.app/areas/agregar";
+  let url = "https://backend-biblioteca-two.vercel.app/api/areas/agregar";
 
   if (id !== "") {
-    url = "https://backend-biblioteca-two.vercel.app/areas/editar";
+    url = "https://backend-biblioteca-two.vercel.app/api/areas/editar";
   }
 
   await fetch(url, {
@@ -101,7 +101,7 @@ function editarArea(id, area, estante) {
 async function eliminarArea(id) {
   if (!confirm("¿Eliminar esta área?")) return;
 
-  await fetch("https://backend-biblioteca-two.vercel.app/areas/eliminar", {
+  await fetch("https://backend-biblioteca-two.vercel.app/api/areas/eliminar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
