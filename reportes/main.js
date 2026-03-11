@@ -26,21 +26,28 @@ fetch(`${BASE_URL}/dashboard`)
 btnGenerar.addEventListener('click', (e) => {
   e.preventDefault();
 
+  fechaInicio.setCustomValidity("");
+  fechaFin.setCustomValidity("");
+
   const t = tipoReporte.value;
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
-  console.log("Fecha inicio:", fIni);
-  console.log("Fecha fin:", fFin);
-
-  if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas");
+  if (!fIni) {
+    fechaInicio.setCustomValidity("Seleccione una fecha de inicio");
+    fechaInicio.reportValidity(); 
     return;
   }
 
-  // Validación directa en formato YYYY-MM-DD
+  if (!fFin) {
+    fechaFin.setCustomValidity("Seleccione una fecha de fin");
+    fechaFin.reportValidity(); 
+    return;
+  }
+
   if (fIni > fFin) {
-    alert("La fecha de inicio no puede ser mayor que la fecha fin");
+    fechaInicio.setCustomValidity("La fecha de inicio no puede ser mayor que la fecha fin.");
+    fechaInicio.reportValidity();
     return;
   }
 
@@ -50,8 +57,5 @@ btnGenerar.addEventListener('click', (e) => {
   );
 });
 
-// LIMPIAR
-btnLimpiar.addEventListener('click', () => {
-  fechaInicio.value = '';
-  fechaFin.value = '';
-});
+fechaInicio.addEventListener('input', () => fechaInicio.setCustomValidity(""));
+fechaFin.addEventListener('input', () => fechaFin.setCustomValidity(""));
