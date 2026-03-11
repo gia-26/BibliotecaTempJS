@@ -17,8 +17,10 @@
     <div class="search-section">
       <div class="search-box">
         <span class="search-label">Buscar libro por título:</span>
-        <input type="text" class="search-input" placeholder="Ingresa el título del libro...">
-        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+        <input type="text" class="search-input" id="searchInput" placeholder="Ingresa el título del libro...">
+        <!--
+          <button class="btn" id="btnBuscar"><i class="fas fa-search"></i> Buscar</button>
+        -->
       </div>
     </div>
     
@@ -62,7 +64,7 @@
         
         <div class="form-group">
           <label class="form-label" for="inpIdUsuario">ID del usuario:</label>
-          <input type="text" class="form-input" id="inpIdUsuario" placeholder="Ingresa ID del usuario">
+          <input type="text" class="form-input" id="inpIdUsuario" title='Dar enter para buscar el usuario' placeholder="Ingresa ID del usuario">
         </div>
         
         <div class="form-group">
@@ -96,7 +98,7 @@
         </div>
         
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary">Limpiar</button>
+          <button type="button" id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
           <button type="button" id="btnPrestar" class="btn">Registrar Préstamo</button>
         </div>
       </div>
