@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autores - Biblioteca UTHH</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+    <h1>Biblioteca UTHH</h1>
+</header>
+
+<main>
+
+    <div class="section-header">
+        <h2>Configuración de Autores</h2>
+        <p>Administración de autores principales</p>
+    </div>
+
+
+    <div class="profile-container">
+
+    <!-- MENU -->
+    <div class="profile-sidebar">
+
+        <ul class="profile-menu">
+
+        <li>
+            <a href="#" class="active" data-target="lista">
+            <i class="fa-solid fa-list"></i>
+            Lista de autores
+            </a>
+        </li>
+
+        <li>
+            <a href="#" data-target="form">
+            <i class="fa-solid fa-plus"></i>
+            Agregar autor
+            </a>
+        </li>
+
+        </ul>
+
+    </div>
+
+
+    <!-- CONTENIDO -->
+    <div class="profile-content">
+
+    <!-- LISTA -->
+    <div id="lista" class="content-section active">
+
+    <div class="content-header">
+    <h3>Autores registrados</h3>
+    </div>
+
+    <div id="listaAutores"></div>
+
+    </div>
+
+
+    <!-- FORM -->
+    <div id="form" class="content-section">
+
+    <div class="content-header">
+    <h3 id="tituloForm">Agregar autor</h3>
+    </div>
+
+    <form id="formAutor">
+
+    <div class="form-group">
+    <label>Nombre del autor</label>
+
+    <input
+    type="text"
+    id="nombreAutor"
+    class="form-control"
+    placeholder="Ej: Gabriel García Márquez"
+    >
+    </div>
+
+    <input type="hidden" id="idAutor">
+
+    <div style="margin-top:20px">
+
+    <button type="submit" class="btn">
+    Guardar
+    </button>
+
+    <button type="button" id="cancelarBtn" class="btn">
+    Cancelar
+    </button>
+
+    </div>
+
+    </form>
+
+    </div>
+
+    </div>
+
+    </div>
+
+</main>
+
+<script src="main.js"></script>
+
+</body>
+</html>
