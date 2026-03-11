@@ -26,32 +26,35 @@ fetch(`${BASE_URL}/dashboard`)
 btnGenerar.addEventListener('click', (e) => {
   e.preventDefault();
 
+  // 1. Limpiar validaciones nativas previas
+  fechaInicio.setCustomValidity("");
+  fechaFin.setCustomValidity("");
+
   const t = tipoReporte.value;
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
-  console.log("Fecha inicio:", fIni);
-  console.log("Fecha fin:", fFin);
-
-  if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas");
+  // 2. VALIDACIÓN CAMPOS VACÍOS
+  if (!fIni) {
+    fechaInicio.setCustomValidity("Completa este campo");
+    fechaInicio.reportValidity();
+    return;
+  }
+  if (!fFin) {
+    fechaFin.setCustomValidity("Completa este campo");
+    fechaFin.reportValidity();
     return;
   }
 
-  // Validación directa en formato YYYY-MM-DD
+  // 3. VALIDACIÓN 
   if (fIni > fFin) {
-    alert("La fecha de inicio no puede ser mayor que la fecha fin");
+    alert("La fecha de inicio no puede ser mayor que la fecha fin.");
     return;
   }
 
+  // Si todo está bien, abre el PDF
   window.open(
     `${BASE_URL}/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
     "_blank"
   );
-});
-
-// LIMPIAR
-btnLimpiar.addEventListener('click', () => {
-  fechaInicio.value = '';
-  fechaFin.value = '';
 });

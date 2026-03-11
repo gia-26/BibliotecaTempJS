@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar Años de Edición</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+</head>
+
+<body>
+
+    <div class="modal-container">
+
+        <div class="modal-card">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+
+                <h2>Configurar Años de Edición</h2>
+
+                <button class="cerrar-modal" onclick="window.parent.closeModal('modalAnios')">
+                    ×
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <p class="label-strong">
+                    Años existentes:
+                </p>
+
+                <!-- LISTA -->
+                <div id="listaAnios" class="lista-anios"></div>
+
+                <!-- FORMULARIO -->
+                <form id="formAnio" class="form-principal">
+
+                    <label for="anio" class="label-strong">
+                        Año edición:
+                    </label>
+
+                    <input type="text" id="anio" placeholder="Nuevo año de edición" maxlength="4">
+
+                    <input type="hidden" id="idAnio">
+
+
+
+                    <div class="botones">
+
+                        <button type="button" id="cancelarBtn" class="btn btn-secundario">
+
+                            Cancelar
+
+                        </button>
+
+
+                        <button type="submit" class="btn btn-primario">
+
+                            Guardar
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>
