@@ -1,3 +1,4 @@
+//CARGAR EDITORIALES
 async function cargarEditoriales() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/editoriales");
     const data = await res.json();
@@ -29,7 +30,7 @@ async function cargarEditoriales() {
         `;
     });
 
-    // EVENTOS
+    // EVENTOS CON data-* (SIN onclick inline)
     contenedor.querySelectorAll(".btn-editar").forEach(btn => {
         btn.addEventListener("click", () => {
             editarEditorial(btn.dataset.id, btn.dataset.nombre, btn.dataset.pais);
