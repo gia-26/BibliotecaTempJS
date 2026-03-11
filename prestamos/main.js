@@ -19,7 +19,7 @@ const mostrarPrestamos = () => {
   
       ejemplares.forEach(ejemplar => {
           tblEjemplares.innerHTML += `
-              <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}', '${ejemplar.Estado}')" style="cursor: pointer;">
+              <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}', '${ejemplar.Estado}')" style="cursor: pointer;" title="Selecciona un ejemplar para prestarlo">
                   <td>${ejemplar.Id_libro}</td>
                   <td>${ejemplar.Titulo}</td>
                   <td>${ejemplar.Autor}</td>
@@ -69,6 +69,7 @@ const seleccionarEjemplar = (Id_libro, Titulo, Id_Ejemplar, Estado) => {
   }
   //Falta validar que el ejemplar no esté prestado y que no exista un solo ejemplar diponible
   //Debe mostrar un mensaje de error y el motivo del error
+  location.href = '#formPrestamo';
   document.getElementById('idLibro').value = Id_libro;
   document.getElementById('titLibro').value = Titulo;
   inpIdEjemplar.value = Id_Ejemplar;
