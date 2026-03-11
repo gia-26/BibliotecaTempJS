@@ -372,6 +372,17 @@ footer {
     justify-content: flex-end;
     margin-top: 1rem;
 }
+.mensaje-error {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fdecea;
+  color: #b42318;
+  border: 1px solid #f5c2c0;
+  font-size: 15px;
+  font-weight: 500;
+}
 
 @media (max-width: 768px) {
     header {
