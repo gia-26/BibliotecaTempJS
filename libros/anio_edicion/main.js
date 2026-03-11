@@ -3,7 +3,7 @@
 async function cargarAnios() {
 
     const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/anios"
+        "https://backend-biblioteca-two.vercel.app/anio_edicion"
     );
 
     const data = await res.json();
@@ -51,10 +51,7 @@ async function cargarAnios() {
 
 cargarAnios();
 
-
-
 //GUARDAR / EDITAR
-
 document
 .getElementById("formAnio")
 .addEventListener("submit", async function(e){
@@ -73,11 +70,11 @@ return;
 }
 
 let url =
-"https://backend-biblioteca-two.vercel.app/anios/agregar";
+"https://backend-biblioteca-two.vercel.app/anio_edicion/agregar";
 
 if(id !== ""){
 url =
-"https://backend-biblioteca-two.vercel.app/anios/editar";
+"https://backend-biblioteca-two.vercel.app/anio_edicion/editar";
 }
 
 await fetch(url,{
@@ -96,10 +93,7 @@ cargarAnios();
 
 });
 
-
-
 // EDITAR
-
 function editarAnio(id,anio){
 
 document.getElementById("idAnio").value = id;
@@ -107,16 +101,13 @@ document.getElementById("anio").value = anio;
 
 }
 
-
-
 // ELIMINAR
-
 async function eliminarAnio(id){
 
 if(!confirm("¿Eliminar este año?")) return;
 
 await fetch(
-"https://backend-biblioteca-two.vercel.app/anios/eliminar",
+"https://backend-biblioteca-two.vercel.app/anio_edicion/eliminar",
 {
 method:"POST",
 headers:{
@@ -132,10 +123,7 @@ cargarAnios();
 
 }
 
-
-
 // LIMPIAR FORM
-
 function limpiarFormulario(){
 
 document.getElementById("idAnio").value = "";
@@ -143,18 +131,12 @@ document.getElementById("anio").value = "";
 
 }
 
-
-
 //CANCELAR
-
 document
 .getElementById("cancelarBtn")
 .addEventListener("click", limpiarFormulario);
 
-
-
 // VALIDACIÓN INPUT
-
 document
 .getElementById("anio")
 .addEventListener("input", function(){
