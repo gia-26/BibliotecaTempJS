@@ -7,6 +7,7 @@ const btnLimpiar = document.getElementById('btnLimpiar');
 const totalMultas = document.getElementById('totalMultas');
 const totalPrestamos = document.getElementById('totalPrestamos');
 const librosPendientes = document.getElementById('librosPendientes');
+const mensajeErrorReporte = document.getElementById('mensajeErrorReporte');
 
 const BASE_URL = 'https://backend-biblioteca-two.vercel.app/api/reportes';
 
@@ -22,6 +23,16 @@ fetch(`${BASE_URL}/dashboard`)
     console.error('Error al cargar dashboard:', error);
   });
 
+function mostrarError(mensaje) {
+  mensajeErrorReporte.textContent = mensaje;
+  mensajeErrorReporte.style.display = 'block';
+}
+
+function ocultarError() {
+  mensajeErrorReporte.textContent = '';
+  mensajeErrorReporte.style.display = 'none';
+}
+
 // GENERAR PDF DESDE BACKEND
 btnGenerar.addEventListener('click', (e) => {
   e.preventDefault();
@@ -30,17 +41,17 @@ btnGenerar.addEventListener('click', (e) => {
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
-  console.log("Fecha inicio:", fIni);
-  console.log("Fecha fin:", fFin);
+  ocultarError();
 
   if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas");
+    mostrarError("Seleccione ambas fechas.");
     return;
   }
 
-  // Validación directa en formato YYYY-MM-DD
+  // Como input type="date" devuelve YYYY-MM-DD,
+  // se puede comparar directamente
   if (fIni > fFin) {
-    alert("La fecha de inicio no puede ser mayor que la fecha fin");
+    mostrarError("La fecha de inicio no puede ser mayor que la fecha fin.");
     return;
   }
 
@@ -54,4 +65,10 @@ btnGenerar.addEventListener('click', (e) => {
 btnLimpiar.addEventListener('click', () => {
   fechaInicio.value = '';
   fechaFin.value = '';
+  ocultarError();
 });
+
+// Ocultar error cuando cambien los campos
+fechaInicio.addEventListener('input', ocultarError);
+fechaFin.addEventListener('input', ocultarError);
+tipoReporte.addEventListener('change', ocultarError);
