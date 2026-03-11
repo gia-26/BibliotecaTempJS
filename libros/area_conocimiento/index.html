@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar Áreas de Conocimiento</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" />
+</head>
+
+<body>
+
+<div class="modal-container">
+
+    <div class="modal-card">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+
+            <h2>Configurar Áreas de Conocimiento</h2>
+
+            <button
+                class="cerrar-modal"
+                onclick="window.parent.closeModal('modalAreas')">
+
+                ×
+
+            </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body">
+
+            <p class="label-strong">
+                Áreas existentes:
+            </p>
+
+            <!-- ENCABEZADO TABLA -->
+            <div class="encabezado-areas">
+
+                <span>Área conocimiento</span>
+                <span>N. Estante</span>
+                <span></span>
+
+            </div>
+            
+            <!-- LISTA AREAS (LLENADA POR JS) -->
+            <div
+                id="listaAreas"
+                class="lista-areas">
+
+            </div>
+
+            <!-- FORMULARIO -->
+            <form
+                id="formArea"
+                class="form-principal">
+
+                <label class="label-strong">
+                    Área conocimiento:
+                </label>
+
+                <input
+                    type="text"
+                    id="nombreArea"
+                    placeholder="Nueva área de conocimiento"
+                >
+
+                <label class="label-strong">
+                    Número de Estante:
+                </label>
+
+                <input
+                    type="text"
+                    id="numeroEstante"
+                    maxlength="10"
+                    placeholder="Número de Estante"
+                >
+
+                <!-- INPUT OCULTO PARA EDITAR -->
+                <input
+                    type="hidden"
+                    id="idArea"
+                >
+
+                <!-- BOTONES -->
+                <div class="botones">
+
+                    <button
+                        type="button"
+                        id="cancelarBtn"
+                        class="btn btn-secundario">
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primario">
+
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
