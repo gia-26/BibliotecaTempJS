@@ -29,20 +29,21 @@ btnGenerar.addEventListener('click', () => {
   const fFin = fechaFin.value;
 
   if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas.");
+    alert("Seleccione ambas fechas");
     return;
   }
 
-  const fecha1 = new Date(fIni + "T00:00:00");
-  const fecha2 = new Date(fFin + "T00:00:00");
+  const fecha1 = new Date(fIni);
+  const fecha2 = new Date(fFin);
 
   if (isNaN(fecha1.getTime()) || isNaN(fecha2.getTime())) {
-    alert("Las fechas ingresadas no son válidas.");
+    alert("Las fechas ingresadas no son válidas");
     return;
   }
 
+  // inicio no puede ser mayor que fin
   if (fecha1 > fecha2) {
-    alert("La fecha de inicio no puede ser mayor que la fecha fin.");
+    alert("La fecha de inicio no puede ser mayor que la fecha fin");
     return;
   }
 
