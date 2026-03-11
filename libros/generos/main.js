@@ -1,7 +1,4 @@
-/* ======================================
-   CARGAR GENEROS
-====================================== */
-
+//CARGAR GENEROS
 async function cargarGeneros() {
 
     const res = await fetch(
@@ -55,12 +52,7 @@ async function cargarGeneros() {
 
 cargarGeneros();
 
-
-
-/* ======================================
-   GUARDAR / AGREGAR GENERO
-====================================== */
-
+//GUARDAR / AGREGAR GENERO
 document
 .getElementById("formGenero")
 .addEventListener("submit", async function (e) {
@@ -112,12 +104,7 @@ document
 
 });
 
-
-
-/* ======================================
-   EDITAR GENERO
-====================================== */
-
+//EDITAR GENERO
 function editarGenero(id, nombre) {
 
     document.getElementById("idGenero").value = id;
@@ -126,12 +113,7 @@ function editarGenero(id, nombre) {
 
 }
 
-
-
-/* ======================================
-   ELIMINAR GENERO
-====================================== */
-
+// ELIMINAR GENERO
 async function eliminarGenero(id) {
 
     if (!confirm("¿Eliminar este género?")) return;
@@ -158,12 +140,7 @@ async function eliminarGenero(id) {
 
 }
 
-
-
-/* ======================================
-   LIMPIAR FORMULARIO
-====================================== */
-
+//LIMPIAR FORMULARIO
 function limpiarFormulario() {
 
     document.getElementById("idGenero").value = "";
@@ -172,12 +149,7 @@ function limpiarFormulario() {
 
 }
 
-
-
-/* ======================================
-   BOTON CANCELAR
-====================================== */
-
+// BOTON CANCELAR
 document
 .getElementById("cancelarBtn")
 .addEventListener("click", limpiarFormulario);
