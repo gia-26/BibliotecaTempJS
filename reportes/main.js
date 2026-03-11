@@ -23,26 +23,39 @@ fetch(`${BASE_URL}/dashboard`)
   });
 
 // GENERAR PDF DESDE BACKEND
-btnGenerar.addEventListener('click', () => {
+btnGenerar.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  fechaInicio.setCustomValidity("");
+  fechaFin.setCustomValidity("");
 
   const t = tipoReporte.value;
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
-  if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas");
+  if (!fIni) {
+    fechaInicio.setCustomValidity("Seleccione una fecha de inicio");
+    fechaInicio.reportValidity(); 
+    return;
+  }
+
+  if (!fFin) {
+    fechaFin.setCustomValidity("Seleccione una fecha de fin");
+    fechaFin.reportValidity(); 
+    return;
+  }
+
+  if (fIni > fFin) {
+    fechaInicio.setCustomValidity("La fecha de inicio no puede ser mayor que la fecha fin.");
+    fechaInicio.reportValidity();
     return;
   }
 
   window.open(
-    `https://backend-biblioteca-two.vercel.app/api/reportes/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
+    `${BASE_URL}/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
     "_blank"
   );
-
 });
 
-// LIMPIAR
-btnLimpiar.addEventListener('click', () => {
-  fechaInicio.value = '';
-  fechaFin.value = '';
-});
+fechaInicio.addEventListener('input', () => fechaInicio.setCustomValidity(""));
+fechaFin.addEventListener('input', () => fechaFin.setCustomValidity(""));

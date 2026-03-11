@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
       dashboard.innerHTML += crearCard("fa-info-circle", "Información de la biblioteca", "Gestiona la información de la biblioteca (Misión, visión, objetivo y ¿quiénes somos?)", "/BibliotecaTempJS/Informacion_biblioteca", "Administrar Información");
 
       dashboard.innerHTML += crearCard("fa-user-circle", "Perfil", "Visualiza y edita tu perfil", "/BibliotecaTempJS/perfil", "Ver perfil");
+
+      dashboard.innerHTML += crearCard( "fa-calculator", "Estimación", "Calcular estimación", "/BibliotecaTempJS/estimacion", "Ver estimación");
       break;
 
 
