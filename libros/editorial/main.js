@@ -3,7 +3,7 @@
 async function cargarEditoriales() {
 
 const res = await fetch(
-"https://backend-biblioteca-two.vercel.app/editoriales"
+"https://backend-biblioteca-two.vercel.app/api/editoriales"
 );
 
 const data = await res.json();
@@ -56,7 +56,6 @@ class="icon-btn">
 cargarEditoriales();
 
 
-
 // GUARDAR / EDITAR
 document
 .getElementById("formEditorial")
@@ -81,11 +80,11 @@ return;
 }
 
 let url =
-"https://backend-biblioteca-two.vercel.app/editoriales/agregar";
+"https://backend-biblioteca-two.vercel.app/api/editoriales/agregar";
 
 if(id !== ""){
 url =
-"https://backend-biblioteca-two.vercel.app/editoriales/editar";
+"https://backend-biblioteca-two.vercel.app/api/editoriales/editar";
 }
 
 await fetch(url,{
@@ -125,7 +124,7 @@ async function eliminarEditorial(id){
 if(!confirm("¿Eliminar esta editorial?")) return;
 
 await fetch(
-"https://backend-biblioteca-two.vercel.app/editoriales/eliminar",
+"https://backend-biblioteca-two.vercel.app/api/editoriales/eliminar",
 {
 method:"POST",
 headers:{
