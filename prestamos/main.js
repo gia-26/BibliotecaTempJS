@@ -5,8 +5,13 @@ const inpIdUsuario = document.getElementById('inpIdUsuario');
 const btnPrestar = document.getElementById('btnPrestar');
 const nombreUsuario = document.getElementById('nombreUsuario');
 const inpIdEjemplar = document.getElementById('idEjemplar');
+const inpBuscar = document.getElementById('searchInput');
+const titLibro = document.getElementById('titLibro');
+const btnLimpiar = document.getElementById('btnLimpiar');
+const inpIdLibro = document.getElementById('idLibro');
 let buscoUsuario = false;
 let idUsuarioBuscado = '';
+let valorTipoUsuario;
 
 document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
 document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
@@ -61,21 +66,40 @@ const mostrarTiposPrestamos = () => {
     });
 }
 
-
 const seleccionarEjemplar = (Id_libro, Titulo, Id_Ejemplar, Estado) => {
   if (Estado === 'Prestado') {
     alert('Este ejemplar ya está prestado. Por favor, selecciona otro.');
     return;
   }
-  //Falta validar que el ejemplar no esté prestado y que no exista un solo ejemplar diponible
-  //Debe mostrar un mensaje de error y el motivo del error
   location.href = '#formPrestamo';
-  document.getElementById('idLibro').value = Id_libro;
-  document.getElementById('titLibro').value = Titulo;
+  inpIdLibro.value = Id_libro;
+  titLibro.value = Titulo;
   inpIdEjemplar.value = Id_Ejemplar;
 };
 
+slcTipoUsuario.addEventListener('focus', () => {
+  valorTipoUsuario = this.selectedIndex;
+});
+
 slcTipoUsuario.addEventListener('change', () => {
+  if (buscoUsuario){
+    if (!confirm('Cambiar el tipo de usuario reiniciará la búsqueda. ¿Deseas continuar?')) {
+      slcTipoUsuario.selectedIndex = valorTipoUsuario;
+      return; 
+    }
+    buscoUsuario = false;
+    idUsuarioBuscado = '';
+    inpIdUsuario.value = '';
+    nombreUsuario.value = '';
+  }
+  fechaTipoPrestamo();
+});
+
+slcTipoPrestamos.addEventListener('change', () => {
+  fechaTipoPrestamo();
+});
+
+const fechaTipoUsuario = () => {
   const idTipoUsuario = slcTipoUsuario.value;
   let dias = 0;
 
@@ -84,7 +108,19 @@ slcTipoUsuario.addEventListener('change', () => {
   
   document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
   document.getElementById('fechaDevolucion').value = fechaConDiasExtra(dias);
-});
+}
+
+const fechaTipoPrestamo = () => {
+   const idTipoPrestamo = slcTipoPrestamos.value;
+
+  if (idTipoPrestamo === 'TP002') {
+    document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
+    document.getElementById('fechaDevolucion').value = fechaConDiasExtra();
+  }
+  else if (idTipoPrestamo === 'TP001'){
+    fechaTipoUsuario();
+  }
+}
 
 function formatearFecha(fecha) {
   const anio = fecha.getFullYear();
@@ -133,6 +169,8 @@ btnPrestar.addEventListener('click', () => {
         idTipoUsuario: slcTipoUsuario.value
     }
 
+    console.log(prestamoData);
+    console.log(prestamoData.idEjemplar);
     if (!validarBuscarUsuario()) return;
     if (!validarPrestamo(prestamoData.idUsuario, prestamoData.idEjemplar, prestamoData.idBibliotecario, prestamoData.idTipoPrestamo, prestamoData.idTipoUsuario)) return;
     
@@ -146,6 +184,7 @@ btnPrestar.addEventListener('click', () => {
         if (result.success) {
           mostrarPrestamos();
           alert(result.mensaje);
+          limpiar();
         } else {
           alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
         }
@@ -160,10 +199,12 @@ const validarBuscarUsuario = () => {
     alert('Falta buscar el usuario. Ingresa su ID y da enter');
     return false;
   }
+
   if (inpIdUsuario.value.trim() !== idUsuarioBuscado) {
     alert('El ID del usuario no coincide con el buscado.');
     return false;
   }
+  return true;
 }
 
 const validarPrestamo = (idUser, idEjemplar, idBibliotecario, idTipoPrestamo, idTipoUsuario) => {
@@ -188,6 +229,46 @@ const validarPrestamo = (idUser, idEjemplar, idBibliotecario, idTipoPrestamo, id
     return false;
   }
   return true
+}
+
+inpBuscar.addEventListener('input', () => {
+  fetch(`https://backend-biblioteca-two.vercel.app/api/prestamos/ejemplares/buscar?q=${inpBuscar.value}`)
+    .then(response => response.json())
+    .then(ejemplares => {
+      tblEjemplares.innerHTML = "";
+      if (ejemplares.length === 0) {
+        tblEjemplares.innerHTML = "<tr><td colspan='6'>No se encontraron ejemplares</td></tr>";
+        return;
+      }
+      ejemplares.forEach(ejemplar => {
+        tblEjemplares.innerHTML += `
+            <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}', '${ejemplar.Estado}')" style="cursor: pointer;" title="Selecciona un ejemplar para prestarlo">
+                <td>${ejemplar.Id_libro}</td>
+                <td>${ejemplar.Titulo}</td>
+                <td>${ejemplar.Autor}</td>
+                <td>${ejemplar.Id_Ejemplar}</td>
+                <td>${ejemplar.Numero_de_ejemplar}</td>
+                <td><span class="status-badge status-${ejemplar.Estado}">${ejemplar.Estado}</span></td>
+            </tr>
+        `;
+      });
+    })
+});
+
+btnLimpiar.addEventListener('click', () => {limpiar()});
+
+const limpiar = () => {
+  inpIdUsuario.value = '';
+  nombreUsuario.value = '';
+  inpIdEjemplar.value = '';
+  slcTipoPrestamos.selectedIndex = 0;
+  slcTipoUsuario.selectedIndex = 0;
+  buscoUsuario = false;
+  idUsuarioBuscado = '';
+  titLibro.value = '';
+  inpIdLibro.value = '';
+  document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
+  document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
 }
 
 mostrarPrestamos();
