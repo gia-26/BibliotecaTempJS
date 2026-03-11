@@ -42,7 +42,7 @@ btnGenerar.addEventListener('click', () => {
   }
 
   // inicio no puede ser mayor que fin
-  if (fecha1 > fecha2) {
+  if (fecha1 < fecha2) {
     alert("La fecha de inicio no puede ser mayor que la fecha fin");
     return;
   }
