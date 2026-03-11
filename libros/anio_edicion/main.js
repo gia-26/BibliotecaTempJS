@@ -3,7 +3,7 @@
 async function cargarAnios() {
 
     const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/anio_edicion"
+        "https://backend-biblioteca-two.vercel.app/anios"
     );
 
     const data = await res.json();
@@ -70,11 +70,11 @@ return;
 }
 
 let url =
-"https://backend-biblioteca-two.vercel.app/anio_edicion/agregar";
+"https://backend-biblioteca-two.vercel.app/anios/agregar";
 
 if(id !== ""){
 url =
-"https://backend-biblioteca-two.vercel.app/anio_edicion/editar";
+"https://backend-biblioteca-two.vercel.app/anios/editar";
 }
 
 await fetch(url,{
@@ -107,7 +107,7 @@ async function eliminarAnio(id){
 if(!confirm("¿Eliminar este año?")) return;
 
 await fetch(
-"https://backend-biblioteca-two.vercel.app/anio_edicion/eliminar",
+"https://backend-biblioteca-two.vercel.app/anios/eliminar",
 {
 method:"POST",
 headers:{
