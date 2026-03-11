@@ -30,13 +30,15 @@ btnGenerar.addEventListener('click', (e) => {
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
+  console.log("Fecha inicio:", fIni);
+  console.log("Fecha fin:", fFin);
+
   if (!fIni || !fFin) {
     alert("Seleccione ambas fechas");
     return;
   }
 
-  // Como input type="date" devuelve YYYY-MM-DD,
-  // se pueden comparar directamente como texto
+  // Validación directa en formato YYYY-MM-DD
   if (fIni > fFin) {
     alert("La fecha de inicio no puede ser mayor que la fecha fin");
     return;
