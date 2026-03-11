@@ -109,6 +109,10 @@ gap:10px;
 margin-top:8px;
 }
 
+.icon-btn.delete{
+color:#d11a1a;
+}
+
 .btn{
 flex:1;
 padding:8px 0;
