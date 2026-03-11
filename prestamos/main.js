@@ -3,6 +3,10 @@ const slcTipoUsuario = document.getElementById('slcTipoUsuario');
 const slcTipoPrestamos = document.getElementById('slcTipoPrestamos');
 const inpIdUsuario = document.getElementById('inpIdUsuario');
 const btnPrestar = document.getElementById('btnPrestar');
+const nombreUsuario = document.getElementById('nombreUsuario');
+const inpIdEjemplar = document.getElementById('idEjemplar');
+let buscoUsuario = false;
+let idUsuarioBuscado = '';
 
 document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
 document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
@@ -15,7 +19,7 @@ const mostrarPrestamos = () => {
   
       ejemplares.forEach(ejemplar => {
           tblEjemplares.innerHTML += `
-              <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}')" style="cursor: pointer;">
+              <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}', '${ejemplar.Estado}')" style="cursor: pointer;">
                   <td>${ejemplar.Id_libro}</td>
                   <td>${ejemplar.Titulo}</td>
                   <td>${ejemplar.Autor}</td>
@@ -31,48 +35,54 @@ const mostrarPrestamos = () => {
     });
 }
 
-
-fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
-  .then(response => response.json())
-  .then(tipos => {
-    tipos.forEach(tipo => {
-      slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+const mostrarTiposUsuarios = () => {
+  fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
+    .then(response => response.json())
+    .then(tipos => {
+      tipos.forEach(tipo => {
+        slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching tipos de usuario:', error);
     });
-  })
-  .catch(error => {
-    console.error('Error fetching tipos de usuario:', error);
-  });
+}
 
-fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
-  .then(response => response.json())
-  .then(tipos => {
-    tipos.forEach(tipo => {
-      slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
+const mostrarTiposPrestamos = () => {
+  fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
+    .then(response => response.json())
+    .then(tipos => {
+      tipos.forEach(tipo => {
+        slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching tipos de préstamo:', error);
     });
-  })
-  .catch(error => {
-    console.error('Error fetching tipos de préstamo:', error);
-  });
+}
 
-const seleccionarEjemplar = (Id_libro, Titulo, Id_Ejemplar) => {
-    document.getElementById('idLibro').value = Id_libro;
-    document.getElementById('titLibro').value = Titulo;
-    document.getElementById('idEjemplar').value = Id_Ejemplar;
+
+const seleccionarEjemplar = (Id_libro, Titulo, Id_Ejemplar, Estado) => {
+  if (Estado === 'Prestado') {
+    alert('Este ejemplar ya está prestado. Por favor, selecciona otro.');
+    return;
+  }
+  //Falta validar que el ejemplar no esté prestado y que no exista un solo ejemplar diponible
+  //Debe mostrar un mensaje de error y el motivo del error
+  document.getElementById('idLibro').value = Id_libro;
+  document.getElementById('titLibro').value = Titulo;
+  inpIdEjemplar.value = Id_Ejemplar;
 };
 
 slcTipoUsuario.addEventListener('change', () => {
-    const idTipoUsuario = slcTipoUsuario.value;
-    let dias = 0;
+  const idTipoUsuario = slcTipoUsuario.value;
+  let dias = 0;
 
-    if (idTipoUsuario === 'TU001') {
-        dias = 5;
-    } 
-    else if (idTipoUsuario === 'TU002') {
-        dias = 21;
-    }
-    
-    document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
-    document.getElementById('fechaDevolucion').value = fechaConDiasExtra(dias);
+  if (idTipoUsuario === 'TU001') dias = 5;
+  else if (idTipoUsuario === 'TU002') dias = 21;
+  
+  document.getElementById('fechaPrestamo').value = fechaConDiasExtra();
+  document.getElementById('fechaDevolucion').value = fechaConDiasExtra(dias);
 });
 
 function formatearFecha(fecha) {
@@ -90,33 +100,40 @@ function fechaConDiasExtra(dias = 0) {
 }
 
 inpIdUsuario.addEventListener('keypress', (event) => {
-  if (event.key === 'Enter') {
-    fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
-      .then(response => response.json())
-      .then(usuario => {
-        if (usuario && usuario.Nombre) {
-          document.getElementById('nombreUsuario').value = usuario.Nombre;
-        } else {
-          alert('Usuario no encontrado');
-          document.getElementById('nombreUsuario').value = '';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching usuario:', error);
-      });
-  }
+  if (event.key === 'Enter') buscarUsuario();
 });
+
+const buscarUsuario = () => {
+  fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
+    .then(response => response.json())
+    .then(usuario => {
+      if (usuario && usuario.Nombre) {
+        nombreUsuario.value = usuario.Nombre;
+        buscoUsuario = true;
+        idUsuarioBuscado = usuario.id;
+      } else {
+        buscoUsuario = false;
+        idUsuarioBuscado = '';
+        nombreUsuario.value = '';
+        alert('Usuario no encontrado');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching usuario:', error);
+    });
+}
 
 btnPrestar.addEventListener('click', () => {
     const prestamoData = {
-        idUsuario: document.getElementById('inpIdUsuario').value,
-        idEjemplar: document.getElementById('idEjemplar').value,
+        idUsuario: inpIdUsuario.value,
+        idEjemplar: inpIdEjemplar.value,
         idBibliotecario: 'PER003', // Este valor debería ser dinámico
         idTipoPrestamo: slcTipoPrestamos.value,
         idTipoUsuario: slcTipoUsuario.value
     }
 
-    console.log('Datos del préstamo:', prestamoData);
+    if (!validarBuscarUsuario()) return;
+    if (!validarPrestamo(prestamoData.idUsuario, prestamoData.idEjemplar, prestamoData.idBibliotecario, prestamoData.idTipoPrestamo, prestamoData.idTipoUsuario)) return;
     
     fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/registrar', {
         method: 'POST',
@@ -137,4 +154,41 @@ btnPrestar.addEventListener('click', () => {
     });
 });
 
+const validarBuscarUsuario = () => {
+  if (!buscoUsuario) {
+    alert('Falta buscar el usuario. Ingresa su ID y da enter');
+    return false;
+  }
+  if (inpIdUsuario.value.trim() !== idUsuarioBuscado) {
+    alert('El ID del usuario no coincide con el buscado.');
+    return false;
+  }
+}
+
+const validarPrestamo = (idUser, idEjemplar, idBibliotecario, idTipoPrestamo, idTipoUsuario) => {
+  if (!idUser) {
+    alert('Por favor, ingresa el ID del usuario.');
+    return false;
+  }
+  if (!idEjemplar) {
+    alert('Por favor, selecciona un ejemplar.');
+    return false;
+  }
+  if (!idBibliotecario) {
+    alert('Por favor, ingresa el ID del bibliotecario.');
+    return false;
+  }
+  if (!idTipoPrestamo) {
+    alert('Por favor, selecciona el tipo de préstamo.');
+    return false;
+  }
+  if (!idTipoUsuario) {
+    alert('Por favor, selecciona el tipo de usuario.');
+    return false;
+  }
+  return true
+}
+
 mostrarPrestamos();
+mostrarTiposUsuarios();
+mostrarTiposPrestamos();
