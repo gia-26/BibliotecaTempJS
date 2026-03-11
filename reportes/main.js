@@ -26,6 +26,7 @@ fetch(`${BASE_URL}/dashboard`)
 btnGenerar.addEventListener('click', (e) => {
   e.preventDefault();
 
+  // 1. Limpiar validaciones nativas previas
   fechaInicio.setCustomValidity("");
   fechaFin.setCustomValidity("");
 
@@ -33,29 +34,27 @@ btnGenerar.addEventListener('click', (e) => {
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
+  // 2. VALIDACIÓN CAMPOS VACÍOS
   if (!fIni) {
-    fechaInicio.setCustomValidity("Seleccione una fecha de inicio");
-    fechaInicio.reportValidity(); 
-    return;
-  }
-
-  if (!fFin) {
-    fechaFin.setCustomValidity("Seleccione una fecha de fin");
-    fechaFin.reportValidity(); 
-    return;
-  }
-
-  if (fIni > fFin) {
-    fechaInicio.setCustomValidity("La fecha de inicio no puede ser mayor que la fecha fin.");
+    fechaInicio.setCustomValidity("Completa este campo");
     fechaInicio.reportValidity();
     return;
   }
+  if (!fFin) {
+    fechaFin.setCustomValidity("Completa este campo");
+    fechaFin.reportValidity();
+    return;
+  }
 
+  // 3. VALIDACIÓN 
+  if (fIni > fFin) {
+    alert("La fecha de inicio no puede ser mayor que la fecha fin.");
+    return;
+  }
+
+  // Si todo está bien, abre el PDF
   window.open(
     `${BASE_URL}/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
     "_blank"
   );
 });
-
-fechaInicio.addEventListener('input', () => fechaInicio.setCustomValidity(""));
-fechaFin.addEventListener('input', () => fechaFin.setCustomValidity(""));
