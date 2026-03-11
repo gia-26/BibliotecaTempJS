@@ -24,21 +24,32 @@ fetch(`${BASE_URL}/dashboard`)
 
 // GENERAR PDF DESDE BACKEND
 btnGenerar.addEventListener('click', () => {
-
   const t = tipoReporte.value;
   const fIni = fechaInicio.value;
   const fFin = fechaFin.value;
 
   if (!fIni || !fFin) {
-    alert("Seleccione ambas fechas");
+    alert("Seleccione ambas fechas.");
+    return;
+  }
+
+  const fecha1 = new Date(fIni + "T00:00:00");
+  const fecha2 = new Date(fFin + "T00:00:00");
+
+  if (isNaN(fecha1.getTime()) || isNaN(fecha2.getTime())) {
+    alert("Las fechas ingresadas no son válidas.");
+    return;
+  }
+
+  if (fecha1 > fecha2) {
+    alert("La fecha de inicio no puede ser mayor que la fecha fin.");
     return;
   }
 
   window.open(
-    `https://backend-biblioteca-two.vercel.app/api/reportes/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
+    `${BASE_URL}/pdf?tipo=${t}&inicio=${fIni}&fin=${fFin}`,
     "_blank"
   );
-
 });
 
 // LIMPIAR

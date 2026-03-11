@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Estimación de préstamos</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Estimación de préstamos</h1>
+<h2>Libro: Cien años de soledad</h2>
+
+<div class="card">
+
+<h3>Problema</h3>
+
+<p>
+El número de préstamos del libro cambia proporcionalmente al número de préstamos actuales.
+</p>
+
+<ul>
+<li>Semana 1 → 3 préstamos</li>
+<li>Semana 3 → 6 préstamos</li>
+</ul>
+
+<p>
+Se modela mediante crecimiento exponencial.
+</p>
+
+</div>
+
+
+<div class="controls">
+
+<div class="control">
+
+<label>Semana a calcular</label>
+
+<input type="number" id="semana" value="6">
+
+</div>
+
+
+<div class="control">
+
+<label>Multiplicar valor inicial por</label>
+
+<input type="number" id="multiplo" value="3">
+
+</div>
+
+
+<button id="calcular">Calcular</button>
+
+</div>
+
+
+
+<div class="grid">
+
+<div class="box">
+
+<h3>Ecuación diferencial</h3>
+
+<div id="ecuacion" class="formula"></div>
+
+</div>
+
+
+<div class="box">
+
+<h3>Función del modelo</h3>
+
+<div id="funcion" class="formula"></div>
+
+</div>
+
+
+<div class="box">
+
+<h3>Resultado de semana</h3>
+
+<div id="resultadoSemana" class="result"></div>
+
+</div>
+
+
+<div class="box">
+
+<h3>Semanas para multiplicar</h3>
+
+<div id="resultadoTriplica" class="result"></div>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Gráfica</h3>
+
+<canvas id="grafica"></canvas>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>Tabla estimada</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Semana</th>
+<th>P(t)</th>
+</tr>
+
+</thead>
+
+<tbody id="tabla"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
