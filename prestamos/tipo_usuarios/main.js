@@ -1,7 +1,7 @@
 // CARGAR TIPOS
 async function cargarTipos() {
     const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/api/tipos_usuario"
+        "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios"
     );
     const data = await res.json();
     const contenedor = document.getElementById("listaTipos");
@@ -37,9 +37,9 @@ document.getElementById("formTipo").addEventListener("submit", async function(e)
         return;
     }
 
-    let url = "https://backend-biblioteca-two.vercel.app/api/tipos_usuario/agregar";
+    let url = "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/agregar";
     if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/tipos_usuario/editar";
+        url = "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/editar";
     }
 
     await fetch(url, {
@@ -62,7 +62,7 @@ function editarTipo(id, nombre) {
 async function eliminarTipo(id) {
     if (!confirm("¿Eliminar este tipo de usuario?")) return;
 
-    await fetch("https://backend-biblioteca-two.vercel.app/api/tipos_usuario/eliminar", {
+    await fetch("https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/eliminar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Id_tipo_usuario: id })
