@@ -1,4 +1,14 @@
-//CARGAR EDITORIALES
+// FUNCIÓN PARA MOSTRAR NOTIFICACIÓN
+function mostrarNotificacion(mensaje) {
+    const alerta = document.getElementById("mensajeExito");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    setTimeout(() => {
+        alerta.style.display = "none";
+    }, 3000);
+}
+
+// CARGAR EDITORIALES
 async function cargarEditoriales() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/editoriales");
     const data = await res.json();
@@ -26,11 +36,10 @@ async function cargarEditoriales() {
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
-        </div>
-        `;
+        </div>`;
     });
 
-    // EVENTOS CON data-* (SIN onclick inline)
+    // EVENTOS CON data-*
     contenedor.querySelectorAll(".btn-editar").forEach(btn => {
         btn.addEventListener("click", () => {
             editarEditorial(btn.dataset.id, btn.dataset.nombre, btn.dataset.pais);
@@ -51,8 +60,8 @@ document.getElementById("formEditorial").addEventListener("submit", async functi
     e.preventDefault();
 
     const nombre = document.getElementById("nombreEditorial").value.trim();
-    const pais = document.getElementById("paisEditorial").value.trim();
-    const id = document.getElementById("idEditorial").value;
+    const pais   = document.getElementById("paisEditorial").value.trim();
+    const id     = document.getElementById("idEditorial").value;
 
     if (nombre === "" || pais === "") {
         alert("Escribe el nombre y país");
@@ -70,15 +79,22 @@ document.getElementById("formEditorial").addEventListener("submit", async functi
         body: JSON.stringify({ Id_editorial: id, Nombre: nombre, Pais: pais })
     });
 
+    // NOTIFICACIÓN según operación
+    if (id !== "") {
+        mostrarNotificacion("Editorial actualizada correctamente.");
+    } else {
+        mostrarNotificacion("Editorial agregada correctamente.");
+    }
+
     limpiarFormulario();
     cargarEditoriales();
 });
 
 // EDITAR
 function editarEditorial(id, nombre, pais) {
-    document.getElementById("idEditorial").value = id;
-    document.getElementById("nombreEditorial").value = nombre;
-    document.getElementById("paisEditorial").value = pais;
+    document.getElementById("idEditorial").value      = id;
+    document.getElementById("nombreEditorial").value  = nombre;
+    document.getElementById("paisEditorial").value    = pais;
 }
 
 // ELIMINAR
@@ -91,14 +107,17 @@ async function eliminarEditorial(id) {
         body: JSON.stringify({ Id_editorial: id })
     });
 
+    // NOTIFICACIÓN de eliminado
+    mostrarNotificacion("Editorial eliminada correctamente.");
+
     cargarEditoriales();
 }
 
 // LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idEditorial").value = "";
+    document.getElementById("idEditorial").value     = "";
     document.getElementById("nombreEditorial").value = "";
-    document.getElementById("paisEditorial").value = "";
+    document.getElementById("paisEditorial").value   = "";
 }
 
 // CANCELAR

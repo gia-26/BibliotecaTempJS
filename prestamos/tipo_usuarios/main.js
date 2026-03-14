@@ -1,3 +1,13 @@
+// FUNCIÓN PARA MOSTRAR NOTIFICACIÓN
+function mostrarNotificacion(mensaje) {
+    const alerta = document.getElementById("mensajeExito");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    setTimeout(() => {
+        alerta.style.display = "none";
+    }, 3000);
+}
+
 // CARGAR TIPOS
 async function cargarTipos() {
     const res = await fetch(
@@ -30,7 +40,7 @@ document.getElementById("formTipo").addEventListener("submit", async function(e)
     e.preventDefault();
 
     const nombre = document.getElementById("nombreTipo").value.trim();
-    const id = document.getElementById("idTipo").value;
+    const id     = document.getElementById("idTipo").value;
 
     if (nombre === "") {
         alert("Escribe el tipo de usuario");
@@ -48,14 +58,21 @@ document.getElementById("formTipo").addEventListener("submit", async function(e)
         body: JSON.stringify({ Id_tipo_usuario: id, Tipo_usuario: nombre })
     });
 
+    //NOTIFICACIÓN según operación
+    if (id !== "") {
+        mostrarNotificacion("Tipo de usuario actualizado correctamente.");
+    } else {
+        mostrarNotificacion("Tipo de usuario agregado correctamente.");
+    }
+
     limpiarFormulario();
     cargarTipos();
 });
 
 // EDITAR
 function editarTipo(id, nombre) {
-    document.getElementById("idTipo").value = id;
-    document.getElementById("nombreTipo").value = nombre;
+    document.getElementById("idTipo").value      = id;
+    document.getElementById("nombreTipo").value  = nombre;
 }
 
 // ELIMINAR
@@ -68,13 +85,16 @@ async function eliminarTipo(id) {
         body: JSON.stringify({ Id_tipo_usuario: id })
     });
 
+    // NOTIFICACIÓN de eliminado
+    mostrarNotificacion("Tipo de usuario eliminado correctamente.");
+
     cargarTipos();
 }
 
 // LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idTipo").value = "";
-    document.getElementById("nombreTipo").value = "";
+    document.getElementById("idTipo").value      = "";
+    document.getElementById("nombreTipo").value  = "";
 }
 
 // CANCELAR
