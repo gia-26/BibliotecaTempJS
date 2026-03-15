@@ -69,21 +69,21 @@ document
         .value;
 
     if (nombre === "") {
-        alert("Ingresa el nombre del género");
+        mostrarMensaje("Ingresa el nombre del género", "error");
         return;
     }
 
     let url =
     "https://backend-biblioteca-two.vercel.app/generos/agregar";
 
+    let esEdicion = false;
+
     if (id !== "") {
-
-        url =
-        "https://backend-biblioteca-two.vercel.app/generos/editar";
-
+        url = "https://backend-biblioteca-two.vercel.app/generos/editar";
+        esEdicion = true;
     }
 
-    await fetch(url, {
+    const response = await fetch(url, {
 
         method: "POST",
 
@@ -98,9 +98,19 @@ document
 
     });
 
-    limpiarFormulario();
+    const result = await response.json();
 
-    cargarGeneros();
+    if (response.ok) {
+        if (esEdicion) {
+            mostrarMensaje("Género editado correctamente", "ok");
+        } else {
+            mostrarMensaje("Género registrado correctamente", "ok");
+        }
+        limpiarFormulario();
+        cargarGeneros();
+    } else {
+        mostrarMensaje(result.message || "Error al guardar el género", "error");
+    }
 
 });
 
@@ -118,7 +128,7 @@ async function eliminarGenero(id) {
 
     if (!confirm("¿Eliminar este género?")) return;
 
-    await fetch(
+    const response = await fetch(
 
         "https://backend-biblioteca-two.vercel.app/generos/eliminar",
 
@@ -136,7 +146,18 @@ async function eliminarGenero(id) {
 
     });
 
-    cargarGeneros();
+    const result = await response.json();
+
+    if (response.ok) {
+        mostrarMensaje("Género eliminado correctamente", "ok");
+        cargarGeneros();
+    } else {
+        if (response.status === 400) {
+            mostrarMensaje("No se puede eliminar el género porque tiene libros asociados", "error");
+        } else {
+            mostrarMensaje(result.message || "Error al eliminar el género", "error");
+        }
+    }
 
 }
 
@@ -153,3 +174,26 @@ function limpiarFormulario() {
 document
 .getElementById("cancelarBtn")
 .addEventListener("click", limpiarFormulario);
+
+// MOSTRAR MENSAJE
+function mostrarMensaje(texto, tipo) {
+    // Eliminar mensaje anterior si existe
+    const mensajeAnterior = document.querySelector(".mensaje");
+    if (mensajeAnterior) {
+        mensajeAnterior.remove();
+    }
+
+    // Crear nuevo mensaje
+    const mensajeDiv = document.createElement("div");
+    mensajeDiv.className = `mensaje ${tipo}`;
+    mensajeDiv.textContent = texto;
+
+    // Insertar al inicio del modal-body
+    const modalBody = document.querySelector(".modal-body");
+    modalBody.insertBefore(mensajeDiv, modalBody.firstChild);
+
+    // Auto-ocultar después de 3 segundos
+    setTimeout(() => {
+        mensajeDiv.remove();
+    }, 3000);
+}
