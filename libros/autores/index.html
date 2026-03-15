@@ -2,112 +2,72 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autores - Biblioteca UTHH</title>
+<title>Configurar Autores Principales</title>
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<header>
-    <h1>Biblioteca UTHH</h1>
-</header>
+<div class="modal-container">
 
-<main>
+<div class="modal-card">
 
-    <div class="section-header">
-        <h2>Configuración de Autores</h2>
-        <p>Administración de autores principales</p>
-    </div>
+<div class="modal-header">
+<h2>Configurar Autores Principales</h2>
+<span class="cerrar">×</span>
+</div>
 
+<div class="modal-body">
 
-    <div class="profile-container">
+<p class="label-strong">Autores existentes:</p>
 
-    <!-- MENU -->
-    <div class="profile-sidebar">
+<div id="listaAutores" class="lista-items">
+<!-- aquí carga JS -->
+</div>
 
-        <ul class="profile-menu">
+<h3 id="tituloForm">Agregar autor</h3>
 
-        <li>
-            <a href="#" class="active" data-target="lista">
-            <i class="fa-solid fa-list"></i>
-            Lista de autores
-            </a>
-        </li>
+<form id="formAutor" class="form-principal">
 
-        <li>
-            <a href="#" data-target="form">
-            <i class="fa-solid fa-plus"></i>
-            Agregar autor
-            </a>
-        </li>
+<label class="label-strong">Nombre del autor:</label>
 
-        </ul>
+<input
+type="text"
+id="nombreAutor"
+placeholder="Nuevo autor principal"
+>
 
-    </div>
+<input type="hidden" id="idAutor">
 
+<div class="botones">
 
-    <!-- CONTENIDO -->
-    <div class="profile-content">
+<button
+type="button"
+id="cancelarBtn"
+class="btn btn-secundario"
+>
+Cancelar
+</button>
 
-    <!-- LISTA -->
-    <div id="lista" class="content-section active">
+<button
+type="submit"
+class="btn btn-primario"
+>
+Agregar
+</button>
 
-    <div class="content-header">
-    <h3>Autores registrados</h3>
-    </div>
+</div>
 
-    <div id="listaAutores"></div>
+</form>
 
-    </div>
-
-
-    <!-- FORM -->
-    <div id="form" class="content-section">
-
-    <div class="content-header">
-    <h3 id="tituloForm">Agregar autor</h3>
-    </div>
-
-    <form id="formAutor">
-
-    <div class="form-group">
-    <label>Nombre del autor</label>
-
-    <input
-    type="text"
-    id="nombreAutor"
-    class="form-control"
-    placeholder="Ej: Gabriel García Márquez"
-    >
-    </div>
-
-    <input type="hidden" id="idAutor">
-
-    <div style="margin-top:20px">
-
-    <button type="submit" class="btn">
-    Guardar
-    </button>
-
-    <button type="button" id="cancelarBtn" class="btn">
-    Cancelar
-    </button>
-
-    </div>
-
-    </form>
-
-    </div>
-
-    </div>
-
-    </div>
-
-</main>
+</div>
+</div>
+</div>
 
 <script src="main.js"></script>
 
