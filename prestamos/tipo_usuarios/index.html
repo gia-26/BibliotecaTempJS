@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurar Tipos de Usuario</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+
+<div class="modal-container">
+    <div class="modal-card">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+            <h2>Gestión de Tipos de Usuario</h2>
+            <button class="cerrar-modal" onclick="window.parent.closeModal('modal-tipos-usuario')">×</button>
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body">
+
+            <div id="mensajeExito" class="alert-success" style="display:none;"></div>
+
+            <p class="label-strong">Tipos existentes:</p>
+
+            <!-- LISTA -->
+            <div id="listaTipos" class="lista-items"></div>
+
+            <!-- FORMULARIO -->
+            <form id="formTipo" class="form-principal">
+
+                <label class="label-strong">Tipo de Usuario:</label>
+                <input type="text" id="nombreTipo" placeholder="Nuevo tipo de usuario">
+
+                <input type="hidden" id="idTipo">
+
+                <div class="botones">
+                    <button type="button" id="cancelarBtn" class="btn btn-secundario">Cancelar</button>
+                    <button type="submit" class="btn btn-primario">Guardar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
