@@ -15,39 +15,24 @@ async function cargarTiposPrestamo() {
     data.forEach(tipo => {
 
         contenedor.innerHTML += `
-
         <div class="fila-genero">
-
             <span class="genero-texto">
-                ${tipo.Nombre}
+                ${tipo.Tipo_prestamo}
             </span>
-
             <div class="acciones">
-
                 <button
-                onclick="editarTipoPrestamo('${tipo.Id_tipo_prestamo}','${tipo.Nombre}')"
+                onclick="editarTipoPrestamo('${tipo.Id_tipo_prestamo}','${tipo.Tipo_prestamo}')"
                 class="icon-btn">
-
-                <i class="fa-solid fa-pen-to-square"></i>
-
+                    <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-
                 <button
                 onclick="eliminarTipoPrestamo('${tipo.Id_tipo_prestamo}')"
                 class="icon-btn delete">
-
-                <i class="fa-solid fa-trash-can"></i>
-
+                    <i class="fa-solid fa-trash-can"></i>
                 </button>
-
             </div>
-
-        </div>
-
-        `;
-
+        </div>`;
     });
-
 }
 
 cargarTiposPrestamo();
@@ -61,8 +46,7 @@ document
 
     const nombre =
         document.getElementById("nombreTipoPrestamo")
-        .value
-        .trim();
+        .value.trim();
 
     const id =
         document.getElementById("idTipoPrestamo")
@@ -77,40 +61,27 @@ document
     "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/agregar";
 
     if (id !== "") {
-
         url =
         "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/editar";
-
     }
 
     await fetch(url, {
-
         method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             Id_tipo_prestamo: id,
-            Nombre: nombre
+            Tipo_prestamo: nombre   
         })
-
     });
 
     limpiarFormulario();
-
     cargarTiposPrestamo();
-
 });
 
 //EDITAR TIPO DE PRÉSTAMO
 function editarTipoPrestamo(id, nombre) {
-
     document.getElementById("idTipoPrestamo").value = id;
-
     document.getElementById("nombreTipoPrestamo").value = nombre;
-
 }
 
 // ELIMINAR TIPO DE PRÉSTAMO
@@ -119,34 +90,21 @@ async function eliminarTipoPrestamo(id) {
     if (!confirm("¿Eliminar este tipo de préstamo?")) return;
 
     await fetch(
-
         "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/eliminar",
-
         {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            Id_tipo_prestamo: id
-        })
-
-    });
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Id_tipo_prestamo: id })
+        }
+    );
 
     cargarTiposPrestamo();
-
 }
 
 //LIMPIAR FORMULARIO
 function limpiarFormulario() {
-
     document.getElementById("idTipoPrestamo").value = "";
-
     document.getElementById("nombreTipoPrestamo").value = "";
-
 }
 
 // BOTON CANCELAR
