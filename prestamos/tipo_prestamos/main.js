@@ -2,7 +2,7 @@
 async function cargarTiposPrestamo() {
 
     const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/tipos_prestamo"
+        "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo"
     );
 
     const data = await res.json();
@@ -74,12 +74,12 @@ document
     }
 
     let url =
-    "https://backend-biblioteca-two.vercel.app/tipos_prestamo/agregar";
+    "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/agregar";
 
     if (id !== "") {
 
         url =
-        "https://backend-biblioteca-two.vercel.app/tipos_prestamo/editar";
+        "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/editar";
 
     }
 
@@ -120,7 +120,7 @@ async function eliminarTipoPrestamo(id) {
 
     await fetch(
 
-        "https://backend-biblioteca-two.vercel.app/tipos_prestamo/eliminar",
+        "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/eliminar",
 
         {
 
