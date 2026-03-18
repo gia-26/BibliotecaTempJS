@@ -65,15 +65,15 @@ document
         "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/editar";
     }
 
+    const body = id !== ""
+        ? { Id_tipo_prestamo: id, Tipo_prestamo: nombre }
+        : { Tipo_prestamo: nombre };
+
     await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            Id_tipo_prestamo: id,
-            Tipo_prestamo: nombre   
-        })
+        body: JSON.stringify(body)
     });
-
     limpiarFormulario();
     cargarTiposPrestamo();
 });
