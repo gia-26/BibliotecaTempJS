@@ -54,7 +54,7 @@ document.getElementById("update-presentacion-form").addEventListener("submit", f
   })
   .then(res => res.json())
   .then(data => {
-    alert("Presentación actualizada correctamente");
+    //alert("Presentación actualizada correctamente");
     
     // Recargar datos
     fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
@@ -65,7 +65,7 @@ document.getElementById("update-presentacion-form").addEventListener("submit", f
   })
   .catch(error => {
     console.error('Error:', error);
-    alert("Error al actualizar la presentación");
+    //alert("Error al actualizar la presentación");
   });
 });
 
@@ -93,7 +93,7 @@ document.getElementById("update-historia-form").addEventListener("submit", funct
   })
   .then(res => res.json())
   .then(data => {
-    alert("Historia actualizada correctamente");
+    //alert("Historia actualizada correctamente");
     
     // Recargar datos
     fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
@@ -133,7 +133,7 @@ document.getElementById("update-mvo-form").addEventListener("submit", function(e
   })
   .then(res => res.json())
   .then(data => {
-    alert(`${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`);
+    //alert(`${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`);
     
     // Recargar datos de MVO
     fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/mvo")
