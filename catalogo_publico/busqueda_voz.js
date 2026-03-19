@@ -66,6 +66,7 @@ recognition.onresult = function(event) {
   // Obtener el texto que dijo el usuario
   const textoDicho = event.results[0][0].transcript;
   console.log('Texto reconocido:', textoDicho);
+  alert(`Texto reconocido: "${textoDicho}". Procesando búsqueda...`);
   
   // Enviar a Wit.ai para análisis
   analizarConWitAI(textoDicho);
