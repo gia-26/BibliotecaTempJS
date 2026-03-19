@@ -271,6 +271,27 @@ const limpiar = () => {
   document.getElementById('fechaDevolucion').value = fechaConDiasExtra(5);
 }
 
+document.addEventListener('click', async (e) => {
+  if (e.target.closest('.btn-delete') && 
+      e.target.closest('#modal-tipos-prestamo')) {
+    const fila = e.target.closest('tr');
+    const idTipo = fila.querySelector('td:nth-child(2)').textContent.trim();
+    
+    const response = await fetch(
+      `https://backend-biblioteca-two.vercel.app/api/prestamos/tipos/${idTipo}`, // ✅ corregido
+      { method: 'DELETE' }
+    );
+    const result = await response.json();
+    
+    if (!result.success) {
+      alert(result.mensaje); // Mensaje de restricción — Paso 5
+    } else {
+      alert(result.mensaje);
+      slcTipoPrestamos.innerHTML = ''; // ✅ limpiar select
+      mostrarTiposPrestamos();         // ✅ recargar select
+    }
+  }
+});
 mostrarPrestamos();
 mostrarTiposUsuarios();
 mostrarTiposPrestamos();

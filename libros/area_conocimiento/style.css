@@ -2,7 +2,7 @@
 box-sizing:border-box;
 margin:0;
 padding:0;
-font-family:"Segoe UI", Arial, sans-serif;
+font-family:"Segoe UI",Arial,sans-serif;
 }
 
 body{
@@ -23,7 +23,6 @@ background:#fff;
 border-radius:4px;
 box-shadow:0 2px 8px rgba(0,0,0,.25);
 overflow-y:auto;
-overflow-x:hidden;
 }
 
 .modal-header{
@@ -59,30 +58,40 @@ margin-bottom:6px;
 display:block;
 }
 
-.lista-items{
-margin:6px 0 18px;
-border-top:1px solid #ddd;
+.encabezado-areas{
+display:grid;
+grid-template-columns:2fr 1fr .6fr;
+font-size:16px;
+font-weight:600;
+margin:5px 0;
 }
 
-.fila-item{
-display:flex;
+.lista-areas{
+border-top:1px solid #ddd;
+margin-bottom:18px;
+}
+
+.fila-area{
+display:grid;
+grid-template-columns:2fr 1fr .6fr;
 align-items:center;
-justify-content:space-between;
-padding:6px 0;
+padding:8px 0;
 border-bottom:1px solid #ddd;
 }
 
-.item-text{
+.area-texto{
 font-size:16px;
 color:#333;
+}
+
+.estante-texto{
+text-align:center;
+font-size:16px;
 }
 
 .acciones{
 display:flex;
 gap:6px;
-}
-.icon-btn.delete{
-color:#d11a1a;
 }
 
 .icon-btn{
@@ -90,6 +99,10 @@ border:none;
 background:transparent;
 cursor:pointer;
 font-size:16px;
+}
+
+.icon-btn.delete{
+color:#d11a1a;
 }
 
 .form-principal{
@@ -100,10 +113,10 @@ gap:10px;
 
 .form-principal input{
 width:100%;
-padding:8px;
+padding:7px 8px;
 border:1px solid #ccc;
 border-radius:3px;
-font-size:15px;
+font-size:16px;
 }
 
 .botones{
@@ -115,7 +128,7 @@ margin-top:8px;
 .btn{
 flex:1;
 padding:8px 0;
-font-size:15px;
+font-size:16px;
 border-radius:3px;
 cursor:pointer;
 border:1px solid transparent;
@@ -123,7 +136,6 @@ border:1px solid transparent;
 
 .btn-secundario{
 background:#fff;
-color:#444;
 border-color:#ccc;
 }
 

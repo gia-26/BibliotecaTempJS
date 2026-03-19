@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Configurar Géneros</title>
+    <title>Configurar Roles</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -26,11 +26,11 @@
 
         <div class="modal-header">
 
-            <h2>Configurar Géneros</h2>
+            <h2>Configurar Roles</h2>
 
             <button
                 class="cerrar-modal"
-                onclick="window.parent.closeModal('modalGeneros')">
+                onclick="window.parent.closeModal('modalRoles')">
 
                 ×
 
@@ -45,15 +45,15 @@
         <div class="modal-body">
 
             <p class="label-strong">
-                Géneros existentes:
+                Roles existentes:
             </p>
 
 
 
-            <!-- LISTA DE GENEROS -->
+            <!-- LISTA DE ROLES -->
 
             <div
-                id="listaGeneros"
+                id="listaRoles"
                 class="lista-generos">
 
             </div>
@@ -63,27 +63,27 @@
             <!-- FORMULARIO -->
 
             <form
-                id="formGenero"
+                id="formRol"
                 class="form-principal">
 
                 <label
-                    for="nombreGenero"
+                    for="nombreRol"
                     class="label-strong">
 
-                    Género:
+                    Rol:
 
                 </label>
 
                 <input
                     type="text"
-                    id="nombreGenero"
-                    placeholder="Nuevo género"
+                    id="nombreRol"
+                    placeholder="Nuevo rol"
                 >
 
 
                 <input
                     type="hidden"
-                    id="idGenero"
+                    id="idRol"
                 >
 
 

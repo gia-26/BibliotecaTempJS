@@ -2,17 +2,12 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-    <title>Configurar Géneros</title>
-
+    <title>Configurar Áreas de Conocimiento</title>
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"/>
-
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" />
 </head>
 
 <body>
@@ -21,16 +16,14 @@
 
     <div class="modal-card">
 
-
         <!-- HEADER -->
-
         <div class="modal-header">
 
-            <h2>Configurar Géneros</h2>
+            <h2>Configurar Áreas de Conocimiento</h2>
 
             <button
                 class="cerrar-modal"
-                onclick="window.parent.closeModal('modalGeneros')">
+                onclick="window.parent.closeModal('modalAreas')">
 
                 ×
 
@@ -38,58 +31,64 @@
 
         </div>
 
-
-
         <!-- BODY -->
-
         <div class="modal-body">
 
+             <div id="mensajeExito" class="alert-success" style="display:none;"></div>
+
             <p class="label-strong">
-                Géneros existentes:
+                Áreas existentes:
             </p>
 
+            <!-- ENCABEZADO TABLA -->
+            <div class="encabezado-areas">
 
+                <span>Área conocimiento</span>
+                <span>N. Estante</span>
+                <span></span>
 
-            <!-- LISTA DE GENEROS -->
-
+            </div>
+            
+            <!-- LISTA AREAS (LLENADA POR JS) -->
             <div
-                id="listaGeneros"
-                class="lista-generos">
+                id="listaAreas"
+                class="lista-areas">
 
             </div>
 
-
-
             <!-- FORMULARIO -->
-
             <form
-                id="formGenero"
+                id="formArea"
                 class="form-principal">
 
-                <label
-                    for="nombreGenero"
-                    class="label-strong">
-
-                    Género:
-
+                <label class="label-strong">
+                    Área conocimiento:
                 </label>
 
                 <input
                     type="text"
-                    id="nombreGenero"
-                    placeholder="Nuevo género"
+                    id="nombreArea"
+                    placeholder="Nueva área de conocimiento"
                 >
 
+                <label class="label-strong">
+                    Número de Estante:
+                </label>
 
                 <input
-                    type="hidden"
-                    id="idGenero"
+                    type="text"
+                    id="numeroEstante"
+                    maxlength="10"
+                    placeholder="Número de Estante"
                 >
 
-
+                <!-- INPUT OCULTO PARA EDITAR -->
+                <input
+                    type="hidden"
+                    id="idArea"
+                >
 
                 <!-- BOTONES -->
-
                 <div class="botones">
 
                     <button
@@ -101,7 +100,6 @@
 
                     </button>
 
-
                     <button
                         type="submit"
                         class="btn btn-primario">
@@ -112,19 +110,15 @@
 
                 </div>
 
-
             </form>
 
         </div>
-
 
     </div>
 
 </div>
 
-
 <script src="main.js"></script>
 
 </body>
-
 </html>

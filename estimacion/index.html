@@ -4,99 +4,679 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Préstamos - Biblioteca UTHH</title>
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --brown-dark: #3d2b1f;
+      --brown-mid:  #5c3d2e;
+      --brown-light:#c4a882;
+      --cream:      #f5ede0;
+      --cream-dark: #e8d9c5;
+      --white:      #ffffff;
+      --text-dark:  #2c1a0e;
+      --text-mid:   #6b4c36;
+      --accent:     #8b5e3c;
+      --shadow:     rgba(61,43,31,.15);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Source Sans 3',sans-serif;
+      background:var(--cream);
+      color:var(--text-dark);
+      min-height:100vh;
+    }
+
+    /* ── HERO ── */
+    .hero{
+      background:var(--brown-dark);
+      padding:1.6rem 2.4rem;
+      display:flex; align-items:center; gap:1rem;
+    }
+    .hero i{color:var(--brown-light);font-size:1.5rem;}
+    .hero h2{
+      font-family:'Playfair Display',serif;
+      color:var(--cream);
+      font-size:1.35rem;
+      letter-spacing:.03em;
+    }
+
+    /* ── CONTAINER ── */
+    .container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+
+    .container > h1{
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem;
+      color:var(--brown-dark);
+      margin-bottom:.3rem;
+    }
+    .container > h2{
+      font-size:1rem;
+      font-weight:400;
+      color:var(--text-mid);
+      margin-bottom:1.8rem;
+    }
+
+    /* ── CARD (problema) ── */
+    .card{
+      background:var(--white);
+      border-radius:14px;
+      padding:1.4rem 1.6rem;
+      box-shadow:0 3px 16px var(--shadow);
+      margin-bottom:1.8rem;
+    }
+    .card h3{
+      font-family:'Playfair Display',serif;
+      font-size:1.05rem;
+      color:var(--brown-dark);
+      margin-bottom:.7rem;
+    }
+    .card p,.card li{
+      font-size:.95rem;
+      color:var(--text-mid);
+      line-height:1.65;
+    }
+    .card ul{margin:.6rem 0 .8rem 1.4rem;}
+    .card li{margin-bottom:.3rem;}
+
+    /* ── CONTROLS ── */
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      align-items:flex-end;
+      margin-bottom:1.8rem;
+    }
+    .control{display:flex;flex-direction:column;gap:.35rem;}
+    .control label{
+      font-size:.78rem;
+      font-weight:600;
+      color:var(--text-mid);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    .control input{
+      border:2px solid var(--cream-dark);
+      border-radius:10px;
+      padding:.5rem .8rem;
+      font-size:.95rem;
+      font-family:inherit;
+      width:180px;
+      background:var(--white);
+      color:var(--text-dark);
+      outline:none;
+      transition:border .2s;
+    }
+    .control input:focus{border-color:var(--brown-mid);}
+
+    #calcular{
+      background:var(--brown-dark);
+      color:var(--cream);
+      border:none;
+      border-radius:999px;
+      padding:.6rem 1.6rem;
+      font-family:inherit;
+      font-size:.9rem;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 2px 10px var(--shadow);
+      transition:background .2s,transform .15s;
+    }
+    #calcular:hover{background:var(--brown-mid);transform:translateY(-1px);}
+
+    /* ── GRID boxes ── */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1rem;
+      margin-bottom:1.8rem;
+    }
+    .box{
+      background:var(--white);
+      border-radius:14px;
+      padding:1.2rem 1.4rem;
+      box-shadow:0 3px 16px var(--shadow);
+    }
+    .box h3{
+      font-size:.78rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:var(--text-mid);
+      margin-bottom:.6rem;
+    }
+    .formula{
+      font-size:1rem;
+      color:var(--brown-dark);
+      font-weight:600;
+    }
+    .result{
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem;
+      font-weight:700;
+      color:var(--brown-dark);
+    }
+
+    /* ── TABLE ── */
+    .table-wrapper{
+      background:var(--white);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 4px 24px var(--shadow);
+    }
+    table{width:100%;border-collapse:collapse;}
+    thead tr{background:var(--brown-dark);}
+    thead th{
+      color:var(--cream);
+      font-size:.82rem;
+      font-weight:600;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      padding:1rem 1.4rem;
+      text-align:left;
+    }
+    tbody tr{border-bottom:1px solid var(--cream-dark);transition:background .2s;}
+    tbody tr:last-child{border-bottom:none;}
+    tbody tr:hover{background:#fdf8f3;}
+    tbody td{padding:1rem 1.4rem;font-size:.95rem;}
+    .book-id{font-size:.8rem;color:var(--text-mid);font-weight:500;}
+    .book-title{font-weight:600;color:var(--brown-dark);}
+    .loans-count{font-weight:700;font-size:1rem;color:var(--accent);}
+
+    /* pill button */
+    .btn-predict{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:var(--brown-dark);color:var(--cream);
+      border:none;border-radius:999px;
+      padding:.52rem 1.2rem;
+      font-family:inherit;font-size:.82rem;font-weight:600;
+      letter-spacing:.03em;cursor:pointer;
+      transition:background .2s,transform .15s,box-shadow .2s;
+      white-space:nowrap;
+      box-shadow:0 2px 8px rgba(61,43,31,.25);
+    }
+    .btn-predict:hover{background:var(--brown-mid);transform:translateY(-1px);box-shadow:0 4px 14px rgba(61,43,31,.35);}
+    .btn-predict svg{width:14px;height:14px;flex-shrink:0;}
+
+    /* ═══════════════════════════
+       MODAL
+    ═══════════════════════════ */
+    .modal-overlay{
+      display:none;
+      position:fixed;inset:0;
+      background:rgba(25,14,6,.55);
+      backdrop-filter:blur(5px);
+      z-index:2000;
+      align-items:center;justify-content:center;
+      padding:1rem;
+    }
+    .modal-overlay.open{display:flex;}
+
+    .modal{
+      background:var(--white);
+      border-radius:20px;
+      width:100%;max-width:720px;
+      box-shadow:0 24px 70px rgba(25,14,6,.4);
+      overflow:hidden;
+      animation:modalIn .28s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes modalIn{
+      from{opacity:0;transform:scale(.88) translateY(24px);}
+      to  {opacity:1;transform:scale(1)   translateY(0);}
+    }
+
+    /* header */
+    .modal-header{
+      background:var(--brown-dark);
+      padding:1.3rem 1.6rem;
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    }
+    .modal-header-left{display:flex;align-items:center;gap:1rem;}
+
+    /* book icon small */
+    .book-icon-sm{
+      width:40px;height:40px;
+      border-radius:10px;
+      background:rgba(255,255,255,.13);
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+    }
+    .book-icon-sm i{color:var(--cream);font-size:1.1rem;}
+
+    .modal-title{
+      font-family:'Playfair Display',serif;
+      font-size:1.1rem;color:var(--cream);line-height:1.3;
+    }
+    .modal-subtitle{font-size:.78rem;color:var(--brown-light);margin-top:3px;}
+
+    .btn-close{
+      background:rgba(255,255,255,.12);border:none;border-radius:50%;
+      width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:background .2s;flex-shrink:0;color:var(--cream);
+    }
+    .btn-close:hover{background:rgba(255,255,255,.22);}
+    .btn-close i{font-size:.85rem;}
+
+    /* tabs — pill style igual que view-btn */
+    .modal-tabs{
+      display:flex;padding:1rem 1.6rem .8rem;gap:.4rem;
+      border-bottom:2px solid var(--cream-dark);
+    }
+    .tab-btn{
+      background:none;border:2px solid var(--cream-dark);
+      padding:.38rem 1.1rem;border-radius:999px;
+      font-family:inherit;font-size:.85rem;font-weight:600;
+      cursor:pointer;color:var(--text-mid);
+      transition:all .2s;
+    }
+    .tab-btn.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--cream);}
+    .tab-btn:not(.active):hover{background:var(--cream-dark);border-color:var(--cream-dark);}
+
+    /* view toggle */
+    .modal-view-toggle{
+      display:flex;padding:.85rem 1.6rem 0;gap:.4rem;
+    }
+    .view-btn{
+      background:none;border:2px solid var(--cream-dark);
+      padding:.32rem 1rem;border-radius:999px;
+      font-family:inherit;font-size:.8rem;font-weight:600;
+      cursor:pointer;color:var(--text-mid);transition:all .2s;
+    }
+    .view-btn.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--cream);}
+
+    /* body layout: left label + chart */
+    .modal-body{
+      padding:1rem 1.6rem 1.5rem;
+      display:flex;gap:1rem;align-items:flex-start;
+    }
+
+    /* LEFT "Préstamos" label — centrado verticalmente */
+    .y-label{
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+      font-size:.75rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.1em;
+      color:var(--text-mid);
+      flex-shrink:0;
+      align-self:center;
+      margin-bottom:1.4rem; /* offset to center within chart area */
+    }
+
+    /* chart + x-labels column */
+    .chart-col{flex:1;display:flex;flex-direction:column;gap:.5rem;}
+
+    .chart-title{
+      font-size:.88rem;font-weight:700;
+      color:var(--text-dark);letter-spacing:.02em;
+    }
+
+    .chart-container{
+      position:relative;height:230px;
+    }
+
+    /* custom x-axis day labels */
+    .x-labels{
+      display:flex;gap:0;
+      padding:0 0 0 2px;
+      overflow:hidden;
+    }
+    .x-labels span{
+      flex:1;text-align:center;
+      font-size:.68rem;color:var(--text-mid);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+
+    /* table view */
+    .data-table-view{
+      display:none;max-height:230px;overflow-y:auto;
+      border-radius:10px;border:1px solid var(--cream-dark);
+    }
+    .data-table-view table{font-size:.85rem;}
+    .data-table-view thead th{background:var(--brown-dark);font-size:.78rem;padding:.6rem 1rem;}
+    .data-table-view tbody td{padding:.5rem 1rem;}
+
+    /* bottom padding for modal */
+    .modal-bottom-pad{ height:1.2rem; }
+  </style>
 </head>
 <body>
-  <div id="header"></div>
 
-  <section class="hero">
-    <h2>Sistema de Préstamos</h2>
-  </section>
+<!-- HERO -->
+<div class="hero">
+  <i class="fa-solid fa-book-open"></i>
+  <h2>Sistema de Préstamos</h2>
+</div>
 
-  <div id="header-dashboard"></div>
+<div class="container">
+  <h1>Estimación de préstamos</h1>
+  <h2 id="subtitleBook">Libro: —</h2>
 
-  <div class="container">
-    <h1>Estimación de préstamos</h1>
-    <h2>Libro: Cien años de soledad</h2>
+  <!-- Problema card -->
+  <div class="card">
+    <h3>Problema</h3>
+    <p>El número de préstamos del libro cambia proporcionalmente al número de préstamos actuales.</p>
+    <ul>
+      <li>Semana 1 → 3 préstamos</li>
+      <li>Semana 3 → 6 préstamos</li>
+    </ul>
+    <p>Se modela mediante crecimiento exponencial.</p>
+  </div>
 
-    <div class="card">
-      <h3>Problema</h3>
-      <p>
-        El número de préstamos del libro cambia proporcionalmente al número de préstamos actuales.
-      </p>
-
-      <ul>
-        <li>Semana 1 → 3 préstamos</li>
-        <li>Semana 3 → 6 préstamos</li>
-      </ul>
-
-      <p>
-        Se modela mediante crecimiento exponencial.
-      </p>
+  <!-- Controls -->
+  <div class="controls">
+    <div class="control">
+      <label>Semana a calcular</label>
+      <input type="number" id="semana" value="6">
     </div>
-
-    <div class="controls">
-      <div class="control">
-        <label>Semana a calcular</label>
-        <input type="number" id="semana" value="6">
-      </div>
-
-      <div class="control">
-        <label>Multiplicar valor inicial por</label>
-        <input type="number" id="multiplo" value="3">
-      </div>
-
-      <button id="calcular">Calcular</button>
+    <div class="control">
+      <label>Multiplicar valor inicial por</label>
+      <input type="number" id="multiplo" value="3">
     </div>
+    <button id="calcular" onclick="calcular()">Calcular</button>
+  </div>
 
-    <div class="grid">
-      <div class="box">
-        <h3>Ecuación diferencial</h3>
-        <div id="ecuacion" class="formula"></div>
-      </div>
-
-      <div class="box">
-        <h3>Función del modelo</h3>
-        <div id="funcion" class="formula"></div>
-      </div>
-
-      <div class="box">
-        <h3>Resultado de semana</h3>
-        <div id="resultadoSemana" class="result"></div>
-      </div>
-
-      <div class="box">
-        <h3>Semanas para multiplicar</h3>
-        <div id="resultadoTriplica" class="result"></div>
-      </div>
+  <!-- Result boxes -->
+  <div class="grid">
+    <div class="box">
+      <h3>Ecuación diferencial</h3>
+      <div id="ecuacion" class="formula">dP/dt = k·P</div>
     </div>
-
-    <div class="card">
-      <h3>Gráfica</h3>
-      <canvas id="grafica"></canvas>
+    <div class="box">
+      <h3>Función del modelo</h3>
+      <div id="funcion" class="formula">P(t) = P₀·eᵏᵗ</div>
     </div>
-
-    <div class="card">
-      <h3>Tabla estimada</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Semana</th>
-            <th>P(t)</th>
-          </tr>
-        </thead>
-        <tbody id="tabla"></tbody>
-      </table>
+    <div class="box">
+      <h3>Resultado de semana</h3>
+      <div id="resultadoSemana" class="result">—</div>
+    </div>
+    <div class="box">
+      <h3>Semanas para multiplicar</h3>
+      <div id="resultadoTriplica" class="result">—</div>
     </div>
   </div>
 
-  <div id="footer"></div>
+  <!-- Books table -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Préstamos totales</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="booksTableBody"></tbody>
+    </table>
+  </div>
+</div>
 
-  <script src="../main.js"></script>
-  <script src="main.js"></script>
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modalBox">
+
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalBookTitle">Título del libro</div>
+        <div class="modal-subtitle" id="modalBookId">ID: LIB001 · 0 préstamos registrados</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.7rem;flex-shrink:0;">
+        <div class="book-icon-sm">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <button class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <div class="modal-tabs">
+      <button class="tab-btn active" onclick="switchTab('dia',this)">Por Día</button>
+      <button class="tab-btn" onclick="switchTab('semana',this)">Por Semana</button>
+      <button class="tab-btn" onclick="switchTab('mes',this)">Por Mes</button>
+    </div>
+
+    <div class="modal-view-toggle">
+      <button class="view-btn active" onclick="switchView('grafica',this)">Gráfica</button>
+      <button class="view-btn" onclick="switchView('tabla',this)">Tabla</button>
+    </div>
+
+    <!-- body: left label + chart -->
+    <div class="modal-body">
+      <div class="y-label">Préstamos</div>
+      <div class="chart-col">
+        <div class="chart-title" id="chartTitle">Préstamos por Día</div>
+
+        <div class="chart-container" id="chartContainer">
+          <canvas id="loansChart"></canvas>
+        </div>
+
+        <div class="x-labels" id="xLabels"></div>
+
+        <div class="data-table-view" id="dataTableView">
+          <table>
+            <thead><tr><th>Período</th><th>Préstamos</th><th>Tipo</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-bottom-pad"></div>
+
+  </div>
+</div>
+
+<script>
+/* ── DATA ── */
+const books = [
+  { id:'LIB001',  title:'Cien años de soledad',                   loans:7  },
+  { id:'LIB002',  title:'La región más transparente',             loans:11 },
+  { id:'LIB003',  title:'El laberinto de la soledad',             loans:1  },
+  { id:'LIB006',  title:'La llorona',                             loans:1  },
+  { id:'LIB007',  title:'El hombre que hablaba serpiente',        loans:1  },
+  { id:'LIB0022', title:'El Diario de Ana Frank',                 loans:1  },
+  { id:'LIB0023', title:'Cartas a Milena',                        loans:1  },
+  { id:'LIB0037', title:'Harry Potter y el prisionero de Azkaban',loans:1  },
+];
+
+/* ── RENDER TABLE ── */
+const tbody = document.getElementById('booksTableBody');
+books.forEach(b => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="book-id">${b.id}</td>
+    <td class="book-title">${b.title}</td>
+    <td class="loans-count">${b.loans}</td>
+    <td>
+      <button class="btn-predict" onclick="openModal('${b.id}','${b.title.replace(/'/g,"\\'")}',${b.loans})">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+        </svg>
+        Predecir préstamos
+      </button>
+    </td>`;
+  tbody.appendChild(tr);
+});
+
+/* ── CALCULAR (existing logic) ── */
+function calcular(){
+  const t  = parseFloat(document.getElementById('semana').value)  || 6;
+  const m  = parseFloat(document.getElementById('multiplo').value) || 3;
+  const P0 = 3, t0 = 1, t1 = 3, P1 = 6;
+  const k  = Math.log(P1/P0)/(t1-t0);
+  const Pt = P0 * Math.exp(k*(t-t0));
+  const tm = Math.log(m)/k + t0;
+  document.getElementById('ecuacion').textContent = `dP/dt = ${k.toFixed(4)}·P`;
+  document.getElementById('funcion').textContent  = `P(t) = 3·e^(${k.toFixed(4)}·(t-1))`;
+  document.getElementById('resultadoSemana').textContent  = Pt.toFixed(2);
+  document.getElementById('resultadoTriplica').textContent = tm.toFixed(2) + ' sem';
+}
+calcular();
+
+/* ── MODAL STATE ── */
+let chartInstance = null, currentBook = null;
+let currentTab = 'dia', currentView = 'grafica';
+
+/* ── GENERATE DATA — siempre "Día 1, 2, 3..." ── */
+function genData(loans, tab){
+  const seed = loans * 3;
+  const labels=[], values=[], isPred=[];
+
+  let histCount, predCount;
+  if(tab==='dia')    { histCount=14; predCount=7;  }
+  else if(tab==='semana') { histCount=8;  predCount=4;  }
+  else               { histCount=6;  predCount=3;  }
+
+  const total = histCount + predCount;
+  for(let i=0; i<total; i++){
+    labels.push('Día '+(i+1));
+    const v = Math.max(0, Math.round(
+      (seed / histCount) * 0.8 + Math.abs(Math.sin(i * 1.1 + seed) * (seed/3 + 1))
+    ));
+    values.push(v);
+    isPred.push(i >= histCount);
+  }
+  return{labels,values,isPred};
+}
+
+/* ── OPEN MODAL ── */
+function openModal(id,title,loans){
+  currentBook={id,title,loans};
+  currentTab='dia'; currentView='grafica';
+
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('.view-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+
+  document.getElementById('modalBookTitle').textContent = title;
+  document.getElementById('modalBookId').textContent = `ID: ${id} · ${loans} préstamos registrados`;
+  document.getElementById('chartTitle').textContent  = 'Préstamos por Día';
+  document.getElementById('subtitleBook').textContent = `Libro: ${title}`;
+
+  document.getElementById('chartContainer').style.display='block';
+  document.getElementById('dataTableView').style.display='none';
+  document.getElementById('modalOverlay').classList.add('open');
+  renderChart();
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+}
+function closeModalOnOverlay(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+function switchTab(tab,btn){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const t={dia:'Préstamos por Día',semana:'Préstamos por Semana',mes:'Préstamos por Mes'};
+  document.getElementById('chartTitle').textContent=t[tab];
+  if(currentView==='grafica') renderChart(); else renderTable();
+}
+
+function switchView(view,btn){
+  currentView=view;
+  document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const isChart=view==='grafica';
+  document.getElementById('chartContainer').style.display=isChart?'block':'none';
+  document.getElementById('xLabels').style.display=isChart?'flex':'none';
+  document.getElementById('dataTableView').style.display=isChart?'none':'block';
+  if(isChart) renderChart(); else renderTable();
+}
+
+/* ── RENDER CHART ── */
+function renderChart(){
+  if(!currentBook) return;
+  const {labels,values,isPred}=genData(currentBook.loans,currentTab);
+
+  // x-labels below chart
+  const xl=document.getElementById('xLabels');
+  xl.style.display='flex';
+  xl.innerHTML=labels.map(l=>`<span>${l}</span>`).join('');
+
+  if(chartInstance) chartInstance.destroy();
+  const ctx=document.getElementById('loansChart').getContext('2d');
+  chartInstance=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'Préstamos',
+        data:values,
+        backgroundColor:'rgba(173,209,235,0.75)',   /* light blue like reference */
+        borderColor:'rgba(120,170,210,0.9)',
+        borderWidth:1,
+        borderRadius:3,
+        borderSkipped:false,
+        barPercentage:0.55,        /* thinner bars like reference */
+        categoryPercentage:0.8,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        /* value labels on top of each bar */
+        datalabels:{display:false},
+        tooltip:{
+          callbacks:{
+            title:ctx=>{const i=ctx[0].dataIndex;return isPred[i]?`${labels[i]} (predicción)`:labels[i];},
+            label:ctx=>` ${ctx.parsed.y} préstamos`
+          },
+          backgroundColor:'#3d2b1f',titleColor:'#f5ede0',bodyColor:'#c4a882',
+          padding:10,cornerRadius:8,
+        }
+      },
+      scales:{
+        x:{display:false},
+        y:{
+          beginAtZero:true,
+          grid:{color:'rgba(200,210,220,.35)',lineWidth:1},
+          border:{dash:[3,3]},
+          ticks:{
+            font:{size:11,family:"'Source Sans 3',sans-serif"},
+            color:'#6b4c36',
+            stepSize:1,
+            padding:4,
+          }
+        }
+      },
+      /* draw value numbers inside/on top of bars like reference photo */
+      animation:{
+        onComplete: function(){
+          const chart = this;
+          const ctx2  = chart.ctx;
+          chart.data.datasets.forEach((dataset,i)=>{
+            const meta = chart.getDatasetMeta(i);
+            meta.data.forEach((bar,j)=>{
+              const val = dataset.data[j];
+              if(val===0) return;
+              ctx2.save();
+              ctx2.fillStyle='#3d2b1f';
+              ctx2.font='bold 11px "Source Sans 3", sans-serif';
+              ctx2.textAlign='center';
+              ctx2.textBaseline='bottom';
+              ctx2.fillText(val, bar.x, bar.y - 2);
+              ctx2.restore();
+            });
+          });
+        }
+      }
+    }
+  });
+}
+
+/* ── RENDER TABLE ── */
+function renderTable(){
+  if(!currentBook)return;
+  const {labels,values,isPred}=genData(currentBook.loans,currentTab);
+  document.getElementById('tableBody').innerHTML=labels.map((l,i)=>`
+    <tr>
+      <td>${l}</td><td><strong>${values[i]}</strong></td>
+      <td>${isPred[i]?'<span style="color:#8b5e3c;font-weight:600">📈 Predicción</span>':'<span style="color:#5c3d2e">✓ Real</span>'}</td>
+    </tr>`).join('');
+}
+</script>
 </body>
 </html>

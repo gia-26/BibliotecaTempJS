@@ -1,31 +1,31 @@
-//CARGAR GENEROS
-async function cargarGeneros() {
+//CARGAR ROLES
+async function cargarRoles() {
 
     const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/generos"
+        "https://backend-biblioteca-two.vercel.app/roles"
     );
 
     const data = await res.json();
 
     const contenedor =
-        document.getElementById("listaGeneros");
+        document.getElementById("listaRoles");
 
     contenedor.innerHTML = "";
 
-    data.forEach(genero => {
+    data.forEach(rol => {
 
         contenedor.innerHTML += `
 
         <div class="fila-genero">
 
             <span class="genero-texto">
-                ${genero.Nombre}
+                ${rol.Nombre}
             </span>
 
             <div class="acciones">
 
                 <button
-                onclick="editarGenero('${genero.Id_genero}','${genero.Nombre}')"
+                onclick="editarRol('${rol.Id_rol}','${rol.Nombre}')"
                 class="icon-btn">
 
                 <i class="fa-solid fa-pen-to-square"></i>
@@ -33,7 +33,7 @@ async function cargarGeneros() {
                 </button>
 
                 <button
-                onclick="eliminarGenero('${genero.Id_genero}')"
+                onclick="eliminarRol('${rol.Id_rol}')"
                 class="icon-btn delete">
 
                 <i class="fa-solid fa-trash-can"></i>
@@ -50,36 +50,36 @@ async function cargarGeneros() {
 
 }
 
-cargarGeneros();
+cargarRoles();
 
-//GUARDAR / AGREGAR GENERO
+//GUARDAR / AGREGAR ROL
 document
-.getElementById("formGenero")
+.getElementById("formRol")
 .addEventListener("submit", async function (e) {
 
     e.preventDefault();
 
     const nombre =
-        document.getElementById("nombreGenero")
+        document.getElementById("nombreRol")
         .value
         .trim();
 
     const id =
-        document.getElementById("idGenero")
+        document.getElementById("idRol")
         .value;
 
     if (nombre === "") {
-        alert("Ingresa el nombre del género");
+        alert("Ingresa el nombre del rol");
         return;
     }
 
     let url =
-    "https://backend-biblioteca-two.vercel.app/generos/agregar";
+    "https://backend-biblioteca-two.vercel.app/roles/agregar";
 
     if (id !== "") {
 
         url =
-        "https://backend-biblioteca-two.vercel.app/generos/editar";
+        "https://backend-biblioteca-two.vercel.app/roles/editar";
 
     }
 
@@ -92,7 +92,7 @@ document
         },
 
         body: JSON.stringify({
-            Id_genero: id,
+            Id_rol: id,
             Nombre: nombre
         })
 
@@ -100,27 +100,27 @@ document
 
     limpiarFormulario();
 
-    cargarGeneros();
+    cargarRoles();
 
 });
 
-//EDITAR GENERO
-function editarGenero(id, nombre) {
+//EDITAR ROL
+function editarRol(id, nombre) {
 
-    document.getElementById("idGenero").value = id;
+    document.getElementById("idRol").value = id;
 
-    document.getElementById("nombreGenero").value = nombre;
+    document.getElementById("nombreRol").value = nombre;
 
 }
 
-// ELIMINAR GENERO
-async function eliminarGenero(id) {
+// ELIMINAR ROL
+async function eliminarRol(id) {
 
-    if (!confirm("¿Eliminar este género?")) return;
+    if (!confirm("¿Eliminar este rol?")) return;
 
     await fetch(
 
-        "https://backend-biblioteca-two.vercel.app/generos/eliminar",
+        "https://backend-biblioteca-two.vercel.app/roles/eliminar",
 
         {
 
@@ -131,21 +131,21 @@ async function eliminarGenero(id) {
         },
 
         body: JSON.stringify({
-            Id_genero: id
+            Id_rol: id
         })
 
     });
 
-    cargarGeneros();
+    cargarRoles();
 
 }
 
 //LIMPIAR FORMULARIO
 function limpiarFormulario() {
 
-    document.getElementById("idGenero").value = "";
+    document.getElementById("idRol").value = "";
 
-    document.getElementById("nombreGenero").value = "";
+    document.getElementById("nombreRol").value = "";
 
 }
 
