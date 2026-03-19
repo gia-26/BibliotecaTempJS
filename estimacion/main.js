@@ -45,9 +45,7 @@ function calcular() {
     resultadoTriplica.innerHTML = "t = " + t.toFixed(2) + " semanas"
 
     cargarTabla()
-
     crearGrafica()
-
 }
 
 
