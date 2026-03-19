@@ -472,6 +472,44 @@ footer {
   padding-right: 50px !important;
   width: 100%;
 }
+/* Solo lo básico para que se vea bien */
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.btn-mic {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.btn-mic:hover {
+  color: #4a90e2;
+}
+
+.btn-mic.escuchando {
+  color: #4caf50;
+  animation: pulso 1s infinite;
+}
+
+@keyframes pulso {
+  0% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
+.search-input {
+  padding-right: 50px !important;
+  width: 100%;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
