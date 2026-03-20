@@ -24,56 +24,80 @@ recognition.maxAlternatives = 1; // Una sola alternativa
 // PASO 5: Variable para saber si está escuchando
 let estaEscuchando = false;
 
-// PASO 6: Función para enviar texto a Wit.ai
-async function analizarConWitAI(texto) {
+// PASO 6: Función para enviar texto a Wit.ai (CORREGIDA)
+const analizarConWitAI = async (texto) => {
   try {
     // Mostrar que está procesando
     console.log('Analizando con Wit.ai:', texto);
+    
+    // Poner el texto en el input para que el usuario vea qué dijo
+    searchInput.value = texto;
 
-    fetch(`https://api.wit.ai/message?v=20240306&q=${encodeURIComponent(texto)}`, {
+    // Llamar a la API de Wit.ai
+    const respuesta = await fetch(`https://api.wit.ai/message?v=20240306&q=${encodeURIComponent(texto)}`, {
       headers: {
-        'Authorization': `Bearer ${TOKEN_IA}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${TOKEN_IA}`
       }
-    })
-    .then(response => response.json())
-    .then(datos => {
-        console.log('Respuesta de Wit.ai:', datos);
-        // PASO 7: Procesar la respuesta de Wit.ai
-        if (datos.entities) {
-          // Buscar qué tipo de entidad detectó Wit.ai
-          if (datos.entities.genero_libro) {
-            alert(`Buscando libros del género: ${datos.entities.genero_libro[0].value}`);
-          } else if (datos.entities.autor_libro) {
-            alert(`Buscando libros del autor: ${datos.entities.autor_libro[0].value}`);
-          } else if (datos.entities.titulo_libro) {
-            alert(`Buscando libros con título: ${datos.entities.titulo_libro[0].value}`);
-          }
-        }
-    })
-    .catch(error => {
-      console.error('Error al llamar a Wit.ai:', error);
     });
+
+    if (!respuesta.ok) {
+      throw new Error(`Error HTTP: ${respuesta.status}`);
+    }
+
+    const datos = await respuesta.json();
+    console.log('Respuesta de Wit.ai:', datos);
+    
+    // PASO 7: Procesar la respuesta de Wit.ai
+    if (datos.entities) {
+      // Buscar qué tipo de entidad detectó Wit.ai
+      if (datos.entities.genero_libro && datos.entities.genero_libro.length > 0) {
+        const valor = datos.entities.genero_libro[0].value;
+        criterioSelect.value = 'genero';
+        alert(`Buscando libros del género: ${valor}`);
+        
+      } else if (datos.entities.autor_libro && datos.entities.autor_libro.length > 0) {
+        const valor = datos.entities.autor_libro[0].value;
+        criterioSelect.value = 'autor';
+        alert(`Buscando libros del autor: ${valor}`);
+        
+      } else if (datos.entities.titulo_libro && datos.entities.titulo_libro.length > 0) {
+        const valor = datos.entities.titulo_libro[0].value;
+        criterioSelect.value = 'titulo';
+        alert(`Buscando libros con título: ${valor}`);
+        
+      } else {
+        // Si no detecta entidades específicas, usa el texto completo
+        alert(`Buscando: "${texto}"`);
+      }
+    } else {
+      // Si no hay entidades, busca con el texto completo
+      alert(`Buscando: "${texto}"`);
+    }
+    
   } catch (error) {
     console.error('Error con Wit.ai:', error);
+    alert(`Error al procesar: ${error.message}. Buscando: "${texto}"`);
     // Si falla Wit.ai, al menos ponemos el texto en el input
     searchInput.value = texto;
+    if (typeof buscarLibros === 'function') buscarLibros();
   }
-}
+};
 
 // PASO 10: Evento cuando se reconoce voz
 recognition.onresult = function(event) {
   // Obtener el texto que dijo el usuario
   const textoDicho = event.results[0][0].transcript;
   console.log('Texto reconocido:', textoDicho);
-  alert(`Texto reconocido: "${textoDicho}". Procesando búsqueda...`);
+  
+  // Mostrar en el input lo que dijo
+  searchInput.value = textoDicho;
+  
+  // Quitar el estado de escuchando ANTES de procesar
+  micButton.classList.remove('escuchando');
+  estaEscuchando = false;
   
   // Enviar a Wit.ai para análisis
   analizarConWitAI(textoDicho);
-  
-  // Quitar el estado de escuchando
-  micButton.classList.remove('escuchando');
-  estaEscuchando = false;
 };
 
 // PASO 11: Evento cuando termina de escuchar
