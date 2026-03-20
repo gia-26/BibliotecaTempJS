@@ -427,3 +427,26 @@ footer {
     font-size: 2rem;
     }
 }
+.dato-curioso {
+  background: linear-gradient(135deg, #f5f0e8, #ede3d0);
+  border-left: 4px solid #4a69bd;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.dato-curioso h2 {
+  font-size: 1rem;
+  color: #4a69bd;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dato-curioso p {
+  color: var(--texto-marron);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}

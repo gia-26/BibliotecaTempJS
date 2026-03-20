@@ -20,11 +20,50 @@ const libroPopular = `
     </div>
 `;
 
+async function obtenerDatoCurioso(anio) {
+  const url = `https://api.wikimedia.org/feed/v1/wikipedia/es/onthisday/events/01/01`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.events && data.events.length > 0) {
+
+      // Recupera los índices ya usados para este libro
+      const keyUsados = `usados_${idLibro}`;
+      let usados = JSON.parse(sessionStorage.getItem(keyUsados) || '[]');
+
+      // Filtra los que no se han mostrado
+      const disponibles = data.events
+        .map((e, i) => i)
+        .filter(i => !usados.includes(i));
+
+      // Si ya se usaron todos, reinicia
+      if (disponibles.length === 0) {
+        usados = [];
+        sessionStorage.setItem(keyUsados, JSON.stringify(usados));
+        disponibles.push(...data.events.map((e, i) => i));
+      }
+
+      // Toma uno aleatorio de los disponibles
+      const indice = disponibles[Math.floor(Math.random() * disponibles.length)];
+
+      // Guarda ese índice como usado
+      usados.push(indice);
+      sessionStorage.setItem(keyUsados, JSON.stringify(usados));
+
+      return `En ${anio}: ${data.events[indice].text}`;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error al obtener dato curioso:', error);
+    return null;
+  }
+}
+
 fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
   .then(response => response.json())
   .then(libro => {
     console.log('Detalles del libro:', libro);
-    libroDetalleDiv.innerHTML = '';
+
     libroDetalleDiv.innerHTML = `
         <div class="libro-portada">
             <img src="https://biblioteca.grupoctic.com/libros_img/${libro[0].Imagen}" alt="${libro[0].Titulo}" id="libro-imagen">
@@ -60,6 +99,13 @@ fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
             <p id="libro-sinopsis">${libro[0].Sinopsis}</p>
             </div>
 
+            <div id="dato-curioso-container">
+              <div class="dato-curioso">
+                <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro[0].Anio}</h2>
+                <p><i class="fas fa-spinner fa-spin"></i> Cargando dato curioso...</p>
+              </div>
+            </div>
+
             <div class="acciones">
             <a href="./index.html" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver al Catálogo
@@ -67,6 +113,20 @@ fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
             </div>  
         </div>
     `;
+
+    //AQUÍ se llama la función y actualiza el contenedor
+    obtenerDatoCurioso(libro[0].Anio).then(datoCurioso => {
+      const contenedor = document.getElementById('dato-curioso-container');
+      if (contenedor) {
+        contenedor.innerHTML = datoCurioso ? `
+          <div class="dato-curioso">
+            <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro[0].Anio}</h2>
+            <p>${datoCurioso}</p>
+          </div>
+        ` : '';
+      }
+    });
+
   })
   .catch(error => {
     console.error('Error al obtener los detalles del libro:', error);

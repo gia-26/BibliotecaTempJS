@@ -244,6 +244,29 @@
     }
     .book-icon-sm i{color:var(--cream);font-size:1.1rem;}
 
+    /* book cover card — top right of modal header */
+    .book-cover-card{
+      width:54px; height:72px;
+      border-radius:6px;
+      background:linear-gradient(160deg, #c4a882 0%, #8b5e3c 100%);
+      position:relative;
+      box-shadow:3px 4px 14px rgba(0,0,0,.4);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+      flex-shrink:0;
+    }
+    .book-spine{
+      position:absolute;left:0;top:0;bottom:0;width:7px;
+      background:rgba(0,0,0,.28);
+      border-radius:6px 0 0 6px;
+    }
+    .book-cover-inner{
+      display:flex;align-items:center;justify-content:center;
+      width:100%;height:100%;
+      padding-left:7px;
+    }
+    .book-cover-inner i{color:rgba(255,255,255,.75);font-size:1.3rem;}
+
     .modal-title{
       font-family:'Playfair Display',serif;
       font-size:1.1rem;color:var(--cream);line-height:1.3;
@@ -417,13 +440,18 @@
   <div class="modal" id="modalBox">
 
     <div class="modal-header">
+      <!-- izquierda: solo nombre e ID -->
       <div>
         <div class="modal-title" id="modalBookTitle">Título del libro</div>
-        <div class="modal-subtitle" id="modalBookId">ID: LIB001 · 0 préstamos registrados</div>
+        <div class="modal-subtitle" id="modalBookId">ID: LIB001</div>
       </div>
-      <div style="display:flex;align-items:center;gap:.7rem;flex-shrink:0;">
-        <div class="book-icon-sm">
-          <i class="fa-solid fa-book-open"></i>
+      <!-- derecha: portada del libro + botón cerrar -->
+      <div style="display:flex;align-items:flex-start;gap:.7rem;flex-shrink:0;">
+        <div class="book-cover-card" id="modalCoverCard">
+          <div class="book-spine"></div>
+          <div class="book-cover-inner">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
         </div>
         <button class="btn-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -549,7 +577,7 @@ function openModal(id,title,loans){
   document.querySelectorAll('.view-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
 
   document.getElementById('modalBookTitle').textContent = title;
-  document.getElementById('modalBookId').textContent = `ID: ${id} · ${loans} préstamos registrados`;
+  document.getElementById('modalBookId').textContent = `ID: ${id}`;
   document.getElementById('chartTitle').textContent  = 'Préstamos por Día';
   document.getElementById('subtitleBook').textContent = `Libro: ${title}`;
 
