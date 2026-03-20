@@ -24,62 +24,58 @@ recognition.maxAlternatives = 1; // Una sola alternativa
 // PASO 5: Variable para saber si está escuchando
 let estaEscuchando = false;
 
-// PASO 6: Función para enviar texto a Wit.ai (CORREGIDA)
+// PASO 6: Función para enviar texto a Wit.ai
 const analizarConWitAI = async (texto) => {
   try {
-    // Mostrar que está procesando
     console.log('Analizando con Wit.ai:', texto);
-    
-    // Poner el texto en el input para que el usuario vea qué dijo
     searchInput.value = texto;
 
-    // Llamar a la API de Wit.ai
     const respuesta = await fetch(`https://api.wit.ai/message?v=20240306&q=${encodeURIComponent(texto)}`, {
-      headers: {
-        'Authorization': `Bearer ${TOKEN_IA}`
-      }
+      headers: { 'Authorization': `Bearer ${TOKEN_IA}` }
     });
 
-    if (!respuesta.ok) {
-      throw new Error(`Error HTTP: ${respuesta.status}`);
-    }
-
+    if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
     const datos = await respuesta.json();
     console.log('Respuesta de Wit.ai:', datos);
     
-    // PASO 7: Procesar la respuesta de Wit.ai
-    if (datos.entities) {
-      // Buscar qué tipo de entidad detectó Wit.ai
-      if (datos.entities.genero_libro && datos.entities.genero_libro.length > 0) {
-        const valor = datos.entities.genero_libro[0].value;
-        criterioSelect.value = 'genero';
-        alert(`Buscando libros del género: ${valor}`);
-        
-      } else if (datos.entities.autor_libro && datos.entities.autor_libro.length > 0) {
-        const valor = datos.entities.autor_libro[0].value;
-        criterioSelect.value = 'autor';
-        alert(`Buscando libros del autor: ${valor}`);
-        
-      } else if (datos.entities.titulo_libro && datos.entities.titulo_libro.length > 0) {
-        const valor = datos.entities.titulo_libro[0].value;
-        criterioSelect.value = 'titulo';
-        alert(`Buscando libros con título: ${valor}`);
-        
-      } else {
-        // Si no detecta entidades específicas, usa el texto completo
-        alert(`Buscando: "${texto}"`);
-      }
-    } else {
-      // Si no hay entidades, busca con el texto completo
-      alert(`Buscando: "${texto}"`);
+    // PROCESAR LAS ENTIDADES
+    const entities = datos.entities;
+    let mensaje = '';
+    
+    // Verificar género (con el formato que me mostraste)
+    if (entities['genero_libro:genero_libro']) {
+      const genero = entities['genero_libro:genero_libro'][0].value;
+      criterioSelect.value = 'genero';
+      mensaje += `Género: ${genero}. `;
     }
     
+    // Verificar título (con el formato que me mostraste)
+    if (entities['titulo_libro:titulo_libro']) {
+      const titulo = entities['titulo_libro:titulo_libro'][0].value;
+      criterioSelect.value = 'titulo';
+      mensaje += `Título: ${titulo}. `;
+    }
+    
+    // Verificar autor (si existe en tu JSON)
+    if (entities['autor_libro:autor_libro']) {
+      const autor = entities['autor_libro:autor_libro'][0].value;
+      criterioSelect.value = 'autor';
+      mensaje += `Autor: ${autor}. `;
+    }
+    
+    // Mostrar resultado
+    if (mensaje) {
+      alert('Buscando: ' + mensaje);
+    } else {
+      alert('Buscando: ' + texto);
+    }
+    
+    // Aquí puedes llamar a tu función de búsqueda
+    
   } catch (error) {
-    console.error('Error con Wit.ai:', error);
-    alert(`Error al procesar: ${error.message}. Buscando: "${texto}"`);
-    // Si falla Wit.ai, al menos ponemos el texto en el input
+    console.error('Error:', error);
+    alert('Buscando: ' + texto);
     searchInput.value = texto;
-    if (typeof buscarLibros === 'function') buscarLibros();
   }
 };
 
