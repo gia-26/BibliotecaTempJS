@@ -1,7 +1,8 @@
 // REFERENCIAS DEL DOM
-const loginForm = document.getElementById("loginForm");
+const btnEntrar = document.getElementById("btnEntrar");
 const slcSesion = document.getElementById("sesion");
 const inputPassword = document.getElementById("password");
+const inpUsuario = document.getElementById("usuario");
 const togglePasswordBtn = document.getElementById("togglePassword");
 const iconToggle = togglePasswordBtn.querySelector("i");
 
@@ -22,77 +23,51 @@ togglePasswordBtn.addEventListener("click", () => {
 
 });
 
-// ENVÍO DEL FORMULARIO
-loginForm.addEventListener("submit", (e) => {
-
-    e.preventDefault();
-
-    const datosLogin = {
-        sesion: slcSesion.value,
-        usuario: loginForm.usuario.value,
-        password: loginForm.password.value
-    };
-
-    console.log("Datos enviados:", datosLogin);
-
-    fetch("https://backend-biblioteca-two.vercel.app/api/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(datosLogin)
-    })
-    .then(response => response.json())
-    .then(result => {
-
-        console.log("Respuesta del servidor:", result);
-
-        if (result.success) {
-
-            alert(result.mensaje);
-
-            // Guardar datos en localStorage si quieres
-            localStorage.setItem("usuario", result.usuario);
-            localStorage.setItem("rol", result.rol);
-
-            // Redireccionar según rol
-            redirigirSegunRol(result.rol);
-
-        } else {
-            alert(result.mensaje);
-        }
-
-    })
-    .catch(error => {
-        console.error("Error en login:", error);
-        alert("Error al conectar con el servidor.");
-    });
-
+btnEntrar.addEventListener("click", () => {
+    iniciarSesion();
 });
 
-// FUNCIÓN PARA REDIRIGIR SEGÚN ROL
-function redirigirSegunRol(rol) {
-
-    switch (rol) {
-
-        case "ROL001":
-            window.location.href = "../dashboard_bibliotecario/index.html";
-            break;
-
-        case "ROL002":
-            window.location.href = "../dashboard_coordinador/index.html";
-            break;
-
-        case "ROL003":
-            window.location.href = "../dashboard_jefe/index.html";
-            break;
-
-        case "Miembro":
-            window.location.href = "../catalogo/index.html";
-            break;
-
-        default:
-            window.location.href = "../index.html";
-            break;
+const iniciarSesion = () => {
+    const sesionSeleccionada = slcSesion.value;
+    const usuarioIngresado = inpUsuario.value;
+    const passwordIngresada = inputPassword.value;
+    
+    if (!sesionSeleccionada || !usuarioIngresado || !passwordIngresada) {
+        alert("Por favor, completa todos los campos.");
+        return;
     }
+
+    const usuario = {
+        sesion: sesionSeleccionada,
+        idUsuario: usuarioIngresado,
+        password: passwordIngresada
+    };
+    
+    fetch("https://backend-biblioteca-two.vercel.app/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            sesion: sesionSeleccionada,
+            idUsuario: usuarioIngresado,
+            password: passwordIngresada
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.token) {
+            localStorage.setItem("id", data.usuario.id);
+            localStorage.setItem("nombre", data.usuario.nombre);
+            localStorage.setItem("rol", data.usuario.rol);
+            localStorage.setItem("token", data.token);
+            window.location.href = "/BibliotecaTempJS/dashboard/";
+            alert("¡Inicio de sesión exitoso!");
+        } else {
+            console.log(data);
+            alert(data.message || data.error || "Credenciales incorrectas. Inténtalo de nuevo.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Ocurrió un error al intentar iniciar sesión.");
+    });
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- <div id="header"></div> -->
+
+  <section class="hero">
+    <h2>Gestión de Usuarios</h2>
+  </section>
+
+  <!--<div id="header-dashboard"></div> -->
+
+  <main>
+    <div class="search-section">
+        <div class="search-box">
+        <span class="search-label">Buscar usuario ID:</span>
+        <input type="text" class="search-input" placeholder="Ingresa ID del usuario...">
+        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+    </div>
+    
+    <div class="table-container">
+      <div class="tabla-scroll">
+        <table class="catalog-table">
+          <thead>
+            <tr>
+              <th>Id usuario</th>
+              <th>Nombre</th>
+              <th>Apellido paterno</th>
+              <th>Apellido materno</th>
+              <th>Tipo de usuario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tblUsuarios">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="form-section">
+        <h3 class="section-title">Usuarios del sistema</h3>
+        <form class="personal-form" id="form-usuario">
+        <div class="form-group">
+            <label class="form-label" for="idUsuario">Id usuario</label>
+            <input type="text" class="form-input" id="idUsuario">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input type="text" class="form-input" id="nombre" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="apellido-paterno">Apellido paterno</label>
+            <input type="text" class="form-input" id="apellido-paterno" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="apellido-materno">Apellido materno</label>
+            <input type="text" class="form-input" id="apellido-materno" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="password">Contraseña</label>
+            <input type="password" class="form-input" id="password" placeholder="Ingresa contraseña">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="password-confirm">Confirmar contraseña</label>
+            <input type="password" class="form-input" id="password-confirm" placeholder="Confirma contraseña">
+        </div>
+        
+        <div class="form-actions">
+            <button id="btnEditar" type="button" class="btn btn-secondary">Editar</button>
+            <button id="btnGuardar" type="button" class="btn">Guardar</button>
+        </div>
+        </form>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="main.js"></script>
+
+  <!-- <script src="../main.js"></script> -->
+</body>
+</html>

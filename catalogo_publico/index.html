@@ -28,16 +28,23 @@
             <option value="autor">Autor</option>
             <option value="genero">Género</option>
         </select>
-        <input type="text" class="search-input" id="input-busqueda" placeholder="Buscar por título, autor o género...">
+        <div class="search-input-wrapper">
+          <input type="text" class="search-input" id="input-busqueda" placeholder="Buscar por título, autor o género...">
+          <button class="btn-mic" id="btnMic">
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
       </div>
     </div>
     
     <div class="catalogo" id="contenedor-libros"></div>
 
-    <div class="paginacion-contenedor">
-      <div class="paginacion-texto" id="textoPaginacion-container"></div>
-      <button id="btnAnterior" class="btn btn-anterior">Anterior</button>
-      <button id="btnSiguiente" class="btn btn-siguiente">Siguiente</button>
+    <div class="container-main">
+      <div class="paginacion-contenedor">
+        <div class="paginacion-texto" id="textoPaginacion-container"></div>
+        <button id="btnAnterior" class="btn btn-anterior">Anterior</button>
+        <button id="btnSiguiente" class="btn btn-siguiente">Siguiente</button>
+      </div>
     </div>
   </main>
 

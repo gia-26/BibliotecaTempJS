@@ -18,10 +18,9 @@
     </div>
     
     <div class="login-body">
-      <form id="loginForm">
-        
+      <form>
         <div class="form-group">
-          <label class="form-label">Sesión:</label>
+          <label class="form-label" for="sesion">Sesión:</label>
           <select class="session-select" id="sesion" name="sesion">
             <option value="Miembro">Estudiante/Miembro de la UTHH</option>
             <option value="ROL001">Bibliotecario</option>
@@ -31,12 +30,12 @@
         </div>
         
         <div class="form-group">
-          <label class="form-label">Usuario:</label>
-          <input type="text" class="form-input" placeholder="Ingresa tu usuario" name="usuario" required>
+          <label class="form-label" for="usuario">Usuario:</label>
+          <input type="text" class="form-input" placeholder="Ingresa tu usuario" id="usuario" name="usuario" required>
         </div>
         
         <div class="form-group">
-          <label class="form-label">Contraseña:</label>
+          <label class="form-label" for="password">Contraseña:</label>
           <div class="password-wrapper">
             <input type="password" class="form-input" placeholder="Ingresa tu contraseña" 
                name="password" id="password" 
@@ -49,7 +48,7 @@
           </div>
         </div>
         
-        <button onclick="window.location.href='/BibliotecaTempJS/dashboard/'" class="btn">
+        <button type="button" id="btnEntrar" class="btn">
           <i class="fas fa-sign-in-alt"></i> Entrar
         </button>
       </form>

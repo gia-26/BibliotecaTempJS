@@ -12,6 +12,13 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.container-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 body {
     background-color: var(--modal-bg);
     color: var(--texto-marron);
@@ -424,6 +431,92 @@ footer {
 .btn-siguiente:hover {
   background-color: var(--boton-marron);
   color: #ffffff;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.btn-mic {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-mic:hover {
+  color: #4a90e2;
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+.btn-mic:active {
+  transform: scale(0.95);
+}
+
+.search-input {
+  padding-right: 50px !important;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.btn-mic {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.btn-mic:hover {
+  color: #4a90e2;
+}
+
+.btn-mic.escuchando {
+  color: #4caf50;
+  animation: pulso 1s infinite;
+}
+
+@keyframes pulso {
+  0% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .btn-mic {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+    right: 5px;
+  }
+  
+  .search-input {
+    padding-right: 45px !important;
+  }
 }
 
 @keyframes suave-brillo {

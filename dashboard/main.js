@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const rolUsuario = localStorage.getItem("rol") || "ROL003";
+  const rolUsuario = localStorage.getItem("rol");
+
+  if (!rolUsuario) window.location.href = "/BibliotecaTempJS/login/";
+
   const dashboard = document.getElementById("dashboard");
 
   function crearCard(icono, titulo, descripcion, enlace, textoBoton) {
@@ -53,18 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
       break;
 
 
-    case "Miembro":
+    case "Trabajador":
+    case "Alumno":
       dashboard.innerHTML += crearCard("fa-history", "Historial de préstamos", "Visualiza el historial de préstamos de libros", "/BibliotecaTempJS/historial_prestamos", "Ver préstamos");
 
       dashboard.innerHTML += crearCard("fa-exclamation-triangle", "Historial de multas", "Visualiza el historial de multas de libros", "/BibliotecaTempJS/historial_multas", "Ver multas");
 
       dashboard.innerHTML += crearCard("fa-user-circle", "Perfil", "Visualiza y edita tu perfil", "/BibliotecaTempJS/perfil", "Ver perfil");
       break;
-
-
-    default:
-      dashboard.innerHTML = "<p>No tienes permisos asignados.</p>";
-      break;
   }
-
 });
