@@ -160,12 +160,12 @@ const analizarConWitAI = async (texto) => {
 
     actualizarLibros(url);
 
-    // Mostrar resultado
+    /* Mostrar resultado
     if (mensaje) {
       alert(mensaje);
     } else {
       alert(texto);
-    }
+    }*/
     
     // Aquí puedes llamar a tu función de búsqueda
   } catch (error) {
