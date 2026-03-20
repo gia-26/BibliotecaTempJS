@@ -499,6 +499,13 @@ footer {
   animation: pulso 1s infinite;
 }
 
+.sin-resultados {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+}
+
 @keyframes pulso {
   0% { transform: translateY(-50%) scale(1); }
   50% { transform: translateY(-50%) scale(1.2); }

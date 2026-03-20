@@ -27,6 +27,15 @@ const actualizarLibros = (url) => {
         totalLibros = resultado.total;
         totalPaginas = Math.ceil(totalLibros / limit);
         actualizarTextoPaginacion();
+        //Si no hay resultados
+        if (!resultado.libros || resultado.libros.length === 0) {
+            contenedorLibros.innerHTML = `
+                <div class="sin-resultados">
+                    <p>No se encontraron resultados para tu búsqueda</p>
+                </div>
+            `;
+            return;
+        }
         resultado.libros.forEach(libro => {
             let estado = (libro.Ejemplares_Disponibles > 1) ? 'Disponible' : 'Prestado';
             contenedorLibros.innerHTML += `
@@ -156,18 +165,10 @@ const analizarConWitAI = async (texto) => {
     if (limit) url += `limit=${limit}&`;
     if (skip) url += `skip=${skip}`;
 
-    console.log('URL para búsqueda IA:', url);
+    //console.log('URL para búsqueda IA:', url);
 
     actualizarLibros(url);
 
-    /* Mostrar resultado
-    if (mensaje) {
-      alert(mensaje);
-    } else {
-      alert(texto);
-    }*/
-    
-    // Aquí puedes llamar a tu función de búsqueda
   } catch (error) {
     console.error('Error:', error);
     alert(texto);
@@ -185,7 +186,9 @@ recognition.onresult = function(event) {
   micButton.classList.remove('escuchando');
   estaEscuchando = false;
   
-  analizarConWitAI(textoDicho);
+  setTimeout(() => {
+    analizarConWitAI(textoDicho);
+  }, 300);
 };
 
 //Evento cuando termina de escuchar
@@ -193,6 +196,8 @@ recognition.onend = function() {
   console.log('Dejó de escuchar');
   micButton.classList.remove('escuchando');
   estaEscuchando = false;
+
+  recognition.abort();
 };
 
 //Evento si hay error
@@ -200,6 +205,8 @@ recognition.onerror = function(event) {
   console.error('Error de voz:', event.error);
   micButton.classList.remove('escuchando');
   estaEscuchando = false;
+  
+  recognition.abort();
   
   if (event.error === 'not-allowed') {
     alert('Por favor, permite el acceso al micrófono para usar búsqueda por voz');
@@ -209,10 +216,12 @@ recognition.onerror = function(event) {
 //Función para empezar a escuchar
 function empezarAEscuchar() {
   if (estaEscuchando) {
-    recognition.stop(); // Dejar de escuchar
+    recognition.stop();
     return;
   }
-  
+
+  micButton.disabled = true;
+
   try {
     recognition.start();
     micButton.classList.add('escuchando');
@@ -221,6 +230,10 @@ function empezarAEscuchar() {
   } catch (error) {
     console.error('Error al iniciar:', error);
   }
+
+  setTimeout(() => {
+    micButton.disabled = false;
+  }, 1000);
 }
 
 micButton.addEventListener('click', empezarAEscuchar);
