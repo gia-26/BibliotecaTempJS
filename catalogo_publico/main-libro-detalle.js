@@ -117,13 +117,23 @@ fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
     //AQUÍ se llama la función y actualiza el contenedor
     obtenerDatoCurioso(libro[0].Anio).then(datoCurioso => {
       const contenedor = document.getElementById('dato-curioso-container');
-      if (contenedor) {
-        contenedor.innerHTML = datoCurioso ? `
+
+      if (contenedor && datoCurioso) {
+        // Limpiar "En 2018:" u otros años al inicio
+        let datoLimpio = datoCurioso.replace(/^En\s\d{4}:\s*/, '');
+
+        //Poner primera letra en minúscula para que encaje mejor
+        datoLimpio = datoLimpio.charAt(0).toLowerCase() + datoLimpio.slice(1);
+
+        contenedor.innerHTML = `
           <div class="dato-curioso">
             <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro[0].Anio}</h2>
-            <p>${datoCurioso}</p>
+            <p>
+              En ${libro[0].Anio}, año en que se publicó "${libro[0].Titulo}", 
+              ${datoLimpio}
+            </p>
           </div>
-        ` : '';
+        `;
       }
     });
 
