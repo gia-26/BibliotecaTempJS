@@ -120,29 +120,30 @@ const analizarConWitAI = async (texto) => {
     
     // PROCESAR LAS ENTIDADES
     const entities = datos.entities;
-    let mensaje = '';
+    let mensaje, genero, titulo, autor, anio;
+    mensaje = genero = titulo = autor = anio = '';
     
     // Verificar género
     if (entities['genero_libro:genero_libro']) {
-      const genero = entities['genero_libro:genero_libro'][0].value;
+      genero = entities['genero_libro:genero_libro'][0].value;
       mensaje += `Género: ${genero}. `;
     }
     
     // Verificar título
     if (entities['titulo_libro:titulo_libro']) {
-      const titulo = entities['titulo_libro:titulo_libro'][0].value;
+      titulo = entities['titulo_libro:titulo_libro'][0].value;
       mensaje += `Título: ${titulo}. `;
     }
     
     // Verificar autor
     if (entities['autor_libro:autor_libro']) {
-      const autor = entities['autor_libro:autor_libro'][0].value;
+      autor = entities['autor_libro:autor_libro'][0].value;
       mensaje += `Autor: ${autor}. `;
     }
 
     // Verificar año de edición
     if (entities['anio_libro:anio_libro']) {
-      const anio = entities['anio_libro:anio_libro'][0].value;
+      anio = entities['anio_libro:anio_libro'][0].value;
       mensaje += `Año de edición: ${anio}. `;
     }
 
@@ -156,7 +157,7 @@ const analizarConWitAI = async (texto) => {
     if (skip) url += `skip=${skip}`;
 
     console.log('URL para búsqueda IA:', url);
-    
+
     actualizarLibros(url);
 
     // Mostrar resultado
