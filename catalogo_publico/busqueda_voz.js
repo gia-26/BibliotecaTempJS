@@ -65,16 +65,16 @@ const analizarConWitAI = async (texto) => {
     
     // Mostrar resultado
     if (mensaje) {
-      alert('Buscando: ' + mensaje);
+      alert('Buscando: con IA' + mensaje);
     } else {
-      alert('Buscando: ' + texto);
+      alert('Buscando sin IA: ' + texto);
     }
     
     // Aquí puedes llamar a tu función de búsqueda
     
   } catch (error) {
     console.error('Error:', error);
-    alert('Buscando: ' + texto);
+    alert('Buscando sin IA: ' + texto);
     searchInput.value = texto;
   }
 };
