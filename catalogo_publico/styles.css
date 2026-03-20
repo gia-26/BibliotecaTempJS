@@ -470,6 +470,8 @@ footer {
 .search-input {
   padding-right: 50px !important;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .search-input-wrapper {
@@ -488,6 +490,10 @@ footer {
   font-size: 1.2rem;
   cursor: pointer;
   padding: 8px;
+  z-index: 2;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
 }
 
 .btn-mic:hover {
