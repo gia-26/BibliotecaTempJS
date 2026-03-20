@@ -155,6 +155,8 @@ const analizarConWitAI = async (texto) => {
     if (limit) url += `limit=${limit}&`;
     if (skip) url += `skip=${skip}`;
 
+    console.log('URL para búsqueda IA:', url);
+    
     actualizarLibros(url);
 
     // Mostrar resultado
