@@ -13,7 +13,7 @@ document.getElementById("nombreUser").textContent = nombreUsuario || "Usuario";
 document.getElementById("idUser").textContent = idUsuario || "----";
 document.getElementById("categoriaUser").textContent = rolUsuario || "----";
 
-const BASE_URL = "https://backend-biblioteca-two.vercel.app/api/perfil";
+const BASE_URL = "https://backend-biblioteca-two.vercel.app";
 
 // CAMBIAR SECCIONES
 document.querySelectorAll('.profile-menu a').forEach(link => {
