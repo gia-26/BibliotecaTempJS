@@ -3,19 +3,17 @@ const idUsuario = localStorage.getItem("id");
 const nombreUsuario = localStorage.getItem("nombre");
 const rolUsuario = localStorage.getItem("rol");
 
-// Redirigir si no hay sesión
 if (!token) {
     window.location.href = "/BibliotecaTempJS/login/";
 }
 
-// Cargar datos en pantalla
 document.getElementById("nombreUser").textContent = nombreUsuario || "Usuario";
 document.getElementById("idUser").textContent = idUsuario || "----";
 document.getElementById("categoriaUser").textContent = rolUsuario || "----";
 
-const BASE_URL = "https://backend-biblioteca-two.vercel.app";
+// ✅ CORREGIDO
+const BASE_URL = "https://backend-biblioteca-two.vercel.app/api";
 
-// CAMBIAR SECCIONES
 document.querySelectorAll('.profile-menu a').forEach(link => {
     link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -26,7 +24,6 @@ document.querySelectorAll('.profile-menu a').forEach(link => {
     });
 });
 
-// CARGAR TELÉFONO ACTUAL
 fetch(`${BASE_URL}/perfil/${idUsuario}`, {
     headers: { "Authorization": `Bearer ${token}` }
 })
@@ -38,7 +35,6 @@ fetch(`${BASE_URL}/perfil/${idUsuario}`, {
 })
 .catch(err => console.error("Error al cargar perfil:", err));
 
-// ACTUALIZAR TELÉFONO
 document.getElementById('profile-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -71,7 +67,6 @@ document.getElementById('profile-form').addEventListener('submit', function (e) 
     });
 });
 
-// CAMBIAR CONTRASEÑA 
 document.getElementById('password-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -117,7 +112,6 @@ document.getElementById('password-form').addEventListener('submit', function (e)
     });
 });
 
-// MOSTRAR / OCULTAR CONTRASEÑA 
 document.querySelectorAll('.toggle-password').forEach(icon => {
     icon.addEventListener('click', function () {
         const input = document.getElementById(this.dataset.target);
@@ -127,7 +121,6 @@ document.querySelectorAll('.toggle-password').forEach(icon => {
     });
 });
 
-// CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", function () {
     document.getElementById('profile-form').reset();
 });
