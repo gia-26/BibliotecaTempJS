@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Libro - Biblioteca UTHH</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <div class="form-section">
+      <h3 class="section-title" id="title">Agregar Libro</h3>
+      <div class="book-form">
+        
+        <div class="form-group">
+          <label class="form-label">Título</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            name="titulo" 
+            placeholder="Ingresa título del libro"
+            pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 .,;:¡!¿?\-_()]{5,100}"
+            title="El título debe tener entre 5 y 100 caracteres. Solo letras, números y signos de puntuación básicos."
+            id="inpTitulo" 
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">ISBN</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            name="isbn" 
+            placeholder="Ingresa ISBN (978 o 979 seguido de 13 dígitos)"
+            id="inpISBN"
+            pattern="(978|979)[\- ]?[0-9]{1,5}[\- ]?[0-9]{1,7}[\- ]?[0-9]{1,6}[\- ]?[0-9X]"
+            title="Formato ISBN válido: 978-3-16-148410-0 o 979-0-1234-5678-9"
+
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Edición</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            name="edicion" 
+            placeholder="Ingresa edición" 
+            id="inpEdicion"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Año de edición:
+            <button 
+                type="button" 
+                class="config-btn" 
+                title="Configurar años de edición">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select 
+            class="form-select" 
+            name="id_anio_edicion"
+            id="slcAnioEdicion" 
+            required>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Área de conocimiento:
+            <button 
+                type="button" 
+                class="config-btn" 
+                title="Configurar áreas de conocimiento">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select 
+            class="form-select" 
+            name="id_area_conocimiento"
+            id="slcAreaConocimiento" 
+            required>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            Género principal:
+            <button 
+                type="button" 
+                class="config-btn" 
+                title="Configurar géneros principales">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select 
+            class="form-select" 
+            name="id_genero" 
+            id="slcGeneroPrincipal"
+            required>
+          </select>
+        </div>
+        
+        <!-- SUBGÉNEROS -->
+        <div class="form-group">
+          <label class="form-label">Subgéneros</label>
+          <div class="add-tag-form">
+            <select class="form-select" id="selectSubgeneros">
+            </select>
+            <button 
+                type="button" 
+                id="btnSubGeneros"
+                class="btn btn-small btn-outline">
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+          </div>
+          <div class="tags-container" id="subgenerosContainer">
+          </div>
+          <input type="hidden" name="subgeneros" id="subgenerosInput">
+        </div>
+      
+        <div class="form-group">
+          <label class="form-label">
+            Autor principal:
+            <button 
+                type="button" 
+                class="config-btn" 
+                title="Configurar autores principales">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select 
+            class="form-select" 
+            name="id_autor"
+            id="slcAutorPrincipal"
+            required>
+          </select>
+        </div>
+
+        <!-- COAUTORES -->
+        <div class="form-group">
+          <label class="form-label">Coautores</label>
+          <div class="add-tag-form">
+            <select class="form-select" id="selectCoautores">
+            </select>
+            <button 
+                type="button" 
+                id="btnCoautores"
+                class="btn btn-small btn-outline">
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+          </div>
+          <div class="tags-container" id="coautoresContainer">
+          </div>
+          <input type="hidden" name="coautores" id="coautoresInput">
+        </div>
+    
+        <div class="form-group">
+          <label class="form-label">
+            Editorial principal:
+            <button 
+                type="button" 
+                class="config-btn" 
+                title="Configurar editoriales principales">
+              <i class="fas fa-cog"></i>
+            </button>
+          </label>
+          <select 
+            class="form-select" 
+            name="id_editorial"
+            id="slcEditoriales" 
+            required>
+          </select>
+        </div>
+
+        <!-- EDITORIALES SECUNDARIAS -->
+        <div class="form-group">
+          <label class="form-label">Editoriales secundarias</label>
+          <div class="add-tag-form">
+            <select class="form-select" id="selectEditoriales">
+            </select>
+            <button 
+                type="button" 
+                id="btnEditorialesSecundarias"
+                class="btn btn-small btn-outline">
+              <i class="fas fa-plus"></i> Agregar
+            </button>
+          </div>
+          <div class="tags-container" id="editorialesContainer">
+            <div class="empty-state">No hay editoriales agregadas.</div>
+          </div>
+          <input type="hidden" name="editoriales" id="editorialesInput">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Sinopsis</label>
+          <textarea 
+            class="form-input" 
+            name="sinopsis" 
+            rows="4" 
+            placeholder="Escribe la sinopsis aquí..." 
+            id="txtaSinopsis"
+            required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Número de ejemplares</label>
+          <input 
+            type="number" 
+            name="no_ejemplares" 
+            id="inpNoEjemplares" 
+            class="form-input" 
+            value="1" 
+            min="1" 
+            max="100" 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Imagen del libro</label>
+          <div class="image-upload-container">
+            <div class="image-preview" id="imagePreview">
+              <div class="no-image">No hay imagen seleccionada</div>
+            </div>
+            <input 
+                type="file" 
+                class="form-input" 
+                id="inpImagen" 
+                name="imagen" 
+                accept="image/jpeg, image/jpg, image/png">
+            <small class="form-text">Formatos permitidos: JPG, JPEG, PNG. Tamaño máximo: 2MB</small>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button 
+            type="button"
+            id="btnGuardar" 
+            name="accion" 
+            value="guardar" 
+            class="btn"
+            >
+            Guardar
+        </button>
+        </div>
+    </div>
+    </div>
+    <div class="loader-container" id="loader-container">
+        <div id="loader" class="loader"></div>
+    </div>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>

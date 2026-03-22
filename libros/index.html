@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <button class="btn-agregar" id="btnAgregar">
+    <button class="btn-agregar" id="btnAgregar" onclick="abrirModal('./guardarLibros/index.html')">
       <i class="fas fa-plus"></i>
       <span>Agregar Nuevo Libro</span>
     </button>
@@ -119,7 +119,7 @@
 
   <!-- MODAL -->
   <div id="modalLibros" class="modal">
-    <div class="modal-content" style="background: transparent; box-shadow: none; padding: 0;">
+    <div class="modal-content">
       <iframe id="modalIframe" class="modal-iframe"></iframe>
     </div>
   </div>

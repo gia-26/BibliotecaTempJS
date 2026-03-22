@@ -33,7 +33,7 @@ function cargarLibros(filtro = "titulo", termino = "") {
             <td>${libro.Genero}</td>
             <td class="actions">
               <button class="action-link action-edit"
-                onclick="openModal('modalLibros', '${libro.Id_libro}', true)">
+                onclick="abrirModal('./guardarLibros/index.html?id=${libro.Id_libro}')">
                 <i class="fas fa-edit"></i> Editar
               </button>
 
@@ -74,15 +74,12 @@ function eliminarLibro(id) {
 }
 
 // MODAL
-function openModal(modalId, idLibro, editar) {
-  document.getElementById(modalId).style.display = "flex";
+function abrirModal(url) {
+  const modal = document.getElementById("modalLibros");
+  const iframe = document.getElementById("modalIframe");
 
-  if (editar)
-    document.getElementById("modalIframe").src =
-      `gestionLibros.html?id=${idLibro}`;
-  else
-    document.getElementById("modalIframe").src =
-      `gestionLibros.html`;
+  iframe.src = url;
+  modal.style.display = "flex";
 }
 
 window.onclick = function(event) {
