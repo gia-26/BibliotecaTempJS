@@ -5,22 +5,31 @@ const listaMultas = document.getElementById("listaMultas");
 
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
-  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=ALU001&tipo=TU001")
+  const nombre = localStorage.getItem("nombre");
+  const id = localStorage.getItem("id");
+  const rol = localStorage.getItem("rol");
+  const tipo = (rol === "Alumno") ? "TU001" : "TU002";
+
+  fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${id}&tipo=${tipo}`)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
-
-      nombreUsuario.textContent = data.Nombre || "Nombre no encontrado";
-      tipoUsuario.textContent = "Ingeniería en TI";
+      nombreUsuario.textContent = nombre || "Nombre no encontrado";
+      tipoUsuario.textContent = data.Carrera || rol; // ← muestra la carrera
     })
     .catch(error => console.error("Error al obtener usuario:", error));
 }
 
 // CARGAR RESUMEN DE MULTAS
 function cargarResumen() {
-  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/resumen")
-    .then(res => res.json())
-    .then(data => {
+  const token = localStorage.getItem("token");
+
+  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/resumen", {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
     
       const total = data.MontoTotal !== undefined ? data.MontoTotal : (data[0] ? data[0].MontoTotal : 0);
       montoTotal.textContent = `$${parseFloat(total).toFixed(2)}`;
@@ -30,9 +39,15 @@ function cargarResumen() {
 
 // CARGAR LISTA DE MULTAS
 function cargarMultas() {
-  fetch("https://backend-biblioteca-two.vercel.app/api/multas")
-    .then(res => res.json())
-    .then(data => {
+  const token = localStorage.getItem("token");
+
+  fetch("https://backend-biblioteca-two.vercel.app/api/multas", {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
 
       listaMultas.innerHTML = "";
 
