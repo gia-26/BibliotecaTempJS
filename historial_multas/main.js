@@ -41,7 +41,7 @@ function cargarResumen() {
 function cargarMultas() {
   const token = localStorage.getItem("token");
 
-  fetch("https://backend-biblioteca-two.vercel.app/api/multas", {
+  fetch("https://backend-biblioteca-two.vercel.app/api/usuarios", {
     headers: {
       "Authorization": `Bearer ${token}`
     }
