@@ -11,7 +11,6 @@ document.getElementById("nombreUser").textContent = nombreUsuario || "Usuario";
 document.getElementById("idUser").textContent = idUsuario || "----";
 document.getElementById("categoriaUser").textContent = rolUsuario || "----";
 
-// ✅ CORREGIDO
 const BASE_URL = "https://backend-biblioteca-two.vercel.app/api";
 
 document.querySelectorAll('.profile-menu a').forEach(link => {
