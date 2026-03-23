@@ -660,6 +660,7 @@ if (idLibro) {
     cargarDatosLibro(idLibro);
 }
 
+loader.style.display = 'flex';
 recuperarAniosEdicion();
 recuperarAreasConocimiento();
 recuperarGeneros();
@@ -668,3 +669,4 @@ recuperarEditoriales();
 divSubgenerosContainer.innerHTML = '<div class="empty-state">No hay subgéneros agregados.</div>';
 divCoautoresContainer.innerHTML = '<div class="empty-state">No hay coautores agregados.</div>';
 divEditorialesContainer.innerHTML = '<div class="empty-state">No hay editoriales secundarias agregadas.</div>';
+loader.style.display = 'none';
