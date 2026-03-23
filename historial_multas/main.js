@@ -6,17 +6,10 @@ const listaMultas = document.getElementById("listaMultas");
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
   const nombre = localStorage.getItem("nombre");
-  const id = localStorage.getItem("id");
   const rol = localStorage.getItem("rol");
-  const tipo = (rol === "Alumno") ? "TU001" : "TU002";
 
-  fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${id}&tipo=${tipo}`)
-    .then(res => res.json())
-    .then(data => {
-      nombreUsuario.textContent = nombre || "Nombre no encontrado";
-      tipoUsuario.textContent = data.Carrera || rol; // ← muestra la carrera
-    })
-    .catch(error => console.error("Error al obtener usuario:", error));
+  nombreUsuario.textContent = nombre || "Nombre no encontrado";
+  tipoUsuario.textContent = rol || ""; // "Alumno" o "Trabajador"
 }
 
 // CARGAR RESUMEN DE MULTAS
