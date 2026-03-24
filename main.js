@@ -60,6 +60,7 @@ fetch("/BibliotecaTempJS/header-dashboard.html")
           <a id="libros" href="/BibliotecaTempJS/libros/" class="read-on-hover" data-text="Libros"><i class="fas fa-book"></i> Libros</a>
           <a id="personal" href="/BibliotecaTempJS/personal/" class="read-on-hover" data-text="Personal"><i class="fas fa-users"></i> Personal</a>
           <a id="info-biblioteca" href="/BibliotecaTempJS/Informacion_biblioteca/" class="read-on-hover" data-text="Biblioteca"><i class="fas fa-info-circle"></i> Biblioteca</a>
+          <a id="estimacion" href="/BibliotecaTempJS/estimacion/" class="read-on-hover" data-text="Biblioteca"><i class="fas fa-calculator"></i> Estimación</a>
           `;
         break;
 
