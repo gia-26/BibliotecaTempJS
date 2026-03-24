@@ -35,18 +35,21 @@ function cargarLibros() {
 }
 
 // Calcular la constante k (puede ser negativa si hay decrecimiento)
+// k = ln(D2/D1) / (t4 - t1)
 function calcularK() {
     if (D2 == 0) D2 = 1;
     return Math.log(D2 / D1) / (t4 - t1);
 }
 
 // Calcular la constante C (siempre positiva si D1 > 0)
+// C = D1 * e^(-kt1)
 function calcularC() {
     const k = calcularK();
     return D1 * Math.exp(-k * t1);
 }
 
-// Calcular préstamos - NUNCA dará negativo con datos correctos
+// Calcular préstamos
+// P = e^(kt) * C
 function calcularPrestamos(t) {
     const k = calcularK();
     const c = calcularC();
@@ -79,8 +82,6 @@ function crearGrafica() {
     // Determinar si hay crecimiento o decrecimiento
     const esCrecimiento = k > 0;
     const esDecrecimiento = k < 0;
-
-    console.log(`Constante k: ${k.toFixed(4)} (${esCrecimiento ? 'Crecimiento' : (esDecrecimiento ? 'Decrecimiento' : 'Estable')})`);
     
     // Colores según la tendencia
     let colorBarra, colorBorde, mensajeTendencia;
@@ -235,10 +236,6 @@ function abrirModal(id, titulo, imagen) {
     modalTitle.textContent = titulo;
     modalID.textContent = `ID: ${id}`;
     modalImageLibro.src = imagen;
-    
-    // Limpiar información anterior
-    const infoDiv = document.getElementById('infoTendencia');
-    if (infoDiv) infoDiv.remove();
     
     fetch(`${URL_BASE}api/estimaciones/libro/datos?idLibro=${id}&fecha=2026-01-01`)
         .then(respuesta => respuesta.json())
