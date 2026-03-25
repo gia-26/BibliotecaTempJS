@@ -19,11 +19,6 @@ cargarUsuario();
 
 const idUsuario = localStorage.getItem("idUsuario");
 
-if (!idUsuario) {
-  alert("Debes iniciar sesión");
-  window.location.href = "../login.html";
-}
-
 // CARGAR ESTADÍSTICAS
 fetch(`https://backend-biblioteca-two.vercel.app/prestamos/usuario/estadisticas?idUsuario=${idUsuario}`)
   .then(res => res.json())
