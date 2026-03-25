@@ -8,6 +8,19 @@ function mostrarNotificacion(mensaje) {
     }, 3000);
 }
 
+function mostrarNotificacionError(mensaje) {
+    const alerta = document.getElementById("mensajeExito");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    alerta.classList.add("alert-error");
+    alerta.classList.remove("alert-success");
+    setTimeout(() => {
+        alerta.style.display = "none";
+        alerta.classList.remove("alert-error");
+        alerta.classList.add("alert-success");
+    }, 4000);
+}
+
 // CARGAR AREAS
 async function cargarAreas() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/areas");
@@ -63,7 +76,7 @@ document.getElementById("formArea").addEventListener("submit", async (e) => {
         }),
     });
 
-    // ✅ NOTIFICACIÓN según operación
+    // NOTIFICACIÓN según operación
     if (id !== "") {
         mostrarNotificacion("Área de conocimiento actualizada correctamente.");
     } else {
@@ -85,15 +98,21 @@ function editarArea(id, area, estante) {
 async function eliminarArea(id) {
     if (!confirm("¿Eliminar esta área?")) return;
 
-    await fetch("https://backend-biblioteca-two.vercel.app/api/areas/eliminar", {
+    const res = await fetch("https://backend-biblioteca-two.vercel.app/api/areas/eliminar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Id_area_conocimiento: id }),
     });
 
-    // ✅ NOTIFICACIÓN de eliminado
-    mostrarNotificacion("Área de conocimiento eliminada correctamente.");
+    const data = await res.json();
 
+    //Si el backend rechaza, mostrar notificación roja
+    if (!res.ok) {
+        mostrarNotificacionError(data.error);
+        return;
+    }
+
+    mostrarNotificacion("Área de conocimiento eliminada correctamente.");
     cargarAreas();
 }
 
