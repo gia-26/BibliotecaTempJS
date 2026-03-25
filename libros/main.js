@@ -1,31 +1,26 @@
 const tablaLibros = document.getElementById("tablaLibros");
-const btnBuscar = document.getElementById("btnBuscar");
-const btnLimpiar = document.getElementById("btnLimpiar");
-const searchInput = document.getElementById("searchInput");
-const filterSelect = document.getElementById("filterSelect");
+const URL_BASE = "https://backend-biblioteca-two.vercel.app/";
 
-// CARGAR LIBROS
-function cargarLibros(filtro = "titulo", termino = "") {
 
-  fetch(`https://backend-biblioteca-two.vercel.app/api/libros?filtro=${filtro}&termino=${termino}`)
+const cargarLibros = () => {
+
+  fetch(`${URL_BASE}api/libros`)
     .then(res => res.json())
-    .then(data => {
-
+    .then(datos => {
+      const libros = datos.data || [];
       tablaLibros.innerHTML = "";
 
-      if (data.length === 0) {
+      if (libros.length === 0) {
         tablaLibros.innerHTML =
           `<tr><td colspan="6">No se encontraron libros.</td></tr>`;
         return;
       }
 
-      data.forEach(libro => {
-
+      libros.forEach(libro => {
         tablaLibros.innerHTML += `
           <tr>
             <td>
-              <img src="https://biblioteca.grupoctic.com/libros_img/${libro.Imagen}"
-                   class="book-image">
+              <img src="${libro.Imagen}" class="book-image" alt="Imagen del libro ${libro.Titulo}">
             </td>
             <td>${libro.Id_libro}</td>
             <td>${libro.Titulo}</td>
@@ -49,40 +44,40 @@ function cargarLibros(filtro = "titulo", termino = "") {
     });
 }
 
-// BUSCAR
-btnBuscar.addEventListener("click", () => {
-  cargarLibros(filterSelect.value, searchInput.value);
-});
-
-// LIMPIAR
-btnLimpiar.addEventListener("click", () => {
-  searchInput.value = "";
-  cargarLibros();
-});
-
 // ELIMINAR
-function eliminarLibro(id) {
-
-  if (!confirm("¿Estás seguro de que deseas eliminar este libro?"))
+const eliminarLibro = (id) => {
+  if (!confirm("¿Estás seguro de que deseas eliminar este libro?")) {
     return;
+  }
 
-  fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${id}`, {
+  fetch(`${URL_BASE}api/libros/eliminar/${id}`, {
     method: "DELETE"
   })
   .then(res => res.json())
-  .then(() => cargarLibros());
-}
+  .then(data => {
+    if (data.success) {
+      alert(data.message || "Libro eliminado exitosamente.");
+      cargarLibros();
+    } else {
+      alert(data.error || "Error al eliminar el libro.");
+    }
+  })
+  .catch(err => {
+    console.error("Error al eliminar el libro:", err);
+    alert("Ocurrió un error al eliminar el libro.");
+  });
+};
 
 // MODAL
-function abrirModal(url) {
+const abrirModal = (url) => {
   const modal = document.getElementById("modalLibros");
   const iframe = document.getElementById("modalIframe");
 
   iframe.src = url;
   modal.style.display = "flex";
-}
+};
 
-window.onclick = function(event) {
+window.onclick = function (event) {
   const modal = document.getElementById("modalLibros");
   if (event.target === modal) {
     modal.style.display = "none";

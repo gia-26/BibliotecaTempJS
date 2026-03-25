@@ -18,6 +18,66 @@ body {
     line-height: 1.6;
 }
 
+/* Contenedor del grupo de formulario */
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Wrapper que envuelve input y botón */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input dentro del wrapper */
+.password-wrapper .form-input {
+  width: 100%;
+  padding: 0.8rem;
+  padding-right: 45px !important; /* Espacio para el ícono */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Botón del ojo - posicionado DENTRO del input */
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 1.1rem;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+/* Efecto hover del ojo */
+.toggle-password:hover {
+  color: var(--boton-marron);
+}
+
+/* Quitar estilos por defecto del botón */
+.toggle-password:focus {
+  outline: none;
+}
+
+/* Asegurar que el input no tenga padding extra por defecto */
+.form-input {
+  box-sizing: border-box;
+}
+
 header {
     background-color: var(--boton-marron);
     padding: 1rem 2rem;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <div id="header"></div>
@@ -21,11 +23,10 @@
     <div class="search-section">
       <div class="search-box">
         <span class="search-label">Buscar personal ID:</span>
-        <input type="text" class="search-input" placeholder="Ingresa ID del personal...">
-        <button class="btn"><i class="fas fa-search"></i> Buscar</button>
+        <input type="text" id="inpSearch" class="search-input" placeholder="Ingresa ID del personal...">
       </div>
     </div>
-    
+
     <div class="table-container">
       <div class="tabla-scroll">
         <table class="catalog-table">
@@ -44,7 +45,7 @@
         </table>
       </div>
     </div>
-    
+
     <div class="form-section">
       <h3 class="section-title">Personal bibliotecario</h3>
       <form class="personal-form" id="formPersonal">
@@ -52,48 +53,59 @@
           <label class="form-label" for="noTrabajador">No. Trabajador</label>
           <input type="text" class="form-input" id="noTrabajador">
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="idPersonal">ID personal</label>
           <input type="text" class="form-input" id="idPersonal" readonly>
         </div>
-        
+
         <div class="form-group">
-          <label class="form-label" for="nombre" >Nombre</label>
+          <label class="form-label" for="nombre">Nombre</label>
           <input type="text" class="form-input" id="nombre" readonly>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="apellidoP">Apellido paterno</label>
           <input type="text" class="form-input" id="apellidoP" readonly>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="apellidoM">Apellido materno</label>
           <input type="text" class="form-input" id="apellidoM" readonly>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="slcTiposRol">
             Tipo de rol:
-            <button type="button" class="config-btn" onclick="openModal('modal-tipos-rol')" title="Configurar tipos de rol">
+            <button type="button" class="config-btn" onclick="openModal('modal-tipos-rol')"
+              title="Configurar tipos de rol">
               <i class="fas fa-cog"></i>
             </button>
           </label>
           <select class="form-select" id="slcTiposRol">
           </select>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="password">Contraseña</label>
-          <input type="password" class="form-input" placeholder="Ingresa contraseña" id="password">
+          <div class="password-wrapper">
+            <input type="password" class="form-input" placeholder="Ingresa contraseña" id="password">
+            <button type="button" class="toggle-password" id="togglePassword">
+              <i class="fa-solid fa-eye-slash"></i>
+            </button>
+          </div>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label" for="password-confirm">Confirmar contraseña</label>
-          <input type="password" class="form-input" placeholder="Confirma contraseña" id="password-confirm">
+          <div class="password-wrapper">
+            <input type="password" class="form-input" placeholder="Confirma contraseña" id="password-confirm">
+            <button type="button" class="toggle-password" id="togglePasswordConfirm">
+              <i class="fa-solid fa-eye-slash"></i>
+            </button>
+          </div>
         </div>
-        
+
         <div class="form-actions">
           <button type="button" class="btn btn-secondary">Limpiar</button>
           <button id="btnEditar" type="button" class="btn">Editar</button>
@@ -110,35 +122,35 @@
         <h2>Gestión de Tipos de Rol</h2>
         <span class="close" onclick="closeModal('modal-tipos-rol')">&times;</span>
       </div>
-      
+
       <div class="modal-form-container">
         <form id="role-type-form">
           <div class="modal-form-group">
             <label for="id-role-type">ID Tipo de Rol</label>
             <input type="text" id="id-role-type" class="modal-form-control" placeholder="TR001">
           </div>
-          
+
           <div class="modal-form-group">
             <label for="role-type-name">Tipo de Rol</label>
             <input type="text" id="role-type-name" class="modal-form-control" placeholder="Jefe de Departamento">
           </div>
-          
+
           <div class="checkbox-group">
             <input type="checkbox" id="edit-mode-role-type" checked>
             <label for="edit-mode-role-type">Habilitar edición</label>
           </div>
-          
+
           <div class="checkbox-group">
             <input type="checkbox" id="delete-mode-role-type">
             <label for="delete-mode-role-type">Habilitar eliminación</label>
           </div>
-          
+
           <button type="submit" class="btn">
             <i class="fas fa-save"></i> Guardar
           </button>
         </form>
       </div>
-      
+
       <div class="modal-table-container">
         <table class="modal-table">
           <thead>
@@ -202,7 +214,7 @@
     }
 
     // Cerrar modal al hacer clic fuera del contenido
-    window.onclick = function(event) {
+    window.onclick = function (event) {
       const modals = document.getElementsByClassName('modal');
       for (let i = 0; i < modals.length; i++) {
         if (event.target == modals[i]) {
@@ -212,11 +224,12 @@
     }
 
     // Manejo de envío de formularios
-    document.getElementById('role-type-form').addEventListener('submit', function(e) {
+    document.getElementById('role-type-form').addEventListener('submit', function (e) {
       e.preventDefault();
       alert('Tipo de rol guardado correctamente.');
       closeModal('modal-tipos-rol');
     });
   </script>
 </body>
+
 </html>

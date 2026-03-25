@@ -8,8 +8,14 @@ const inpApellidoM = document.getElementById('apellidoM');
 const inpPassword = document.getElementById('password');
 const inpPasswordConfirm = document.getElementById('password-confirm');
 const btnEditar = document.getElementById('btnEditar');
+const inpSearch = document.getElementById('inpSearch');
+const togglePasswordBtn = document.getElementById("togglePassword");
+const togglePasswordConfirmBtn = document.getElementById("togglePasswordConfirm");
+const iconToggle = togglePasswordBtn.querySelector("i");
+const iconToggleConfirm = togglePasswordConfirmBtn.querySelector("i");
 
-const recuperarPersonal = () => {
+
+const cargarPersonal = () => {
     fetch('https://backend-biblioteca-two.vercel.app/api/personal')
     .then(response => response.json())
     .then(personales => {
@@ -85,7 +91,7 @@ const editar = () => {
         } else {
             alert('Error al actualizar el personal bibliotecario.');
         }
-        recuperarPersonal();
+        cargarPersonal();
     })
     .catch(error => {
         console.error('Error al actualizar el personal bibliotecario:', error);
@@ -104,9 +110,81 @@ const limpiar = () => {
     slcTiposRol.selectedIndex = 0;
 }
 
+const buscarPersonal = () => {
+    const searchTerm = inpSearch.value.trim();
+    if (searchTerm === '') {
+        cargarPersonal();
+        return;
+    }
+
+    fetch(`https://backend-biblioteca-two.vercel.app/api/personal/${searchTerm}`)
+    .then(response => response.json())
+    .then(personal => {
+        tblPersonal.innerHTML = '';
+        if (personal.length === 0) {
+            tblPersonal.innerHTML = "<tr><td colspan='6'>No se encontró personal con ese ID</td></tr>";
+            return;
+        }
+        personal.forEach(p => {
+            tblPersonal.innerHTML += `
+                <tr>
+                    <td>${p.Id_personal}</td>
+                    <td>${p.Nombre}</td>
+                    <td>${p.Apellido_P}</td>
+                    <td>${p.Apellido_M}</td>
+                    <td>${p.Tipo_rol}</td>
+                    <td class="actions">
+                        <a onclick="colocarDatos('${p.Id_personal}', '${p.Nombre}', '${p.Apellido_P}', '${p.Apellido_M}', '${p.Id_rol}', '${p.Id_trabajador}')" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
+                        <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+                    </td>
+                </tr>
+            `;
+        });
+    })
+    .catch(error => {
+        console.error('Error al buscar el personal bibliotecario:', error);
+        alert('Error al buscar el personal bibliotecario.');
+    });
+}
+
+inpSearch.addEventListener('input', () => {
+    buscarPersonal();
+});
+
+// MOSTRAR / OCULTAR CONTRASEÑA
+togglePasswordBtn.addEventListener("click", () => {
+
+    const esPassword = inpPassword.type === "password";
+
+    inpPassword.type = esPassword ? "text" : "password";
+
+    if (esPassword) {
+        iconToggle.classList.remove("fa-eye-slash");
+        iconToggle.classList.add("fa-eye");
+    } else {
+        iconToggle.classList.remove("fa-eye");
+        iconToggle.classList.add("fa-eye-slash");
+    }
+
+});
+
+togglePasswordConfirmBtn.addEventListener("click", () => {
+
+    const esPasswordConfirm = inpPasswordConfirm.type === "password";
+    inpPasswordConfirm.type = esPasswordConfirm ? "text" : "password";
+
+    if (esPasswordConfirm) {
+        iconToggleConfirm.classList.remove("fa-eye-slash");
+        iconToggleConfirm.classList.add("fa-eye");
+    } else {
+        iconToggleConfirm.classList.remove("fa-eye");
+        iconToggleConfirm.classList.add("fa-eye-slash");
+    }
+});
+
 const guardar = () => {
     //Falta implementar la función para guardar un nuevo personal bibliotecario
 }
 
-recuperarPersonal();
+cargarPersonal();
 recuperarTipoRol();

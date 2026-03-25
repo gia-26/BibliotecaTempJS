@@ -186,6 +186,20 @@
      overflow-x: auto;
  }
 
+ .tabla-scroll {
+     max-height: 420px;
+     /* altura máxima */
+     overflow-y: auto;
+     /* activa el scroll vertical */
+     border: 1px solid #ccc;
+ }
+
+ .tabla-scroll thead tr {
+     position: sticky;
+     top: 0;
+     background: white;
+ }
+
  .catalog-table {
      width: 100%;
      border-collapse: collapse;
@@ -202,7 +216,7 @@
  .catalog-table td {
      padding: 1rem;
      border-bottom: 1px solid #eee;
-     vertical-align: middle;
+     height: 80px;
  }
 
  .catalog-table tr:hover {
@@ -219,12 +233,18 @@
 
  .actions {
      display: flex;
+     align-items: center;
+     justify-content: center;
      gap: 0.5rem;
+     border: none;
  }
 
  .action-link {
-     display: inline-block;
-     padding: 0.4rem 0.8rem;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     padding: 0.5rem 1rem;
      border-radius: 4px;
      font-size: 0.9rem;
      text-decoration: none;
@@ -233,8 +253,9 @@
      transition: all 0.3s;
      border: none;
      cursor: pointer;
+     height: 40px;
+     min-height: 36px;
  }
-
  .action-link:hover {
      transform: translateY(-2px);
      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
