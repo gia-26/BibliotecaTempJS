@@ -41,7 +41,7 @@ const actualizarLibros = (url) => {
             contenedorLibros.innerHTML += `
                 <div class="libro" style="position: relative;">
                     ${libro.Id_libro === 'LIB0037' ? '<div class="libro-popular-indicador">Más popular</div>' : ''}
-                    <img src="https://biblioteca.grupoctic.com/libros_img/${libro.Imagen}" class="libro-img">
+                    <img src="${libro.Imagen}" class="libro-img">
                     <div class="libro-content">
                     <h3>${libro.Titulo}</h3>
                     <div class="autor">${libro.Nombre}</div>

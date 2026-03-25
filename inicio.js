@@ -16,7 +16,7 @@ fetch('https://backend-biblioteca-two.vercel.app/api/inicio/libros')
         catalogoLibs.innerHTML += `
         <div class="swiper-slide" >
             <div class="libro">
-                <img loading="lazy" src="https://biblioteca.grupoctic.com/libros_img/${libro.Imagen}" alt="${libro.Titulo}" class="libro-img">
+                <img loading="lazy" src="${libro.Imagen}" alt="${libro.Titulo}" class="libro-img">
                 <div class="libro-content">
                 <h3 class="read-on-hover" data-text='Título: ${libro.Titulo}'>${libro.Titulo}</h3>
                 <div class="read-on-hover autor" data-text='Autor: ${libro.Autor}'>${libro.Autor}</div>

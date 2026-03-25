@@ -10,7 +10,7 @@ const libroPopular = `
             <span style="font-weight: 600; color: var(--texto-marron);">Escanea para Realidad Aumentada</span>
         </div>
         <div style="padding: 10px; background: white; border-radius: 10px; display: inline-block;">
-            <img src="https://biblioteca.grupoctic.com/libros_img/qrHarryPotter.jpg" 
+            <img src="https://res.cloudinary.com/dpxukm9oe/image/upload/v1774311623/harryPottter_domuio.jpg" 
                 alt="QR para AR" 
                 style="width: 150px; height: 150px; border-radius: 5px;">
         </div>
@@ -61,47 +61,48 @@ async function obtenerDatoCurioso(anio) {
 
 fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
   .then(response => response.json())
-  .then(libro => {
+  .then(datos => {
+    const libro = datos.data;
     console.log('Detalles del libro:', libro);
 
     libroDetalleDiv.innerHTML = `
         <div class="libro-portada">
-            <img src="https://biblioteca.grupoctic.com/libros_img/${libro[0].Imagen}" alt="${libro[0].Titulo}" id="libro-imagen">
+            <img src="${libro.Imagen}" alt="${libro.Titulo}" id="libro-imagen">
             <div class="estado-badge ${estadoLibro.toLowerCase()}" id="estado-libro">${estadoLibro}</div>
             ${(idLibro === 'LIB0037') ? libroPopular : ''}
         </div>
 
         <div class="libro-info">
-            <h1 id="libro-titulo">${libro[0].Titulo}</h1>
-            <div class="autor" id="libro-autor">${libro[0].Autor}</div>
+            <h1 id="libro-titulo">${libro.Titulo}</h1>
+            <div class="autor" id="libro-autor">${libro.Autor}</div>
 
             <div class="libro-meta">
             <div class="meta-item">
                 <h3>Género</h3>
-                <p id="libro-genero">${libro[0].Genero}</p>
+                <p id="libro-genero">${libro.Genero}</p>
             </div>
             <div class="meta-item">
                 <h3>ISBN</h3>
-                <p id="libro-isbn">${libro[0].ISBN}</p>
+                <p id="libro-isbn">${libro.ISBN}</p>
             </div>
             <div class="meta-item">
                 <h3>Editorial</h3>
-                <p id="libro-editorial">${libro[0].Editorial}</p>
+                <p id="libro-editorial">${libro.Editorial}</p>
             </div>
             <div class="meta-item">
                 <h3>Año de publicación</h3>
-                <p id="libro-anio">${libro[0].Anio}</p>
+                <p id="libro-anio">${libro.Anio}</p>
             </div>
             </div>
 
             <div class="sinopsis">
             <h2>Sinopsis</h2>
-            <p id="libro-sinopsis">${libro[0].Sinopsis}</p>
+            <p id="libro-sinopsis">${libro.Sinopsis}</p>
             </div>
 
             <div id="dato-curioso-container">
               <div class="dato-curioso">
-                <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro[0].Anio}</h2>
+                <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro.Anio}</h2>
                 <p><i class="fas fa-spinner fa-spin"></i> Cargando dato curioso...</p>
               </div>
             </div>
@@ -115,7 +116,7 @@ fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
     `;
 
     //AQUÍ se llama la función y actualiza el contenedor
-    obtenerDatoCurioso(libro[0].Anio).then(datoCurioso => {
+    obtenerDatoCurioso(libro.Anio).then(datoCurioso => {
       const contenedor = document.getElementById('dato-curioso-container');
 
       if (contenedor && datoCurioso) {
@@ -127,9 +128,9 @@ fetch(`https://backend-biblioteca-two.vercel.app/api/libros/${idLibro}`)
 
         contenedor.innerHTML = `
           <div class="dato-curioso">
-            <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro[0].Anio}</h2>
+            <h2><i class="fas fa-lightbulb"></i> Dato curioso del año ${libro.Anio}</h2>
             <p>
-              En ${libro[0].Anio}, año en que se publicó "${libro[0].Titulo}", 
+              En ${libro.Anio}, año en que se publicó "${libro.Titulo}", 
               ${datoLimpio}
             </p>
           </div>
