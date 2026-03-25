@@ -39,7 +39,7 @@ function cargarEstadisticas() {
     librosActivos.textContent = data.librosActivos;
     librosDevueltos.textContent = data.librosDevueltos;
   })
-  .catch(err => console.error("Error cargando estadísticas:", err));
+  
 }
 
 // CARGAR HISTORIAL DE PRÉSTAMOS
@@ -115,7 +115,6 @@ function cargarHistorial() {
       prestamosContainer.appendChild(card);
     });
   })
-  .catch(err => console.error("Error cargando préstamos:", err));
 }
 
 // INICIALIZAR
