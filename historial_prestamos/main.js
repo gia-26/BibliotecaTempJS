@@ -1,3 +1,4 @@
+// Elementos del DOM
 const nombreUsuario = document.getElementById("nombreUsuario");
 const tipoUsuario = document.getElementById("tipoUsuario");
 
@@ -7,36 +8,59 @@ const librosDevueltos = document.getElementById("librosDevueltos");
 
 const prestamosContainer = document.getElementById("prestamosContainer");
 
-// CARGAR USUARIO
-fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/perfil")
-  .then(res => res.json())
-  .then(data => {
-    nombreUsuario.textContent = data.nombre;
-    tipoUsuario.textContent = data.tipo;
-  });
+// CARGAR INFORMACIÓN DEL USUARIO
+function cargarUsuario() {
+  const nombre = localStorage.getItem("nombre");
+  const rol = localStorage.getItem("rol");
 
-// CARGAR ESTADÍSTICAS
-fetch("https://backend-biblioteca-two.vercel.app/prestamos/estadisticas")
+  nombreUsuario.textContent = nombre || "Nombre no encontrado";
+  tipoUsuario.textContent = rol || "";
+}
+
+// CARGAR ESTADÍSTICAS DEL USUARIO
+function cargarEstadisticas() {
+  const token = localStorage.getItem("token");
+
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/estadisticas", {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
   .then(res => res.json())
   .then(data => {
     prestamosTotales.textContent = data.prestamosTotales;
     librosActivos.textContent = data.librosActivos;
     librosDevueltos.textContent = data.librosDevueltos;
-  }
-);
+  })
+  .catch(err => console.error("Error cargando estadísticas:", err));
+}
+
 // CARGAR HISTORIAL DE PRÉSTAMOS
-fetch("https://backend-biblioteca-two.vercel.app/prestamos/mis-prestamos")
+function cargarHistorial() {
+  const token = localStorage.getItem("token");
+
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/mis-prestamos", {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
   .then(res => res.json())
   .then(data => {
-    data.forEach(prestamo => {
+    prestamosContainer.innerHTML = "";
 
+    if (!data || data.length === 0) {
+      prestamosContainer.innerHTML = "<p>No tienes préstamos registrados.</p>";
+      return;
+    }
+
+    data.forEach(prestamo => {
       const card = document.createElement("div");
       card.classList.add("prestamo-card");
 
       let estadoClase = "prestado";
-      if (prestamo.estado === "Entregado con retraso") estadoClase = "retraso";
-      if (prestamo.estado === "Expirado") estadoClase = "expirado";
       if (prestamo.estado === "Entregado") estadoClase = "entregado";
+      else if (prestamo.estado === "Expirado") estadoClase = "expirado";
+      else if (prestamo.estado === "Activo") estadoClase = "prestado";
 
       card.innerHTML = `
         <div class="prestamo-header">
@@ -76,5 +100,13 @@ fetch("https://backend-biblioteca-two.vercel.app/prestamos/mis-prestamos")
 
       prestamosContainer.appendChild(card);
     });
-  }
-);
+  })
+  .catch(err => console.error("Error cargando préstamos:", err));
+}
+
+// INICIALIZAR
+document.addEventListener("DOMContentLoaded", () => {
+  cargarUsuario();
+  cargarEstadisticas();
+  cargarHistorial();
+});

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
-  <title>Historial de Préstamos</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="../styles.css">
-</head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historial de Préstamos - Biblioteca UTHH</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
   <div id="header"></div>
@@ -21,340 +20,53 @@
   <div id="header-dashboard"></div>
 
   <main>
+
+    <!-- HEADER -->
     <div class="section-header">
       <h2>Mis Préstamos</h2>
-      <p>Revisa el estado de todos los libros que has solicitado en préstamo</p>
+      <p>Revisa el estado de todos los libros que has solicitado</p>
     </div>
 
+    <!-- USUARIO -->
     <div class="user-info-card">
       <div class="user-avatar">
         <i class="fas fa-user"></i>
       </div>
       <div class="user-details">
-        <h3>Pedro Sánchez Gómez</h3>
-        <p>Ingeniería en TI</p>
+        <h3 id="nombreUsuario"></h3>
+        <p id="tipoUsuario"></p>
       </div>
     </div>
 
+    <!-- ESTADÍSTICAS -->
     <div class="stats-cards">
       <div class="stat-card">
-        <div class="stat-number">9</div>
+        <div class="stat-number" id="prestamosTotales">0</div>
         <div class="stat-label">Préstamos Totales</div>
       </div>
+
       <div class="stat-card">
-        <div class="stat-number">2</div>
+        <div class="stat-number" id="librosActivos">0</div>
         <div class="stat-label">Libros Activos</div>
       </div>
+
       <div class="stat-card">
-        <div class="stat-number">7</div>
+        <div class="stat-number" id="librosDevueltos">0</div>
         <div class="stat-label">Libros Devueltos</div>
       </div>
     </div>
 
-    <div class="prestamos-grid">
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">Cien años de soledad</div>
-          <div class="prestamo-author">Por: Gabriel García Márquez</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-01-10</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-01-15</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-01-15</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de préstamo </label>
-              <span>
-                5 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado entregado">Entregado</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">Cien años de soledad</div>
-          <div class="prestamo-author">Por: Gabriel García Márquez</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-07-17</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-07-22</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-07-22</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de préstamo </label>
-              <span>
-                5 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado entregado">Entregado</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">La región más transparente</div>
-          <div class="prestamo-author">Por: Carlos Fuentes</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-07-22</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-08-01</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-07-24</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de préstamo </label>
-              <span>
-                2 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>1</span>
-            </div>
-          </div>
-          <div class="estado entregado">Entregado</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">El laberinto de la soledad</div>
-          <div class="prestamo-author">Por: Octavio Paz</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-07-22</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-07-27</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-11-15</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                111 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado retraso">Entregado con retraso</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">Cien años de soledad</div>
-          <div class="prestamo-author">Por: Gabriel García Márquez</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-07-24</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-07-24</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-11-15</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                114 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado retraso">Entregado con retraso</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">La llorona</div>
-          <div class="prestamo-author">Por: Mario Vargas Llosa</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-11-15</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-11-20</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-11-22</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                2 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado retraso">Entregado con retraso</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">El laberinto de la soledad</div>
-          <div class="prestamo-author">Por: Octavio Paz</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-11-15</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-11-20</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>2025-11-22</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                2 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado retraso">Entregado con retraso</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">Cien años de soledad</div>
-          <div class="prestamo-author">Por: Gabriel García Márquez</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-11-22</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-11-27</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>No devuelto</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                99 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado expirado">Expirado</div>
-        </div>
-      </div>
-      <div class="prestamo-card">
-        <div class="prestamo-header">
-          <div class="prestamo-title">El hombre que hablaba serpiente</div>
-          <div class="prestamo-author">Por: Jorge Luis Borges</div>
-        </div>
-        <div class="prestamo-body">
-          <div class="prestamo-info">
-            <div class="info-item">
-              <label>Fecha de Préstamo</label>
-              <span>2025-11-26</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Esperada</label>
-              <span>2025-12-01</span>
-            </div>
-            <div class="info-item">
-              <label>Fecha de Devolución Real</label>
-              <span>No devuelto</span>
-            </div>
-            <div class="info-item">
-              <label>
-                Días de retraso </label>
-              <span>
-                95 </span>
-            </div>
-            <div class="info-item">
-              <label>Renovaciones</label>
-              <span>0</span>
-            </div>
-          </div>
-          <div class="estado expirado">Expirado</div>
-        </div>
-      </div>
+    <!-- LISTA DE PRÉSTAMOS -->
+    <div class="prestamos-grid" id="prestamosContainer">
+      <!-- Aquí se insertan las tarjetas dinámicamente -->
     </div>
+
   </main>
 
   <div id="footer"></div>
+
   <script src="../main.js"></script>
   <script src="main.js"></script>
-</body>
 
+</body>
 </html>
