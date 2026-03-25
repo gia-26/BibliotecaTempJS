@@ -21,7 +21,10 @@ const mostrarPrestamos = () => {
     .then(response => response.json())
     .then(ejemplares => {
       tblEjemplares.innerHTML = "";
-  
+      if (ejemplares.length === 0) {
+        tblEjemplares.innerHTML = "<tr><td colspan='6'>No se encontraron ejemplares</td></tr>";
+        return;
+      }
       ejemplares.forEach(ejemplar => {
           tblEjemplares.innerHTML += `
               <tr onclick="seleccionarEjemplar('${ejemplar.Id_libro}', '${ejemplar.Titulo}', '${ejemplar.Id_Ejemplar}', '${ejemplar.Estado}')" style="cursor: pointer;" title="Selecciona un ejemplar para prestarlo">
@@ -164,7 +167,7 @@ btnPrestar.addEventListener('click', () => {
     const prestamoData = {
         idUsuario: inpIdUsuario.value,
         idEjemplar: inpIdEjemplar.value,
-        idBibliotecario: 'PER003', // Este valor debería ser dinámico
+        idBibliotecario: localStorage.getItem('id'), // Este valor debería ser dinámico
         idTipoPrestamo: slcTipoPrestamos.value,
         idTipoUsuario: slcTipoUsuario.value
     }
