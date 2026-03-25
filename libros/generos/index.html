@@ -2,128 +2,67 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <title>Configurar Géneros</title>
 
     <link rel="stylesheet" href="style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"/>
-
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" />
 </head>
 
 <body>
 
-<div class="modal-container">
+    <div class="modal-container">
 
-    <div class="modal-card">
+        <div class="modal-card">
 
-
-        <!-- HEADER -->
-
-        <div class="modal-header">
-
-            <h2>Configurar Géneros</h2>
-
-            <button
-                class="cerrar-modal"
-                onclick="window.parent.closeModal('modalGeneros')">
-
-                ×
-
-            </button>
-
-        </div>
-
-
-
-        <!-- BODY -->
-
-        <div class="modal-body">
-
-            <p class="label-strong">
-                Géneros existentes:
-            </p>
-
-
-
-            <!-- LISTA DE GENEROS -->
-
-            <div
-                id="listaGeneros"
-                class="lista-generos">
-
+            <div class="modal-header">
+                <h2>Configurar Géneros</h2>
+                <span class="cerrar">×</span>
             </div>
 
+            <div class="modal-body">
 
+                <div id="mensajeExito" class="alert-success" style="display:none;"></div>
 
-            <!-- FORMULARIO -->
+                <p class="label-strong">Géneros existentes:</p>
 
-            <form
-                id="formGenero"
-                class="form-principal">
-
-                <label
-                    for="nombreGenero"
-                    class="label-strong">
-
-                    Género:
-
-                </label>
-
-                <input
-                    type="text"
-                    id="nombreGenero"
-                    placeholder="Nuevo género"
-                >
-
-
-                <input
-                    type="hidden"
-                    id="idGenero"
-                >
-
-
-
-                <!-- BOTONES -->
-
-                <div class="botones">
-
-                    <button
-                        type="button"
-                        id="cancelarBtn"
-                        class="btn btn-secundario">
-
-                        Cancelar
-
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="btn btn-primario">
-
-                        Guardar
-
-                    </button>
-
+                <div id="listaGeneros" class="lista-items">
+                    <!-- aquí carga JS -->
                 </div>
 
+                <h3 id="tituloForm">Agregar género</h3>
 
-            </form>
+                <form id="formGenero" class="form-principal">
 
+                    <label class="label-strong">Nombre del género:</label>
+
+                    <input type="text" id="nombreGenero" placeholder="Nuevo género">
+
+                    <input type="hidden" id="idGenero">
+
+                    <div class="botones">
+
+                        <button type="button" id="cancelarBtn" class="btn btn-secundario">
+                            Cancelar
+                        </button>
+
+                        <button type="submit" class="btn btn-primario">
+                            Agregar
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
         </div>
-
-
     </div>
 
-</div>
-
-
-<script src="main.js"></script>
+    <script src="main.js"></script>
 
 </body>
 

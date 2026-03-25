@@ -2,128 +2,75 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-    <title>Configurar Roles</title>
+    <title>Configurar Tipos de Rol</title>
 
     <link rel="stylesheet" href="style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"/>
-
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" />
 </head>
 
 <body>
 
-<div class="modal-container">
+    <div class="modal-container">
 
-    <div class="modal-card">
+        <div class="modal-card">
 
+            <!-- HEADER -->
+            <div class="modal-header">
+                <h2>Configurar Tipos de Rol</h2>
+                <button class="cerrar-modal" onclick="window.parent.closeModal('modal-roles')">
+                    ×
+                </button>
+            </div>
 
-        <!-- HEADER -->
+            <!-- BODY -->
+            <div class="modal-body">
 
-        <div class="modal-header">
+                <div id="mensajeExito" class="alert-success" style="display:none;"></div>
 
-            <h2>Configurar Roles</h2>
+                <p class="label-strong">
+                    Tipos de rol existentes:
+                </p>
 
-            <button
-                class="cerrar-modal"
-                onclick="window.parent.closeModal('modalRoles')">
+                <!-- LISTA -->
+                <div id="listaRoles" class="lista-items"></div>
 
-                ×
+                <!-- FORMULARIO -->
+                <form id="formRol" class="form-principal">
 
-            </button>
+                    <label class="label-strong">
+                        Nombre del rol:
+                    </label>
 
-        </div>
+                    <input type="text" id="nombreRol" placeholder="Nuevo tipo de rol">
 
+                    <input type="hidden" id="idRol">
 
+                    <div class="botones">
 
-        <!-- BODY -->
+                        <button type="button" id="cancelarBtn" class="btn btn-secundario">
+                            Cancelar
+                        </button>
 
-        <div class="modal-body">
+                        <button type="submit" class="btn btn-primario">
+                            Guardar
+                        </button>
 
-            <p class="label-strong">
-                Roles existentes:
-            </p>
+                    </div>
 
-
-
-            <!-- LISTA DE ROLES -->
-
-            <div
-                id="listaRoles"
-                class="lista-generos">
+                </form>
 
             </div>
 
-
-
-            <!-- FORMULARIO -->
-
-            <form
-                id="formRol"
-                class="form-principal">
-
-                <label
-                    for="nombreRol"
-                    class="label-strong">
-
-                    Rol:
-
-                </label>
-
-                <input
-                    type="text"
-                    id="nombreRol"
-                    placeholder="Nuevo rol"
-                >
-
-
-                <input
-                    type="hidden"
-                    id="idRol"
-                >
-
-
-
-                <!-- BOTONES -->
-
-                <div class="botones">
-
-                    <button
-                        type="button"
-                        id="cancelarBtn"
-                        class="btn btn-secundario">
-
-                        Cancelar
-
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="btn btn-primario">
-
-                        Guardar
-
-                    </button>
-
-                </div>
-
-
-            </form>
-
         </div>
-
 
     </div>
 
-</div>
-
-
-<script src="main.js"></script>
+    <script src="main.js"></script>
 
 </body>
 

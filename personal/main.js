@@ -8,6 +8,7 @@ const inpApellidoM = document.getElementById('apellidoM');
 const inpPassword = document.getElementById('password');
 const inpPasswordConfirm = document.getElementById('password-confirm');
 const btnEditar = document.getElementById('btnEditar');
+const btnGuardar = document.getElementById('btnGuardar');
 const inpSearch = document.getElementById('inpSearch');
 const togglePasswordBtn = document.getElementById("togglePassword");
 const togglePasswordConfirmBtn = document.getElementById("togglePasswordConfirm");
@@ -30,7 +31,7 @@ const cargarPersonal = () => {
                     <td>${personal.Tipo_rol}</td>
                     <td class="actions">
                         <a onclick="colocarDatos('${personal.Id_personal}', '${personal.Nombre}', '${personal.Apellido_P}', '${personal.Apellido_M}', '${personal.Id_rol}', '${personal.Id_trabajador}')" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                        <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+                        <a onclick="eliminarPersonal('${personal.Id_personal}')" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
                     </td>
                 </tr>
             `;
@@ -39,16 +40,8 @@ const cargarPersonal = () => {
 }
 
 const recuperarTipoRol = () => {
-    fetch('https://backend-biblioteca-two.vercel.app/api/personal/tipos-roles')
-    .then(response => response.json())
-    .then(roles => {
-        slcTiposRol.innerHTML = '';
-        roles.forEach(rol => {
-            slcTiposRol.innerHTML += `
-                <option value="${rol.Id_rol}">${rol.Tipo_rol}</option>
-            `;
-        });
-    })
+    // Los roles ya se cargan desde cargarRoles()
+    console.log("Roles cargados desde cargarRoles()");
 }
 
 const colocarDatos = (idPersonal, nombre, apellidoP, apellidoM, idRol, idTrabajador) => {
@@ -99,6 +92,77 @@ const editar = () => {
     });
 }
 
+const eliminarPersonal = (idPersonal) => {
+    if (!confirm('¿Estás seguro de eliminar este personal?')) return;
+    
+    fetch('https://backend-biblioteca-two.vercel.app/api/personal/eliminar', {
+        method: 'DELETE',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ Id_personal: idPersonal })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            cargarPersonal();
+            limpiar();
+        } else {
+            alert('Error al eliminar el personal.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al eliminar personal:', error);
+        alert('Error al eliminar el personal.');
+    });
+}
+
+const guardar = () => {
+    const noTrabajador = inpNoTrabajador.value.trim();
+    const nombre = inpNombre.value.trim();
+    const apellidoP = inpApellidoP.value.trim();
+    const apellidoM = inpApellidoM.value.trim();
+    const idRol = slcTiposRol.value;
+    const password = inpPassword.value;
+    const passwordConfirm = inpPasswordConfirm.value;
+    
+    if (!noTrabajador || !nombre || !apellidoP || !apellidoM || !idRol) {
+        alert('Por favor completa todos los campos.');
+        return;
+    }
+    
+    if (password !== passwordConfirm) {
+        alert('Las contraseñas no coinciden.');
+        return;
+    }
+    
+    fetch('https://backend-biblioteca-two.vercel.app/api/personal/agregar', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            Id_trabajador: noTrabajador,
+            Nombre: nombre,
+            Apellido_P: apellidoP,
+            Apellido_M: apellidoM,
+            Id_rol: idRol,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            limpiar();
+            cargarPersonal();
+        } else {
+            alert('Error al guardar el personal.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al guardar personal:', error);
+        alert('Error al guardar el personal.');
+    });
+}
+
 const limpiar = () => {
     inpNoTrabajador.value =  '';
     inpIdPersonal.value = '';
@@ -107,7 +171,9 @@ const limpiar = () => {
     inpApellidoM.value = '';
     inpPassword.value = '';
     inpPasswordConfirm.value = '';
-    slcTiposRol.selectedIndex = 0;
+    if (slcTiposRol.options.length > 0) {
+        slcTiposRol.selectedIndex = 0;
+    }
 }
 
 const buscarPersonal = () => {
@@ -135,7 +201,7 @@ const buscarPersonal = () => {
                     <td>${p.Tipo_rol}</td>
                     <td class="actions">
                         <a onclick="colocarDatos('${p.Id_personal}', '${p.Nombre}', '${p.Apellido_P}', '${p.Apellido_M}', '${p.Id_rol}', '${p.Id_trabajador}')" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                        <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
+                        <a onclick="eliminarPersonal('${p.Id_personal}')" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
                     </td>
                 </tr>
             `;
@@ -182,9 +248,168 @@ togglePasswordConfirmBtn.addEventListener("click", () => {
     }
 });
 
-const guardar = () => {
-    //Falta implementar la función para guardar un nuevo personal bibliotecario
+btnGuardar.addEventListener('click', () => {
+    guardar();
+});
+
+// ========== FUNCIONES PARA TIPOS DE ROL ==========
+
+// NOTIFICACIÓN VERDE para roles
+function mostrarNotificacionRoles(mensaje) {
+    const alerta = document.getElementById("mensajeExitoRoles");
+    if (!alerta) return;
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    alerta.classList.add("alert-success");
+    alerta.classList.remove("alert-error");
+    setTimeout(() => { alerta.style.display = "none"; }, 3000);
 }
 
+// NOTIFICACIÓN ROJA para roles
+function mostrarNotificacionErrorRoles(mensaje) {
+    const alerta = document.getElementById("mensajeExitoRoles");
+    if (!alerta) return;
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    alerta.classList.add("alert-error");
+    alerta.classList.remove("alert-success");
+    setTimeout(() => {
+        alerta.style.display = "none";
+        alerta.classList.remove("alert-error");
+        alerta.classList.add("alert-success");
+    }, 4000);
+}
+
+// CARGAR TIPOS DE ROL
+async function cargarRoles() {
+    try {
+        const res = await fetch("https://backend-biblioteca-two.vercel.app/api/roles");
+        const data = await res.json();
+        const contenedor = document.getElementById("listaRoles");
+        if (!contenedor) return;
+        contenedor.innerHTML = "";
+
+        data.forEach(rol => {
+            contenedor.innerHTML += `
+            <div class="fila-item">
+                <span class="item-text">${rol.Nombre}</span>
+                <div class="acciones">
+                    <button onclick="editarRol('${rol.Id_rol}','${rol.Nombre}')" class="icon-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onclick="eliminarRol('${rol.Id_rol}')" class="icon-btn delete">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>`;
+        });
+        
+        // Actualizar el select de roles en el formulario principal
+        actualizarSelectRoles(data);
+        
+    } catch (error) {
+        console.error('Error al cargar roles:', error);
+    }
+}
+
+// Actualizar el select de tipos de rol en el formulario principal
+function actualizarSelectRoles(roles) {
+    const slcTiposRol = document.getElementById('slcTiposRol');
+    if (!slcTiposRol) return;
+    
+    const valorActual = slcTiposRol.value;
+    slcTiposRol.innerHTML = '';
+    
+    roles.forEach(rol => {
+        slcTiposRol.innerHTML += `
+            <option value="${rol.Id_rol}">${rol.Nombre}</option>
+        `;
+    });
+    
+    if (valorActual && [...slcTiposRol.options].some(opt => opt.value === valorActual)) {
+        slcTiposRol.value = valorActual;
+    }
+}
+
+// GUARDAR / EDITAR ROL
+const formRol = document.getElementById("formRol");
+if (formRol) {
+    formRol.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const nombre = document.getElementById("nombreRol").value.trim();
+        const id = document.getElementById("idRol").value;
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
+
+        if (nombre === "") { alert("Escribe el nombre del rol"); return; }
+        if (!regex.test(nombre)) { alert("Solo se permiten letras"); return; }
+
+        let url = "https://backend-biblioteca-two.vercel.app/api/roles/agregar";
+        if (id !== "") {
+            url = "https://backend-biblioteca-two.vercel.app/api/roles/editar";
+        }
+
+        await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Id_rol: id, Nombre: nombre })
+        });
+
+        if (id !== "") {
+            mostrarNotificacionRoles("Tipo de rol actualizado correctamente.");
+        } else {
+            mostrarNotificacionRoles("Tipo de rol agregado correctamente.");
+        }
+
+        limpiarFormularioRoles();
+        cargarRoles();
+    });
+}
+
+// EDITAR ROL
+function editarRol(id, nombre) {
+    document.getElementById("idRol").value = id;
+    document.getElementById("nombreRol").value = nombre;
+    document.getElementById("tituloFormRol").textContent = "Editar tipo de rol";
+}
+
+// ELIMINAR ROL
+async function eliminarRol(id) {
+    if (!confirm("¿Eliminar este tipo de rol?")) return;
+
+    const res = await fetch("https://backend-biblioteca-two.vercel.app/api/roles/eliminar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Id_rol: id })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        mostrarNotificacionErrorRoles(data.error);
+        return;
+    }
+
+    mostrarNotificacionRoles("Tipo de rol eliminado correctamente.");
+    cargarRoles();
+}
+
+// LIMPIAR FORMULARIO DE ROLES
+function limpiarFormularioRoles() {
+    const idRol = document.getElementById("idRol");
+    const nombreRol = document.getElementById("nombreRol");
+    const tituloFormRol = document.getElementById("tituloFormRol");
+    if (idRol) idRol.value = "";
+    if (nombreRol) nombreRol.value = "";
+    if (tituloFormRol) tituloFormRol.textContent = "Agregar tipo de rol";
+}
+
+// CANCELAR ROL
+const cancelarBtnRol = document.getElementById("cancelarBtnRol");
+if (cancelarBtnRol) {
+    cancelarBtnRol.addEventListener("click", limpiarFormularioRoles);
+}
+
+// Cargar roles al iniciar
 cargarPersonal();
-recuperarTipoRol();
+cargarRoles();

@@ -31,7 +31,7 @@
       <div class="tabla-scroll">
         <table class="catalog-table">
           <thead>
-            <tr>
+            报
               <th>Id personal</th>
               <th>Nombre</th>
               <th>Apellido paterno</th>
@@ -107,9 +107,9 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary">Limpiar</button>
+          <button type="button" class="btn btn-secondary" onclick="limpiar()">Limpiar</button>
           <button id="btnEditar" type="button" class="btn">Editar</button>
-          <button type="button" class="btn">Guardar</button>
+          <button id="btnGuardar" type="button" class="btn">Guardar</button>
         </div>
       </form>
     </div>
@@ -119,82 +119,29 @@
   <div id="modal-tipos-rol" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Gestión de Tipos de Rol</h2>
+        <h2>Configurar Tipos de Rol</h2>
         <span class="close" onclick="closeModal('modal-tipos-rol')">&times;</span>
       </div>
 
-      <div class="modal-form-container">
-        <form id="role-type-form">
-          <div class="modal-form-group">
-            <label for="id-role-type">ID Tipo de Rol</label>
-            <input type="text" id="id-role-type" class="modal-form-control" placeholder="TR001">
-          </div>
+      <div class="modal-body" style="padding: 16px 18px 20px;">
+        <div id="mensajeExitoRoles" class="alert-success" style="display:none;"></div>
 
-          <div class="modal-form-group">
-            <label for="role-type-name">Tipo de Rol</label>
-            <input type="text" id="role-type-name" class="modal-form-control" placeholder="Jefe de Departamento">
-          </div>
+        <p class="label-strong">Tipos de rol existentes:</p>
 
-          <div class="checkbox-group">
-            <input type="checkbox" id="edit-mode-role-type" checked>
-            <label for="edit-mode-role-type">Habilitar edición</label>
-          </div>
+        <div id="listaRoles" class="lista-items"></div>
 
-          <div class="checkbox-group">
-            <input type="checkbox" id="delete-mode-role-type">
-            <label for="delete-mode-role-type">Habilitar eliminación</label>
-          </div>
+        <h3 id="tituloFormRol" style="font-size: 16px; font-weight: 600; margin: 12px 0 8px; color: #3B2423;">Agregar tipo de rol</h3>
 
-          <button type="submit" class="btn">
-            <i class="fas fa-save"></i> Guardar
-          </button>
+        <form id="formRol" class="form-principal">
+          <label class="label-strong">Nombre del rol:</label>
+          <input type="text" id="nombreRol" placeholder="Nuevo tipo de rol">
+          <input type="hidden" id="idRol">
+
+          <div class="botones" style="display: flex; gap: 10px; margin-top: 8px;">
+            <button type="button" id="cancelarBtnRol" class="btn btn-secundario">Cancelar</button>
+            <button type="submit" class="btn btn-primario">Guardar</button>
+          </div>
         </form>
-      </div>
-
-      <div class="modal-table-container">
-        <table class="modal-table">
-          <thead>
-            <tr>
-              <th>ID Tipo de Rol</th>
-              <th>Tipo de Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>TR001</td>
-              <td>Jefe de Departamento</td>
-              <td class="actions">
-                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-            <tr>
-              <td>TR002</td>
-              <td>Bibliotecario</td>
-              <td class="actions">
-                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-            <tr>
-              <td>TR003</td>
-              <td>Coordinador/a bibliotecario</td>
-              <td class="actions">
-                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-            <tr>
-              <td>TR004</td>
-              <td>Téc. Bibliotecario</td>
-              <td class="actions">
-                <a href="#" class="action-link action-edit"><i class="fas fa-edit"></i> Editar</a>
-                <a href="#" class="action-link action-delete"><i class="fas fa-trash"></i> Eliminar</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -222,13 +169,6 @@
         }
       }
     }
-
-    // Manejo de envío de formularios
-    document.getElementById('role-type-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      alert('Tipo de rol guardado correctamente.');
-      closeModal('modal-tipos-rol');
-    });
   </script>
 </body>
 

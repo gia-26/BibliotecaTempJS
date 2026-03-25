@@ -20,31 +20,45 @@ function cargarUsuario() {
 // CARGAR ESTADÍSTICAS DEL USUARIO
 function cargarEstadisticas() {
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
 
-  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/estadisticas", {
+  // Agrega la barra antes del ID
+  fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/usuario/estadisticas/${id}`, {
     headers: {
       "Authorization": `Bearer ${token}`
     }
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  })
   .then(data => {
     prestamosTotales.textContent = data.prestamosTotales;
     librosActivos.textContent = data.librosActivos;
     librosDevueltos.textContent = data.librosDevueltos;
   })
-  .catch(err => console.error("Error cargando estadísticas:", err));
+  
 }
 
 // CARGAR HISTORIAL DE PRÉSTAMOS
 function cargarHistorial() {
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
 
-  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/mis-prestamos", {
+  // Agrega la barra antes del ID
+  fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/usuario/mis-prestamos/${id}`, {
     headers: {
       "Authorization": `Bearer ${token}`
     }
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  })
   .then(data => {
     prestamosContainer.innerHTML = "";
 
@@ -101,7 +115,6 @@ function cargarHistorial() {
       prestamosContainer.appendChild(card);
     });
   })
-  .catch(err => console.error("Error cargando préstamos:", err));
 }
 
 // INICIALIZAR
