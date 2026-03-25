@@ -8,6 +8,19 @@ function mostrarNotificacion(mensaje) {
     }, 3000);
 }
 
+function mostrarNotificacionError(mensaje) {
+    const alerta = document.getElementById("mensajeExito");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    alerta.classList.add("alert-error");
+    alerta.classList.remove("alert-success");
+    setTimeout(() => {
+        alerta.style.display = "none";
+        alerta.classList.remove("alert-error");
+        alerta.classList.add("alert-success");
+    }, 4000);
+}
+
 // CARGAR EDITORIALES
 async function cargarEditoriales() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/editoriales");
@@ -101,15 +114,21 @@ function editarEditorial(id, nombre, pais) {
 async function eliminarEditorial(id) {
     if (!confirm("¿Eliminar esta editorial?")) return;
 
-    await fetch("https://backend-biblioteca-two.vercel.app/api/editoriales/eliminar", {
+    const res = await fetch("https://backend-biblioteca-two.vercel.app/api/editoriales/eliminar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Id_editorial: id })
     });
 
-    // NOTIFICACIÓN de eliminado
-    mostrarNotificacion("Editorial eliminada correctamente.");
+    const data = await res.json();
 
+    //Si el backend rechaza, mostrar notificación roja
+    if (!res.ok) {
+        mostrarNotificacionError(data.error);
+        return;
+    }
+
+    mostrarNotificacion("Editorial eliminada correctamente.");
     cargarEditoriales();
 }
 
