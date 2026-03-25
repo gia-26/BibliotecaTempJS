@@ -63,11 +63,18 @@ document.getElementById("formRol").addEventListener("submit", async function(e) 
         url = "https://backend-biblioteca-two.vercel.app/api/roles/editar";
     }
 
-    await fetch(url, {
+    const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Id_rol: id, Nombre: nombre })
     });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        mostrarNotificacionError(data.error || "Error al guardar el tipo de rol");
+        return;
+    }
 
     if (id !== "") {
         mostrarNotificacion("Tipo de rol actualizado correctamente.");
