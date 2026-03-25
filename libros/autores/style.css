@@ -141,3 +141,11 @@ border-color:#ccc;
 background:#3B2423;
 color:#fff;
 }
+.alert-error {
+    background-color: #fde8e8;
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+}

@@ -1,75 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Configurar Autores Principales</title>
+    <meta charset="UTF-8">
+    <title>Configurar Autores Principales</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="modal-container">
+    <div class="modal-container">
 
-<div class="modal-card">
+        <div class="modal-card">
 
-<div class="modal-header">
-<h2>Configurar Autores Principales</h2>
-<span class="cerrar">×</span>
-</div>
+            <div class="modal-header">
+                <h2>Configurar Autores Principales</h2>
+                <span class="cerrar">×</span>
+            </div>
 
-<div class="modal-body">
+            <div class="modal-body">
 
-<p class="label-strong">Autores existentes:</p>
+                 <div id="mensajeExito" class="alert-success" style="display:none;"></div>
 
-<div id="listaAutores" class="lista-items">
-<!-- aquí carga JS -->
-</div>
+                <p class="label-strong">Autores existentes:</p>
 
-<h3 id="tituloForm">Agregar autor</h3>
+                <div id="listaAutores" class="lista-items">
+                    <!-- aquí carga JS -->
+                </div>
 
-<form id="formAutor" class="form-principal">
+                <h3 id="tituloForm">Agregar autor</h3>
 
-<label class="label-strong">Nombre del autor:</label>
+                <form id="formAutor" class="form-principal">
 
-<input
-type="text"
-id="nombreAutor"
-placeholder="Nuevo autor principal"
->
+                    <label class="label-strong">Nombre del autor:</label>
 
-<input type="hidden" id="idAutor">
+                    <input type="text" id="nombreAutor" placeholder="Nuevo autor principal">
 
-<div class="botones">
+                    <input type="hidden" id="idAutor">
 
-<button
-type="button"
-id="cancelarBtn"
-class="btn btn-secundario"
->
-Cancelar
-</button>
+                    <div class="botones">
 
-<button
-type="submit"
-class="btn btn-primario"
->
-Agregar
-</button>
+                        <button type="button" id="cancelarBtn" class="btn btn-secundario">
+                            Cancelar
+                        </button>
 
-</div>
+                        <button type="submit" class="btn btn-primario">
+                            Agregar
+                        </button>
 
-</form>
+                    </div>
 
-</div>
-</div>
-</div>
+                </form>
 
-<script src="main.js"></script>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
 
 </body>
+
 </html>
