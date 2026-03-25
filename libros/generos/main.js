@@ -31,8 +31,8 @@ async function cargarGeneros() {
 
     data.forEach(genero => {
         contenedor.innerHTML += `
-        <div class="fila-genero">
-            <span class="genero-texto">${genero.Nombre}</span>
+        <div class="fila-item">
+            <span class="item-text">${genero.Nombre}</span>
             <div class="acciones">
                 <button onclick="editarGenero('${genero.Id_genero}','${genero.Nombre}')" class="icon-btn">
                     <i class="fa-solid fa-pen-to-square"></i>
@@ -83,6 +83,7 @@ document.getElementById("formGenero").addEventListener("submit", async function(
 function editarGenero(id, nombre) {
     document.getElementById("idGenero").value     = id;
     document.getElementById("nombreGenero").value = nombre;
+    document.getElementById("tituloForm").textContent = "Editar género";
 }
 
 // ELIMINAR
@@ -110,12 +111,13 @@ async function eliminarGenero(id) {
 function limpiarFormulario() {
     document.getElementById("idGenero").value     = "";
     document.getElementById("nombreGenero").value = "";
+    document.getElementById("tituloForm").textContent = "Agregar género";
 }
 
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
 // CERRAR MODAL CON LA X
-document.querySelector(".cerrar-modal").addEventListener("click", function() {
-    window.parent.closeModal('modalGeneros');
+document.querySelector(".cerrar").addEventListener("click", function() {
+    window.parent.closeModal('modal-generos');
 });
