@@ -147,10 +147,10 @@ const buscarUsuario = () => {
   fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
     .then(response => response.json())
     .then(usuario => {
-      if (usuario && usuario.Nombre) {
-        nombreUsuario.value = usuario.Nombre;
+      if (usuario.NombreCompleto && usuario.Id_usuario) {
+        nombreUsuario.value = usuario.NombreCompleto;
         buscoUsuario = true;
-        idUsuarioBuscado = usuario.id;
+        idUsuarioBuscado = usuario.Id_usuario;
       } else {
         buscoUsuario = false;
         idUsuarioBuscado = '';
@@ -189,7 +189,7 @@ btnPrestar.addEventListener('click', () => {
           alert(result.mensaje);
           limpiar();
         } else {
-          alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
+          alert(`Error al registrar el préstamo: ${result.error || 'Error desconocido'}`);
         }
     })
     .catch(error => {
