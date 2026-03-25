@@ -399,6 +399,98 @@ main {
     color: var(--texto-marron);
 }
 
+/* Estilos para el modal de tipos de rol */
+.modal-body {
+    padding: 16px 18px 20px;
+}
+
+.label-strong {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.lista-items {
+    margin: 6px 0 18px;
+    border-top: 1px solid #ddd;
+}
+
+.fila-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.item-text {
+    font-size: 16px;
+    color: #333;
+}
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    transition: opacity 0.2s;
+    padding: 4px;
+}
+
+.icon-btn:hover {
+    opacity: 0.7;
+}
+
+.icon-btn.delete {
+    color: #d11a1a;
+}
+
+.form-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-principal input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 15px;
+}
+
+.btn-secundario {
+    background: #fff;
+    color: #444;
+    border-color: #ccc;
+}
+
+.btn-primario {
+    background: #3B2423;
+    color: #fff;
+    border-color: #3B2423;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+.alert-error {
+    background-color: #fde8e8;
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
 .modal-form-container {
     margin-bottom: 2rem;
 }
