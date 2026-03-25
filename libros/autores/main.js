@@ -117,3 +117,8 @@ function limpiarFormulario() {
 
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
+
+// CERRAR MODAL CON LA X
+document.querySelector(".cerrar").addEventListener("click", function() {
+    window.parent.closeModal('modal-autores');
+});
