@@ -22,7 +22,7 @@ function mostrarNotificacionError(mensaje) {
     }, 4000);
 }
 
-// CARGAR GENEROS
+// CARGAR GÉNEROS
 async function cargarGeneros() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/generos");
     const data = await res.json();
@@ -53,8 +53,10 @@ document.getElementById("formGenero").addEventListener("submit", async function(
 
     const nombre = document.getElementById("nombreGenero").value.trim();
     const id     = document.getElementById("idGenero").value;
+    const regex  = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
 
-    if (nombre === "") { alert("Ingresa el nombre del género"); return; }
+    if (nombre === "") { alert("Escribe el nombre del género"); return; }
+    if (!regex.test(nombre)) { alert("Solo se permiten letras"); return; }
 
     let url = "https://backend-biblioteca-two.vercel.app/api/generos/agregar";
     if (id !== "") {
@@ -112,3 +114,8 @@ function limpiarFormulario() {
 
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
+
+// CERRAR MODAL CON LA X
+document.querySelector(".cerrar-modal").addEventListener("click", function() {
+    window.parent.closeModal('modalGeneros');
+});
