@@ -8,6 +8,19 @@ function mostrarNotificacion(mensaje) {
     }, 3000);
 }
 
+function mostrarNotificacionError(mensaje) {
+    const alerta = document.getElementById("mensajeExito");
+    alerta.textContent = mensaje;
+    alerta.style.display = "block";
+    alerta.classList.add("alert-error");
+    alerta.classList.remove("alert-success");
+    setTimeout(() => {
+        alerta.style.display = "none";
+        alerta.classList.remove("alert-error");
+        alerta.classList.add("alert-success");
+    }, 4000);
+}
+
 // CARGAR AÑOS
 async function cargarAnios() {
     const res = await fetch(
@@ -86,15 +99,21 @@ function editarAnio(id, anio) {
 async function eliminarAnio(id) {
     if (!confirm("¿Eliminar este año?")) return;
 
-    await fetch("https://backend-biblioteca-two.vercel.app/api/anios/eliminar", {
+    const res = await fetch("https://backend-biblioteca-two.vercel.app/api/anios/eliminar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ Id_anio_edicion: id })
     });
 
-    //NOTIFICACIÓN de eliminado
-    mostrarNotificacion("Año de edición eliminado correctamente.");
+    const data = await res.json();
 
+    // Si el backend devuelve error, mostrar notificación roja
+    if (!res.ok) {
+        mostrarNotificacionError(data.error);
+        return;
+    }
+
+    mostrarNotificacion("Año de edición eliminado correctamente.");
     cargarAnios();
 }
 
