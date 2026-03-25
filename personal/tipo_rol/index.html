@@ -19,26 +19,32 @@
 
         <div class="modal-card">
 
+            <!-- HEADER -->
             <div class="modal-header">
                 <h2>Configurar Tipos de Rol</h2>
-                <span class="cerrar">×</span>
+                <button class="cerrar-modal" onclick="window.parent.closeModal('modal-roles')">
+                    ×
+                </button>
             </div>
 
+            <!-- BODY -->
             <div class="modal-body">
 
                 <div id="mensajeExito" class="alert-success" style="display:none;"></div>
 
-                <p class="label-strong">Tipos de rol existentes:</p>
+                <p class="label-strong">
+                    Tipos de rol existentes:
+                </p>
 
-                <div id="listaRoles" class="lista-items">
-                    <!-- aquí carga JS -->
-                </div>
+                <!-- LISTA -->
+                <div id="listaRoles" class="lista-items"></div>
 
-                <h3 id="tituloForm">Agregar tipo de rol</h3>
-
+                <!-- FORMULARIO -->
                 <form id="formRol" class="form-principal">
 
-                    <label class="label-strong">Nombre del rol:</label>
+                    <label class="label-strong">
+                        Nombre del rol:
+                    </label>
 
                     <input type="text" id="nombreRol" placeholder="Nuevo tipo de rol">
 
@@ -51,7 +57,7 @@
                         </button>
 
                         <button type="submit" class="btn btn-primario">
-                            Agregar
+                            Guardar
                         </button>
 
                     </div>
@@ -59,7 +65,9 @@
                 </form>
 
             </div>
+
         </div>
+
     </div>
 
     <script src="main.js"></script>

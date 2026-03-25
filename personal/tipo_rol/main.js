@@ -124,7 +124,15 @@ function limpiarFormulario() {
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
-// CERRAR MODAL CON LA X
-document.querySelector(".cerrar").addEventListener("click", function() {
-    window.parent.closeModal('modal-roles');
-});
+// TÍTULO DEL FORMULARIO
+const tituloForm = document.createElement("h3");
+tituloForm.id = "tituloForm";
+tituloForm.textContent = "Agregar tipo de rol";
+tituloForm.style.fontSize = "16px";
+tituloForm.style.fontWeight = "600";
+tituloForm.style.margin = "12px 0 8px";
+tituloForm.style.color = "#3B2423";
+
+// Insertar título antes del formulario
+const formRol = document.getElementById("formRol");
+formRol.parentNode.insertBefore(tituloForm, formRol);
