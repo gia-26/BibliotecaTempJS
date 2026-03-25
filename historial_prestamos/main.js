@@ -1,3 +1,4 @@
+// Elementos del DOM
 const nombreUsuario = document.getElementById("nombreUsuario");
 const tipoUsuario = document.getElementById("tipoUsuario");
 
@@ -13,99 +14,99 @@ function cargarUsuario() {
   const rol = localStorage.getItem("rol");
 
   nombreUsuario.textContent = nombre || "Nombre no encontrado";
-  tipoUsuario.textContent = rol || ""; // "Alumno" o "Trabajador"
+  tipoUsuario.textContent = rol || "";
 }
 
-// CARGAR ESTADÍSTICAS DE PRÉSTAMOS
+// CARGAR ESTADÍSTICAS DEL USUARIO
 function cargarEstadisticas() {
   const token = localStorage.getItem("token");
 
-  fetch("https://backend-biblioteca-two.vercel.app/prestamos/usuario/estadisticas", {
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/estadisticas", {
     headers: {
       "Authorization": `Bearer ${token}`
     }
   })
-    .then(res => res.json())
-    .then(data => {
-      prestamosTotales.textContent = data.prestamosTotales || 0;
-      librosActivos.textContent = data.librosActivos || 0;
-      librosDevueltos.textContent = data.librosDevueltos || 0;
-    })
-    .catch(err => console.error("Error cargando estadísticas:", err));
+  .then(res => res.json())
+  .then(data => {
+    prestamosTotales.textContent = data.prestamosTotales;
+    librosActivos.textContent = data.librosActivos;
+    librosDevueltos.textContent = data.librosDevueltos;
+  })
+  .catch(err => console.error("Error cargando estadísticas:", err));
 }
 
-// CARGAR LISTA DE PRÉSTAMOS
-function cargarPrestamos() {
+// CARGAR HISTORIAL DE PRÉSTAMOS
+function cargarHistorial() {
   const token = localStorage.getItem("token");
 
-  fetch("https://backend-biblioteca-two.vercel.app/prestamos/usuario/mis-prestamos", {
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/usuario/mis-prestamos", {
     headers: {
       "Authorization": `Bearer ${token}`
     }
   })
-    .then(res => res.json())
-    .then(data => {
-      prestamosContainer.innerHTML = "";
+  .then(res => res.json())
+  .then(data => {
+    prestamosContainer.innerHTML = "";
 
-      if (!data || data.length === 0) {
-        prestamosContainer.innerHTML = "<p>No tienes préstamos registrados.</p>";
-        return;
-      }
+    if (!data || data.length === 0) {
+      prestamosContainer.innerHTML = "<p>No tienes préstamos registrados.</p>";
+      return;
+    }
 
-      data.forEach(prestamo => {
-        const card = document.createElement("div");
-        card.classList.add("prestamo-card");
+    data.forEach(prestamo => {
+      const card = document.createElement("div");
+      card.classList.add("prestamo-card");
 
-        let estadoClase = "prestado";
-        if (prestamo.estado === "Entregado") estadoClase = "entregado";
-        else if (prestamo.estado === "Expirado") estadoClase = "expirado";
-        else if (prestamo.estado === "Activo") estadoClase = "prestado";
+      let estadoClase = "prestado";
+      if (prestamo.estado === "Entregado") estadoClase = "entregado";
+      else if (prestamo.estado === "Expirado") estadoClase = "expirado";
+      else if (prestamo.estado === "Activo") estadoClase = "prestado";
 
-        card.innerHTML = `
-          <div class="prestamo-header">
-            <div class="prestamo-title">${prestamo.titulo}</div>
-            <div class="prestamo-author">Por: ${prestamo.autor}</div>
-          </div>
+      card.innerHTML = `
+        <div class="prestamo-header">
+          <div class="prestamo-title">${prestamo.titulo}</div>
+          <div class="prestamo-author">Por: ${prestamo.autor}</div>
+        </div>
 
-          <div class="prestamo-body">
-            <div class="prestamo-info">
-              <div class="info-item">
-                <label>Fecha de Préstamo</label>
-                <span>${prestamo.fechaPrestamo}</span>
-              </div>
-              <div class="info-item">
-                <label>Fecha Devolución Esperada</label>
-                <span>${prestamo.fechaDevolucion}</span>
-              </div>
-              <div class="info-item">
-                <label>Fecha Devolución Real</label>
-                <span>${prestamo.fechaDevolucionReal || "No devuelto"}</span>
-              </div>
-              <div class="info-item">
-                <label>Días</label>
-                <span>${prestamo.dias}</span>
-              </div>
-              <div class="info-item">
-                <label>Renovaciones</label>
-                <span>${prestamo.renovaciones}</span>
-              </div>
+        <div class="prestamo-body">
+          <div class="prestamo-info">
+            <div class="info-item">
+              <label>Fecha de Préstamo</label>
+              <span>${prestamo.fechaPrestamo}</span>
             </div>
-
-            <div class="estado ${estadoClase}">
-              ${prestamo.estado}
+            <div class="info-item">
+              <label>Fecha Devolución Esperada</label>
+              <span>${prestamo.fechaDevolucion}</span>
+            </div>
+            <div class="info-item">
+              <label>Fecha Devolución Real</label>
+              <span>${prestamo.fechaDevolucionReal || "No devuelto"}</span>
+            </div>
+            <div class="info-item">
+              <label>Días</label>
+              <span>${prestamo.dias}</span>
+            </div>
+            <div class="info-item">
+              <label>Renovaciones</label>
+              <span>${prestamo.renovaciones}</span>
             </div>
           </div>
-        `;
 
-        prestamosContainer.appendChild(card);
-      });
-    })
-    .catch(err => console.error("Error cargando préstamos:", err));
+          <div class="estado ${estadoClase}">
+            ${prestamo.estado}
+          </div>
+        </div>
+      `;
+
+      prestamosContainer.appendChild(card);
+    });
+  })
+  .catch(err => console.error("Error cargando préstamos:", err));
 }
 
 // INICIALIZAR
 document.addEventListener("DOMContentLoaded", () => {
   cargarUsuario();
   cargarEstadisticas();
-  cargarPrestamos();
+  cargarHistorial();
 });
