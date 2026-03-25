@@ -7,16 +7,25 @@ const librosDevueltos = document.getElementById("librosDevueltos");
 
 const prestamosContainer = document.getElementById("prestamosContainer");
 
-// CARGAR USUARIO
-fetch("https://backend-biblioteca-two.vercel.app/api/usuarios/perfil")
-  .then(res => res.json())
-  .then(data => {
-    nombreUsuario.textContent = data.nombre;
-    tipoUsuario.textContent = data.tipo;
-  });
+// CARGAR INFORMACIÓN DEL USUARIO
+function cargarUsuario() {
+  const nombre = localStorage.getItem("nombre");
+  const rol = localStorage.getItem("rol");
+
+  nombreUsuario.textContent = nombre || "Nombre no encontrado";
+  tipoUsuario.textContent = rol || ""; // "Alumno" o "Trabajador"
+}
+cargarUsuario();
+
+const idUsuario = localStorage.getItem("idUsuario");
+
+if (!idUsuario) {
+  alert("Debes iniciar sesión");
+  window.location.href = "../login.html";
+}
 
 // CARGAR ESTADÍSTICAS
-fetch("https://backend-biblioteca-two.vercel.app/prestamos/estadisticas")
+fetch(`https://backend-biblioteca-two.vercel.app/prestamos/usuario/estadisticas?idUsuario=${idUsuario}`)
   .then(res => res.json())
   .then(data => {
     prestamosTotales.textContent = data.prestamosTotales;
@@ -25,18 +34,19 @@ fetch("https://backend-biblioteca-two.vercel.app/prestamos/estadisticas")
   }
 );
 // CARGAR HISTORIAL DE PRÉSTAMOS
-fetch("https://backend-biblioteca-two.vercel.app/prestamos/mis-prestamos")
+fetch(`https://backend-biblioteca-two.vercel.app/prestamos/usuario/mis-prestamos?idUsuario=${idUsuario}`)
   .then(res => res.json())
   .then(data => {
+    prestamosContainer.innerHTML = "";
     data.forEach(prestamo => {
 
       const card = document.createElement("div");
       card.classList.add("prestamo-card");
 
       let estadoClase = "prestado";
-      if (prestamo.estado === "Entregado con retraso") estadoClase = "retraso";
-      if (prestamo.estado === "Expirado") estadoClase = "expirado";
       if (prestamo.estado === "Entregado") estadoClase = "entregado";
+      else if (prestamo.estado === "Expirado") estadoClase = "expirado";
+      else if (prestamo.estado === "Activo") estadoClase = "prestado";
 
       card.innerHTML = `
         <div class="prestamo-header">
