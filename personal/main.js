@@ -280,21 +280,35 @@ function mostrarNotificacionErrorRoles(mensaje) {
     }, 4000);
 }
 
-// CARGAR TIPOS DE ROL
-async function cargarRoles() {
-    try {
-        const res = await fetch("https://backend-biblioteca-two.vercel.app/api/roles");
-        const data = await res.json();
-        const contenedor = document.getElementById("listaRoles");
-        if (!contenedor) return;
-        contenedor.innerHTML = "";
+async function cargarRolesSelect() {
+    const res = await fetch(
+        "https://backend-biblioteca-two.vercel.app/api/tipo_rol"
+    );
+    const data = await res.json();
 
+    // Actualiza el SELECT
+    const select = document.getElementById("slcTiposRol");
+    if (select) {
+        const valorActual = select.value;
+        select.innerHTML = '';
+        data.forEach(rol => {
+            select.innerHTML += `
+                <option value="${rol.Id_rol}">${rol.Tipo_rol}</option>
+            `;
+        });
+        if (valorActual) select.value = valorActual;
+    }
+
+    // Actualiza la LISTA del modal
+    const contenedor = document.getElementById("listaRoles");
+    if (contenedor) {
+        contenedor.innerHTML = "";
         data.forEach(rol => {
             contenedor.innerHTML += `
             <div class="fila-item">
-                <span class="item-text">${rol.Nombre}</span>
+                <span class="item-text">${rol.Tipo_rol}</span>
                 <div class="acciones">
-                    <button onclick="editarRol('${rol.Id_rol}','${rol.Nombre}')" class="icon-btn">
+                    <button onclick="editarRol('${rol.Id_rol}','${rol.Tipo_rol}')" class="icon-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button onclick="eliminarRol('${rol.Id_rol}')" class="icon-btn delete">
@@ -303,31 +317,6 @@ async function cargarRoles() {
                 </div>
             </div>`;
         });
-        
-        // Actualizar el select de roles en el formulario principal
-        actualizarSelectRoles(data);
-        
-    } catch (error) {
-        console.error('Error al cargar roles:', error);
-    }
-}
-
-// Actualizar el select de tipos de rol en el formulario principal
-function actualizarSelectRoles(roles) {
-    const slcTiposRol = document.getElementById('slcTiposRol');
-    if (!slcTiposRol) return;
-    
-    const valorActual = slcTiposRol.value;
-    slcTiposRol.innerHTML = '';
-    
-    roles.forEach(rol => {
-        slcTiposRol.innerHTML += `
-            <option value="${rol.Id_rol}">${rol.Nombre}</option>
-        `;
-    });
-    
-    if (valorActual && [...slcTiposRol.options].some(opt => opt.value === valorActual)) {
-        slcTiposRol.value = valorActual;
     }
 }
 
@@ -362,7 +351,7 @@ if (formRol) {
         }
 
         limpiarFormularioRoles();
-        cargarRoles();
+        cargarRolesSelect();
     });
 }
 
@@ -391,7 +380,7 @@ async function eliminarRol(id) {
     }
 
     mostrarNotificacionRoles("Tipo de rol eliminado correctamente.");
-    cargarRoles();
+    cargarRolesSelect();
 }
 
 // LIMPIAR FORMULARIO DE ROLES
@@ -410,6 +399,21 @@ if (cancelarBtnRol) {
     cancelarBtnRol.addEventListener("click", limpiarFormularioRoles);
 }
 
-// Cargar roles al iniciar
+// CARGAR ROLES EN EL SELECT
+async function cargarRolesSelect() {
+    const res = await fetch(
+        "https://backend-biblioteca-two.vercel.app/api/tipo_rol"
+    );
+    const data = await res.json();
+    const select = document.getElementById("slcTiposRol");
+    select.innerHTML = '';
+
+    data.forEach(rol => {
+        select.innerHTML += `
+            <option value="${rol.Id_rol}">${rol.Tipo_rol}</option>
+        `;
+    });
+}
+
 cargarPersonal();
-cargarRoles();
+cargarRolesSelect();

@@ -3,9 +3,9 @@ function mostrarNotificacion(mensaje) {
     const alerta = document.getElementById("mensajeExito");
     alerta.textContent = mensaje;
     alerta.style.display = "block";
-    alerta.classList.add("alert-success");
-    alerta.classList.remove("alert-error");
-    setTimeout(() => { alerta.style.display = "none"; }, 3000);
+    setTimeout(() => {
+        alerta.style.display = "none";
+    }, 3000);
 }
 
 // Notificación roja
@@ -22,7 +22,7 @@ function mostrarNotificacionError(mensaje) {
     }, 4000);
 }
 
-// Cargar roles
+// CARGAR ROLES
 async function cargarRoles() {
     const res = await fetch(
         "https://backend-biblioteca-two.vercel.app/api/tipo_rol"
@@ -49,18 +49,21 @@ async function cargarRoles() {
 
 cargarRoles();
 
-// Guardar / Editar
+// GUARDAR / EDITAR
 document.getElementById("formRol").addEventListener("submit", async function(e) {
     e.preventDefault();
+
     const nombre = document.getElementById("nombreRol").value.trim();
-    const id = document.getElementById("idRol").value;
-    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
+    const id     = document.getElementById("idRol").value;
+    const regex  = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
 
     if (nombre === "") { alert("Escribe el nombre del rol"); return; }
     if (!regex.test(nombre)) { alert("Solo se permiten letras"); return; }
 
     let url = "https://backend-biblioteca-two.vercel.app/api/tipo_rol/agregar";
-    if (id !== "") url = "https://backend-biblioteca-two.vercel.app/api/tipo_rol/editar";
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/tipo_rol/editar";
+    }
 
     const response = await fetch(url, {
         method: "POST",
@@ -69,24 +72,32 @@ document.getElementById("formRol").addEventListener("submit", async function(e) 
     });
 
     const data = await response.json();
+
     if (!response.ok) {
         mostrarNotificacionError(data.error || "Error al guardar el rol");
         return;
     }
 
-    mostrarNotificacion(id ? "Tipo de rol actualizado." : "Tipo de rol agregado.");
+    if (id !== "") {
+        mostrarNotificacion("Tipo de rol actualizado correctamente.");
+    } else {
+        mostrarNotificacion("Tipo de rol agregado correctamente.");
+    }
+
     limpiarFormulario();
     cargarRoles();
+     if (window.parent && window.parent.cargarRolesSelect) {
+        window.parent.cargarRolesSelect();
+    }
 });
 
-// Editar
+// EDITAR
 function editarRol(id, nombre) {
-    document.getElementById("idRol").value = id;
+    document.getElementById("idRol").value    = id;
     document.getElementById("nombreRol").value = nombre;
-    document.getElementById("tituloForm").textContent = "Editar tipo de rol";
 }
 
-// Eliminar
+// ELIMINAR
 async function eliminarRol(id) {
     if (!confirm("¿Eliminar este tipo de rol?")) return;
 
@@ -100,6 +111,7 @@ async function eliminarRol(id) {
     );
 
     const data = await res.json();
+
     if (!res.ok) {
         mostrarNotificacionError(data.error);
         return;
@@ -107,15 +119,18 @@ async function eliminarRol(id) {
 
     mostrarNotificacion("Tipo de rol eliminado correctamente.");
     cargarRoles();
+     if (window.parent && window.parent.cargarRolesSelect) {
+        window.parent.cargarRolesSelect();
+    }
 }
 
-// Limpiar
+// LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idRol").value = "";
+    document.getElementById("idRol").value     = "";
     document.getElementById("nombreRol").value = "";
-    document.getElementById("tituloForm").textContent = "Agregar tipo de rol";
 }
 
-// Cancelar
-document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
-
+// CANCELAR
+document
+    .getElementById("cancelarBtn")
+    .addEventListener("click", limpiarFormulario);
