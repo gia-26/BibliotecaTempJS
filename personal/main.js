@@ -428,6 +428,5 @@ async function cargarRolesSelect() {
 }
 
 cargarPersonal();
-cargarRoles();
 generarIdPersonal();
 cargarRolesSelect();
