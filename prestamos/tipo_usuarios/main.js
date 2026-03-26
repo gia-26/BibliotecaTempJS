@@ -1,134 +1,117 @@
 // FUNCIÓN PARA MOSTRAR NOTIFICACIÓN
 function mostrarNotificacion(mensaje) {
-    const alerta = document.getElementById("mensajeExito");
-    alerta.textContent = mensaje;
-    alerta.style.display = "block";
-    setTimeout(() => {
-        alerta.style.display = "none";
-    }, 3000);
+  const alerta = document.getElementById("mensajeExito");
+  alerta.textContent = mensaje;
+  alerta.style.display = "block";
+  setTimeout(() => {
+    alerta.style.display = "none";
+  }, 3000);
 }
 
-// FUNCIÓN PARA ESCAPAR HTML
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// CARGAR TIPOS
-async function cargarTipos() {
-    const res = await fetch(
-        "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios"
-    );
-    const data = await res.json();
-    const contenedor = document.getElementById("listaTipos");
-    contenedor.innerHTML = "";
-    data.forEach(tipo => {
-        contenedor.innerHTML += `
-        <div class="fila-item">
-            <span class="item-text">${escapeHtml(tipo.Tipo_usuario)}</span>
+// CARGAR TIPOS DE USUARIO
+async function cargarTiposUsuario() {
+  const res = await fetch(
+    "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios",
+  );
+  const data = await res.json();
+  const contenedor = document.getElementById("listaTiposUsuario");
+  contenedor.innerHTML = "";
+  data.forEach((tipo) => {
+    contenedor.innerHTML += `
+        <div class="fila-genero">
+            <span class="genero-texto">${tipo.Tipo_usuario}</span>
             <div class="acciones">
-                <button onclick="editarTipo('${tipo.Id_tipo_usuario}','${escapeHtml(tipo.Tipo_usuario)}')" class="icon-btn edit">
+                <button onclick="editarTipoUsuario('${tipo.Id_tipo_usuario}','${tipo.Tipo_usuario}')" class="icon-btn">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-                <button onclick="eliminarTipo('${tipo.Id_tipo_usuario}')" class="icon-btn delete">
+                <button onclick="eliminarTipoUsuario('${tipo.Id_tipo_usuario}')" class="icon-btn delete">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
         </div>`;
-    });
+  });
 }
 
 // EDITAR
-function editarTipo(id, nombre) {
-    document.getElementById("idTipo").value = id;
-    document.getElementById("nombreTipo").value = nombre;
+function editarTipoUsuario(id, nombre) {
+  document.getElementById("idTipoUsuario").value = id;
+  document.getElementById("nombreTipoUsuario").value = nombre;
 }
 
 // ELIMINAR
-async function eliminarTipo(id) {
-    if (!confirm("¿Eliminar este tipo de usuario?")) return;
-    
-    try {
-        await fetch(
-            "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/eliminar",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ Id_tipo_usuario: id }),
-            }
-        );
-        
-        mostrarNotificacion("Tipo de usuario eliminado correctamente.");
-        cargarTipos();
+async function eliminarTipoUsuario(id) {
+  if (!confirm("¿Eliminar este tipo de usuario?")) return;
+  await fetch(
+    "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/eliminar",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Id_tipo_usuario: id }),
+    },
+  );
+  mostrarNotificacion("Tipo de usuario eliminado correctamente.");
+  cargarTiposUsuario();
 
-        // ACTUALIZAR SELECT EN PÁGINA PRINCIPAL
-        if (window.parent && window.parent.mostrarTiposUsuarios) {
-            window.parent.mostrarTiposUsuarios();
-        }
-        
-    } catch (error) {
-        console.error('Error al eliminar:', error);
-        mostrarNotificacion("Error al eliminar el tipo de usuario.");
-    }
+  if (window.parent && window.parent.mostrarTiposUsuarios) {
+    window.parent.mostrarTiposUsuarios();
+  }
 }
 
-// LIMPIAR FORMULARIO
+// LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idTipo").value = "";
-    document.getElementById("nombreTipo").value = "";
+  document.getElementById("idTipoUsuario").value = "";
+  document.getElementById("nombreTipoUsuario").value = "";
 }
 
-// GUARDAR (AGREGAR/EDITAR)
-async function guardarTipo(event) {
-    event.preventDefault();
-    
-    const nombre = document.getElementById("nombreTipo").value.trim();
-    const id = document.getElementById("idTipo").value;
+// Solo ejecuta si estamos en la página correcta
+if (document.getElementById("formTipoUsuario")) {
+  cargarTiposUsuario();
 
-    if (nombre === "") {
-        alert("Escribe el tipo de usuario");
+  document
+    .getElementById("formTipoUsuario")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const nombre = document.getElementById("nombreTipoUsuario").value.trim();
+      const id = document.getElementById("idTipoUsuario").value;
+
+      if (nombre === "") {
+        alert("Ingresa el nombre del tipo de usuario");
         return;
-    }
+      }
 
-    try {
-        let url = "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/agregar";
-        let body = { Tipo_usuario: nombre };
-        
-        if (id !== "") {
-            url = "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/editar";
-            body = { Id_tipo_usuario: id, Tipo_usuario: nombre };
-        }
+      let url =
+        "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/agregar";
+      if (id !== "") {
+        url =
+          "https://backend-biblioteca-two.vercel.app/api/tipo_usuarios/editar";
+      }
 
-        await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-        });
+      const body =
+        id !== ""
+          ? { Id_tipo_usuario: id, Tipo_usuario: nombre }
+          : { Tipo_usuario: nombre };
 
-        if (id !== "") {
-            mostrarNotificacion("Tipo de usuario actualizado correctamente.");
-        } else {
-            mostrarNotificacion("Tipo de usuario agregado correctamente.");
-        }
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-        limpiarFormulario();
-        cargarTipos();
+      if (id !== "") {
+        mostrarNotificacion("Tipo de usuario actualizado correctamente.");
+      } else {
+        mostrarNotificacion("Tipo de usuario agregado correctamente.");
+      }
 
-        // ACTUALIZAR SELECT EN PÁGINA PRINCIPAL
-        if (window.parent && window.parent.mostrarTiposUsuarios) {
-            window.parent.mostrarTiposUsuarios();
-        }
-        
-    } catch (error) {
-        console.error('Error al guardar:', error);
-        mostrarNotificacion("Error al guardar el tipo de usuario.");
-    }
-}
+      limpiarFormulario();
+      cargarTiposUsuario();
 
-// INICIALIZAR
-if (document.getElementById("formTipo")) {
-    cargarTipos();
-    document.getElementById("formTipo").addEventListener("submit", guardarTipo);
-    document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
+      if (window.parent && window.parent.mostrarTiposUsuarios) {
+        window.parent.mostrarTiposUsuarios();
+      }
+    });
+
+  document
+    .getElementById("cancelarBtn")
+    .addEventListener("click", limpiarFormulario);
 }

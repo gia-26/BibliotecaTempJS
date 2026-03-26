@@ -43,26 +43,18 @@ const mostrarPrestamos = () => {
     });
 }
 
-// MOSTRAR TIPOS DE USUARIO EN EL SELECT
 function mostrarTiposUsuarios() {
-    fetch('https://backend-biblioteca-two.vercel.app/api/tipo_usuarios')
-        .then(response => response.json())
-        .then(tipos => {
-            const slcTipoUsuario = document.getElementById('slcTipoUsuario');
-            if (slcTipoUsuario) {
-                const valorActual = slcTipoUsuario.value;
-                slcTipoUsuario.innerHTML = '';
-                tipos.forEach(tipo => {
-                    slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
-                });
-                if (Array.from(slcTipoUsuario.options).some(opt => opt.value === valorActual)) {
-                    slcTipoUsuario.value = valorActual;
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error cargando tipos de usuario:', error);
+  fetch("https://backend-biblioteca-two.vercel.app/api/tipo_usuarios")
+    .then((response) => response.json())
+    .then((tipos) => {
+      const slcTipoUsuario = document.getElementById("slcTipoUsuario");
+      if (slcTipoUsuario) {
+        slcTipoUsuario.innerHTML = "";
+        tipos.forEach((tipo) => {
+          slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
         });
+      }
+    });
 }
 
 function mostrarTiposPrestamos() {
