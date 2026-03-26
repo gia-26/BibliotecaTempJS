@@ -47,25 +47,21 @@ const mostrarTiposUsuarios = () => {
   fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
     .then(response => response.json())
     .then(tipos => {
+      slcTipoUsuario.innerHTML = '';
       tipos.forEach(tipo => {
         slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
       });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de usuario:', error);
     });
 }
 
-const mostrarTiposPrestamos = () => {
-  fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
+function mostrarTiposPrestamos() {
+    fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
     .then(response => response.json())
     .then(tipos => {
-      tipos.forEach(tipo => {
-        slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de préstamo:', error);
+        slcTipoPrestamos.innerHTML = '';
+        tipos.forEach(tipo => {
+            slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
+        });
     });
 }
 

@@ -40,14 +40,21 @@ function editarTipoPrestamo(id, nombre) {
 
 // ELIMINAR
 async function eliminarTipoPrestamo(id) {
-    if (!confirm("¿Eliminar este tipo de préstamo?")) return;
-    await fetch("https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/eliminar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id_tipo_prestamo: id })
-    });
-    mostrarNotificacion("Tipo de préstamo eliminado correctamente.");
-    cargarTiposPrestamo();
+  if (!confirm("¿Eliminar este tipo de préstamo?")) return;
+  await fetch(
+    "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/eliminar",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Id_tipo_prestamo: id }),
+    },
+  );
+  mostrarNotificacion("Tipo de préstamo eliminado correctamente.");
+  cargarTiposPrestamo();
+
+  if (window.parent && window.parent.mostrarTiposPrestamos) {
+    window.parent.mostrarTiposPrestamos();
+  }
 }
 
 // LIMPIAR
@@ -56,45 +63,56 @@ function limpiarFormulario() {
     document.getElementById("nombreTipoPrestamo").value = "";
 }
 
-// ✅ GUARD: Solo ejecuta si estamos en la página correcta
+//Solo ejecuta si estamos en la página correcta
 if (document.getElementById("formTipoPrestamo")) {
 
     cargarTiposPrestamo();
 
-    document.getElementById("formTipoPrestamo").addEventListener("submit", async function(e) {
+    document
+      .getElementById("formTipoPrestamo")
+      .addEventListener("submit", async function (e) {
         e.preventDefault();
-        const nombre = document.getElementById("nombreTipoPrestamo").value.trim();
-        const id     = document.getElementById("idTipoPrestamo").value;
+        const nombre = document
+          .getElementById("nombreTipoPrestamo")
+          .value.trim();
+        const id = document.getElementById("idTipoPrestamo").value;
 
         if (nombre === "") {
-            alert("Ingresa el nombre del tipo de préstamo");
-            return;
+          alert("Ingresa el nombre del tipo de préstamo");
+          return;
         }
 
-        let url = "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/agregar";
+        let url =
+          "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/agregar";
         if (id !== "") {
-            url = "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/editar";
+          url =
+            "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/editar";
         }
 
-        const body = id !== ""
+        const body =
+          id !== ""
             ? { Id_tipo_prestamo: id, Tipo_prestamo: nombre }
             : { Tipo_prestamo: nombre };
 
         await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
         });
 
         if (id !== "") {
-            mostrarNotificacion("Tipo de préstamo actualizado correctamente.");
+          mostrarNotificacion("Tipo de préstamo actualizado correctamente.");
         } else {
-            mostrarNotificacion("Tipo de préstamo agregado correctamente.");
+          mostrarNotificacion("Tipo de préstamo agregado correctamente.");
         }
 
         limpiarFormulario();
         cargarTiposPrestamo();
-    });
+
+        if (window.parent && window.parent.mostrarTiposPrestamos) {
+          window.parent.mostrarTiposPrestamos();
+        }
+      });
 
     document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
