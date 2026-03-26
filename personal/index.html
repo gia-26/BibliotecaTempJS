@@ -77,13 +77,11 @@
         <div class="form-group">
           <label class="form-label" for="slcTiposRol">
             Tipo de rol:
-            <button type="button" class="config-btn" onclick="openModal('modal-tipos-rol')"
-              title="Configurar tipos de rol">
-              <i class="fas fa-cog"></i>
-            </button>
+            <button type="button" class="config-btn" onclick="openModal('modal-roles')" title="Configurar tipos de rol">
+            <i class="fas fa-cog"></i>
+        </button>
           </label>
-          <select class="form-select" id="slcTiposRol">
-          </select>
+          <select class="form-select" id="slcTiposRol"></select>
         </div>
 
         <div class="form-group">
@@ -115,41 +113,20 @@
     </div>
   </main>
 
-  <!-- Modal Tipos de Rol -->
-  <div id="modal-tipos-rol" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Configurar Tipos de Rol</h2>
-        <span class="close" onclick="closeModal('modal-tipos-rol')">&times;</span>
-      </div>
-
-      <div class="modal-body" style="padding: 16px 18px 20px;">
-        <div id="mensajeExitoRoles" class="alert-success" style="display:none;"></div>
-
-        <p class="label-strong">Tipos de rol existentes:</p>
-
-        <div id="listaRoles" class="lista-items"></div>
-
-        <h3 id="tituloFormRol" style="font-size: 16px; font-weight: 600; margin: 12px 0 8px; color: #3B2423;">Agregar tipo de rol</h3>
-
-        <form id="formRol" class="form-principal">
-          <label class="label-strong">Nombre del rol:</label>
-          <input type="text" id="nombreRol" placeholder="Nuevo tipo de rol">
-          <input type="hidden" id="idRol">
-
-          <div class="botones" style="display: flex; gap: 10px; margin-top: 8px;">
-            <button type="button" id="cancelarBtnRol" class="btn btn-secundario">Cancelar</button>
-            <button type="submit" class="btn btn-primario">Guardar</button>
-          </div>
-        </form>
-      </div>
+  <!-- Modal Roles -->
+<div id="modal-roles" class="modal">
+    <div class="modal-content" style="padding:0; overflow:hidden; background:transparent; max-width:500px;">
+        <iframe src="tipo_rol/index.html"
+            style="width:100%; height:470px; border:none; display:block; border-radius:8px;">
+        </iframe>
     </div>
-  </div>
+</div>
 
   <div id="footer"></div>
 
   <script src="main.js"></script>
   <script src="../main.js"></script>
+
   <script>
     // Funciones para abrir y cerrar modales
     function openModal(modalId) {
