@@ -43,29 +43,36 @@ const mostrarPrestamos = () => {
     });
 }
 
-const mostrarTiposUsuarios = () => {
-  fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
-    .then(response => response.json())
-    .then(tipos => {
-      tipos.forEach(tipo => {
-        slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de usuario:', error);
-    });
+// MOSTRAR TIPOS DE USUARIO EN EL SELECT
+function mostrarTiposUsuarios() {
+    fetch('https://backend-biblioteca-two.vercel.app/api/tipo_usuarios')
+        .then(response => response.json())
+        .then(tipos => {
+            const slcTipoUsuario = document.getElementById('slcTipoUsuario');
+            if (slcTipoUsuario) {
+                const valorActual = slcTipoUsuario.value;
+                slcTipoUsuario.innerHTML = '';
+                tipos.forEach(tipo => {
+                    slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+                });
+                if (Array.from(slcTipoUsuario.options).some(opt => opt.value === valorActual)) {
+                    slcTipoUsuario.value = valorActual;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error cargando tipos de usuario:', error);
+        });
 }
 
-const mostrarTiposPrestamos = () => {
-  fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
+function mostrarTiposPrestamos() {
+    fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
     .then(response => response.json())
     .then(tipos => {
-      tipos.forEach(tipo => {
-        slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de préstamo:', error);
+        slcTipoPrestamos.innerHTML = '';
+        tipos.forEach(tipo => {
+            slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
+        });
     });
 }
 
