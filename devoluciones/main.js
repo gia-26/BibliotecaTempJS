@@ -17,7 +17,7 @@ const mostrarDevolcuiones = () => {
             <td>${new Date(prestamo.Fecha_devolucion).toLocaleDateString()}</td>
             <td>${prestamo.Estado}</td>
             <td><button class="btn btn-small btn-danger" onclick="devolver('${prestamo.Id_prestamo}')">Devolver</button></td>
-            <td><button class="btn btn-small btn-warning">Renovar</button></td>
+            <td><button class="btn btn-small btn-warning" onclick="renovar('${prestamo.Id_prestamo}', '${prestamo.Id_usuario}')">Renovar</button></td>
           </tr>
         `;
       });
@@ -27,50 +27,76 @@ const mostrarDevolcuiones = () => {
     });
 }
 
-fetch("https://backend-biblioteca-two.vercel.app/api/multas")
-  .then(response => response.json())
-  .then(data => {
-    tblMultas.innerHTML = "";
-    data.forEach(multa => {
-      tblMultas.innerHTML += `
-        <tr>
-          <td>${multa.Nombre}</td>
-          <td>${multa.Apellido_P}</td>
-          <td>${multa.Apellido_M}</td>
-          <td>${multa.Titulo}</td>
-          <td>${new Date(multa.Fecha_devolucion).toLocaleDateString()}</td>
-          <td>${multa.Fecha_devolucion_real != null ? new Date(multa.Fecha_devolucion_real).toLocaleDateString() : "No devuelto"}</td>
-          <td>${multa.Dias_excedidos}</td>
-          <td>$${multa.Monto}</td>
-        </tr>
-      `;
+const cargarMultas = () => {
+  fetch("https://backend-biblioteca-two.vercel.app/api/multas")
+    .then(response => response.json())
+    .then(data => {
+      tblMultas.innerHTML = "";
+      data.forEach(multa => {
+        tblMultas.innerHTML += `
+          <tr>
+            <td>${multa.Nombre}</td>
+            <td>${multa.Apellido_P}</td>
+            <td>${multa.Apellido_M}</td>
+            <td>${multa.Titulo}</td>
+            <td>${new Date(multa.Fecha_devolucion).toLocaleDateString()}</td>
+            <td>${multa.Fecha_devolucion_real != null ? new Date(multa.Fecha_devolucion_real).toLocaleDateString() : "No devuelto"}</td>
+            <td>${multa.Dias_excedidos}</td>
+            <td>$${multa.Monto}</td>
+          </tr>
+        `;
+      });
+    })
+    .catch(error => {
+      console.error("Error al obtener las multas:", error);
     });
-  })
-  .catch(error => {
-    console.error("Error al obtener las multas:", error);
-  });
+}
 
 const devolver = (idPrestamo) => {
   if (!confirm("¿Está seguro de que desea devolver este préstamo?"))
-      return;
+    return;
   fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/devolver", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: idPrestamo })
-    })
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: idPrestamo })
+  })
     .then(response => response.json())
     .then(result => {
       console.log("RESULTADO DEVOLUCIÓN:", result);
-      if (result.success){
+      if (result.success) {
         mostrarDevolcuiones();
         alert(result.mensaje);
       }
       else
-        alert("Error al devolver el préstamo: " + result.mensaje);
+        alert("Error al devolver el préstamo: " + result.error);
     })
     .catch(error => {
       console.error("Error al devolver el préstamo:", error);
     });
 }
 
+const renovar = (idPrestamo, idUsuario) => {
+  if (!confirm("¿Está seguro de que desea renovar este préstamo?"))
+    return;
+  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/renovar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idPrestamo, idUsuario})
+  })
+    .then(response => response.json())
+    .then(result => {
+      console.log("RESULTADO RENOVACIÓN:", result);
+      if (result.success) {
+        mostrarDevolcuiones();
+        alert(result.mensaje);
+      }
+      else
+        alert("Error al renovar el préstamo: " + result.mensaje);
+    })
+    .catch(error => {
+      alert("Error al renovar el préstamo:", error);
+    });
+}
+
 mostrarDevolcuiones();
+cargarMultas();
