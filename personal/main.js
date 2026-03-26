@@ -96,7 +96,7 @@ const eliminarPersonal = (idPersonal) => {
     if (!confirm('¿Estás seguro de eliminar este personal?')) return;
     
     fetch('https://backend-biblioteca-two.vercel.app/api/personal/eliminar', {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ Id_personal: idPersonal })
     })
@@ -165,7 +165,7 @@ const guardar = () => {
 
 const limpiar = () => {
     inpNoTrabajador.value =  '';
-    inpIdPersonal.value = '';
+    generarIdPersonal();
     inpNombre.value = '';
     inpApellidoP.value = '';
     inpApellidoM.value = '';
@@ -251,6 +251,18 @@ togglePasswordConfirmBtn.addEventListener("click", () => {
 btnGuardar.addEventListener('click', () => {
     guardar();
 });
+
+const generarIdPersonal = () => {
+    fetch('https://backend-biblioteca-two.vercel.app/api/personal/generar/id')
+    .then(response => response.json())
+    .then(idPersonal => {
+        console.log('ID personal generado:', idPersonal);
+        inpIdPersonal.value = idPersonal;
+    })
+    .catch(error => {
+        console.error('Error al generar ID personal:', error);
+    });
+}
 
 // ========== FUNCIONES PARA TIPOS DE ROL ==========
 
@@ -416,4 +428,6 @@ async function cargarRolesSelect() {
 }
 
 cargarPersonal();
+cargarRoles();
+generarIdPersonal();
 cargarRolesSelect();
