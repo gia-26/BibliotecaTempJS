@@ -32,9 +32,9 @@ async function cargarAutores() {
     data.forEach(autor => {
         contenedor.innerHTML += `
         <div class="fila-item">
-            <span class="item-text">${autor.Nombre}</span>
+            <span class="item-text">${escapeHtml(autor.Nombre)}</span>
             <div class="acciones">
-                <button onclick="editarAutor('${autor.Id_autor}','${autor.Nombre}')" class="icon-btn">
+                <button onclick="editarAutor('${autor.Id_autor}','${escapeHtml(autor.Nombre)}')" class="icon-btn">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
                 <button onclick="eliminarAutor('${autor.Id_autor}')" class="icon-btn delete">
@@ -45,44 +45,17 @@ async function cargarAutores() {
     });
 }
 
-cargarAutores();
-
-// GUARDAR / EDITAR
-document.getElementById("formAutor").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const nombre = document.getElementById("nombreAutor").value.trim();
-    const id     = document.getElementById("idAutor").value;
-    const regex  = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
-
-    if (nombre === "") { alert("Escribe el nombre del autor"); return; }
-    if (!regex.test(nombre)) { alert("Solo se permiten letras"); return; }
-
-    let url = "https://backend-biblioteca-two.vercel.app/api/autores/agregar";
-    if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/autores/editar";
-    }
-
-    await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id_autor: id, Nombre: nombre })
-    });
-
-    if (id !== "") {
-        mostrarNotificacion("Autor actualizado correctamente.");
-    } else {
-        mostrarNotificacion("Autor agregado correctamente.");
-    }
-
-    limpiarFormulario();
-    cargarAutores();
-});
+// Función para escapar HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 // EDITAR
 function editarAutor(id, nombre) {
-    document.getElementById("idAutor").value      = id;
-    document.getElementById("nombreAutor").value  = nombre;
+    document.getElementById("idAutor").value = id;
+    document.getElementById("nombreAutor").value = nombre;
     document.getElementById("tituloForm").textContent = "Editar autor";
 }
 
@@ -98,7 +71,6 @@ async function eliminarAutor(id) {
 
     const data = await res.json();
 
-    // ✅ Si el backend rechaza, mostrar notificación roja
     if (!res.ok) {
         mostrarNotificacionError(data.error);
         return;
@@ -106,19 +78,73 @@ async function eliminarAutor(id) {
 
     mostrarNotificacion("Autor eliminado correctamente.");
     cargarAutores();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAutores) {
+        window.parent.recuperarAutores();
+    }
 }
 
 // LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idAutor").value          = "";
-    document.getElementById("nombreAutor").value      = "";
+    document.getElementById("idAutor").value = "";
+    document.getElementById("nombreAutor").value = "";
     document.getElementById("tituloForm").textContent = "Agregar autor";
 }
 
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
+// GUARDAR / EDITAR
+document.getElementById("formAutor").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombreAutor").value.trim();
+    const id = document.getElementById("idAutor").value;
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
+
+    if (nombre === "") {
+        alert("Escribe el nombre del autor");
+        return;
+    }
+    if (!regex.test(nombre)) {
+        alert("Solo se permiten letras");
+        return;
+    }
+
+    let url = "https://backend-biblioteca-two.vercel.app/api/autores/agregar";
+    let body = { Nombre: nombre };
+
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/autores/editar";
+        body = { Id_autor: id, Nombre: nombre };
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+
+    if (id !== "") {
+        mostrarNotificacion("Autor actualizado correctamente.");
+    } else {
+        mostrarNotificacion("Autor agregado correctamente.");
+    }
+
+    limpiarFormulario();
+    cargarAutores();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAutores) {
+        window.parent.recuperarAutores();
+    }
+});
+
 // CERRAR MODAL CON LA X
 document.querySelector(".cerrar").addEventListener("click", function() {
     window.parent.closeModal('modal-autores');
 });
+
+// CARGAR AUTORES AL INICIAR
+cargarAutores();

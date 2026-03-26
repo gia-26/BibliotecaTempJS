@@ -45,53 +45,11 @@ async function cargarAreas() {
     });
 }
 
-cargarAreas();
-
-// GUARDAR / EDITAR
-document.getElementById("formArea").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const nombre  = document.getElementById("nombreArea").value.trim();
-    const estante = document.getElementById("numeroEstante").value.trim();
-    const id      = document.getElementById("idArea").value;
-
-    if (nombre === "" || estante === "") {
-        alert("Completa todos los campos");
-        return;
-    }
-
-    let url = "https://backend-biblioteca-two.vercel.app/api/areas/agregar";
-
-    if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/areas/editar";
-    }
-
-    await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            Id_area_conocimiento: id,
-            Area_conocimiento: nombre,
-            N_estante: estante,
-        }),
-    });
-
-    // NOTIFICACIÓN según operación
-    if (id !== "") {
-        mostrarNotificacion("Área de conocimiento actualizada correctamente.");
-    } else {
-        mostrarNotificacion("Área de conocimiento agregada correctamente.");
-    }
-
-    limpiarFormulario();
-    cargarAreas();
-});
-
 // EDITAR
 function editarArea(id, area, estante) {
-    document.getElementById("idArea").value          = id;
-    document.getElementById("nombreArea").value      = area;
-    document.getElementById("numeroEstante").value   = estante;
+    document.getElementById("idArea").value = id;
+    document.getElementById("nombreArea").value = area;
+    document.getElementById("numeroEstante").value = estante;
 }
 
 // ELIMINAR
@@ -106,7 +64,6 @@ async function eliminarArea(id) {
 
     const data = await res.json();
 
-    //Si el backend rechaza, mostrar notificación roja
     if (!res.ok) {
         mostrarNotificacionError(data.error);
         return;
@@ -114,17 +71,20 @@ async function eliminarArea(id) {
 
     mostrarNotificacion("Área de conocimiento eliminada correctamente.");
     cargarAreas();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAreasConocimiento) {
+        window.parent.recuperarAreasConocimiento();
+    }
 }
 
 // CANCELAR
-document
-    .getElementById("cancelarBtn")
-    .addEventListener("click", limpiarFormulario);
+document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
 // LIMPIAR FORM
 function limpiarFormulario() {
-    document.getElementById("idArea").value        = "";
-    document.getElementById("nombreArea").value    = "";
+    document.getElementById("idArea").value = "";
+    document.getElementById("nombreArea").value = "";
     document.getElementById("numeroEstante").value = "";
 }
 
@@ -135,3 +95,48 @@ estanteInput.addEventListener("input", () => {
         .replace(/[^0-9]/g, "")
         .slice(0, 10);
 });
+
+// GUARDAR / EDITAR
+document.getElementById("formArea").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombreArea").value.trim();
+    const estante = document.getElementById("numeroEstante").value.trim();
+    const id = document.getElementById("idArea").value;
+
+    if (nombre === "" || estante === "") {
+        alert("Completa todos los campos");
+        return;
+    }
+
+    let url = "https://backend-biblioteca-two.vercel.app/api/areas/agregar";
+    let body = { Area_conocimiento: nombre, N_estante: estante };
+
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/areas/editar";
+        body = { Id_area_conocimiento: id, Area_conocimiento: nombre, N_estante: estante };
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    });
+
+    if (id !== "") {
+        mostrarNotificacion("Área de conocimiento actualizada correctamente.");
+    } else {
+        mostrarNotificacion("Área de conocimiento agregada correctamente.");
+    }
+
+    limpiarFormulario();
+    cargarAreas();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAreasConocimiento) {
+        window.parent.recuperarAreasConocimiento();
+    }
+});
+
+// CARGAR AREAS AL INICIAR
+cargarAreas();

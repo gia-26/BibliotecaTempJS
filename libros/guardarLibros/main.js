@@ -244,7 +244,7 @@ const validarDatos = () => {
   return true;
 }
 
-const recuperarGeneros = () => {
+function recuperarGeneros() {
     fetch(URL_BASE + 'api/generos')
      .then(response => response.json())
      .then(generos => {
@@ -260,7 +260,7 @@ const recuperarGeneros = () => {
      })
 }
 
-const recuperarAniosEdicion = () => {
+function recuperarAniosEdicion() {
     fetch(URL_BASE + 'api/anios')
      .then(response => response.json())
      .then(anios => {
@@ -274,7 +274,7 @@ const recuperarAniosEdicion = () => {
      })
 }
 
-const recuperarAreasConocimiento = () => {
+function recuperarAreasConocimiento() {
     fetch(URL_BASE + 'api/areas')
      .then(response => response.json())
      .then(areas => {
@@ -288,7 +288,7 @@ const recuperarAreasConocimiento = () => {
      })
 }
 
-const recuperarAutores = () => {
+function recuperarAutores() {
     fetch(URL_BASE + 'api/autores')
      .then(response => response.json())
      .then(autores => {
@@ -304,7 +304,7 @@ const recuperarAutores = () => {
      })
 }
 
-const recuperarEditoriales = () => {
+function recuperarEditoriales() {
     fetch(URL_BASE + 'api/editoriales')
      .then(response => response.json())
      .then(editoriales => {

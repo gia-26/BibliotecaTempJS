@@ -46,53 +46,10 @@ async function cargarAnios() {
     });
 }
 
-cargarAnios();
-
-// GUARDAR / EDITAR
-document
-    .getElementById("formAnio")
-    .addEventListener("submit", async function(e) {
-
-    e.preventDefault();
-
-    const anio = document.getElementById("anio").value.trim();
-    const id   = document.getElementById("idAnio").value;
-
-    if (!/^\d{4}$/.test(anio)) {
-        alert("El año debe ser numérico de 4 dígitos");
-        return;
-    }
-
-    let url = "https://backend-biblioteca-two.vercel.app/api/anios/agregar";
-
-    if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/anios/editar";
-    }
-
-    await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            Id_anio_edicion: id,
-            Anio_edicion: anio
-        })
-    });
-
-    //NOTIFICACIÓN según la operación
-    if (id !== "") {
-        mostrarNotificacion("Año de edición actualizado correctamente.");
-    } else {
-        mostrarNotificacion("Año de edición agregado correctamente.");
-    }
-
-    limpiarFormulario();
-    cargarAnios();
-});
-
 // EDITAR
 function editarAnio(id, anio) {
     document.getElementById("idAnio").value = id;
-    document.getElementById("anio").value   = anio;
+    document.getElementById("anio").value = anio;
 }
 
 // ELIMINAR
@@ -107,7 +64,6 @@ async function eliminarAnio(id) {
 
     const data = await res.json();
 
-    // Si el backend devuelve error, mostrar notificación roja
     if (!res.ok) {
         mostrarNotificacionError(data.error);
         return;
@@ -115,22 +71,67 @@ async function eliminarAnio(id) {
 
     mostrarNotificacion("Año de edición eliminado correctamente.");
     cargarAnios();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAniosEdicion) {
+        window.parent.recuperarAniosEdicion();
+    }
 }
 
 // LIMPIAR FORM
 function limpiarFormulario() {
     document.getElementById("idAnio").value = "";
-    document.getElementById("anio").value   = "";
+    document.getElementById("anio").value = "";
 }
 
 // CANCELAR
-document
-    .getElementById("cancelarBtn")
-    .addEventListener("click", limpiarFormulario);
+document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
 // VALIDACIÓN INPUT — solo números, máx 4 dígitos
-document
-    .getElementById("anio")
-    .addEventListener("input", function() {
-        this.value = this.value.replace(/[^0-9]/g, "").slice(0, 4);
+document.getElementById("anio").addEventListener("input", function() {
+    this.value = this.value.replace(/[^0-9]/g, "").slice(0, 4);
+});
+
+// GUARDAR / EDITAR
+document.getElementById("formAnio").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const anio = document.getElementById("anio").value.trim();
+    const id = document.getElementById("idAnio").value;
+
+    if (!/^\d{4}$/.test(anio)) {
+        alert("El año debe ser numérico de 4 dígitos");
+        return;
+    }
+
+    let url = "https://backend-biblioteca-two.vercel.app/api/anios/agregar";
+    let body = { Anio_edicion: anio };
+
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/anios/editar";
+        body = { Id_anio_edicion: id, Anio_edicion: anio };
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
     });
+
+    if (id !== "") {
+        mostrarNotificacion("Año de edición actualizado correctamente.");
+    } else {
+        mostrarNotificacion("Año de edición agregado correctamente.");
+    }
+
+    limpiarFormulario();
+    cargarAnios();
+    
+    //ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarAniosEdicion) {
+        window.parent.recuperarAniosEdicion();
+    }
+});
+
+// CARGAR AÑOS AL INICIAR
+cargarAnios();

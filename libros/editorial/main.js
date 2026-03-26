@@ -66,48 +66,11 @@ async function cargarEditoriales() {
     });
 }
 
-cargarEditoriales();
-
-// GUARDAR / EDITAR
-document.getElementById("formEditorial").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const nombre = document.getElementById("nombreEditorial").value.trim();
-    const pais   = document.getElementById("paisEditorial").value.trim();
-    const id     = document.getElementById("idEditorial").value;
-
-    if (nombre === "" || pais === "") {
-        alert("Escribe el nombre y país");
-        return;
-    }
-
-    let url = "https://backend-biblioteca-two.vercel.app/api/editoriales/agregar";
-    if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/editoriales/editar";
-    }
-
-    await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id_editorial: id, Nombre: nombre, Pais: pais })
-    });
-
-    // NOTIFICACIÓN según operación
-    if (id !== "") {
-        mostrarNotificacion("Editorial actualizada correctamente.");
-    } else {
-        mostrarNotificacion("Editorial agregada correctamente.");
-    }
-
-    limpiarFormulario();
-    cargarEditoriales();
-});
-
 // EDITAR
 function editarEditorial(id, nombre, pais) {
-    document.getElementById("idEditorial").value      = id;
-    document.getElementById("nombreEditorial").value  = nombre;
-    document.getElementById("paisEditorial").value    = pais;
+    document.getElementById("idEditorial").value = id;
+    document.getElementById("nombreEditorial").value = nombre;
+    document.getElementById("paisEditorial").value = pais;
 }
 
 // ELIMINAR
@@ -122,7 +85,6 @@ async function eliminarEditorial(id) {
 
     const data = await res.json();
 
-    //Si el backend rechaza, mostrar notificación roja
     if (!res.ok) {
         mostrarNotificacionError(data.error);
         return;
@@ -130,14 +92,64 @@ async function eliminarEditorial(id) {
 
     mostrarNotificacion("Editorial eliminada correctamente.");
     cargarEditoriales();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarEditoriales) {
+        window.parent.recuperarEditoriales();
+    }
 }
 
 // LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idEditorial").value     = "";
+    document.getElementById("idEditorial").value = "";
     document.getElementById("nombreEditorial").value = "";
-    document.getElementById("paisEditorial").value   = "";
+    document.getElementById("paisEditorial").value = "";
 }
 
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
+
+// GUARDAR / EDITAR
+document.getElementById("formEditorial").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombreEditorial").value.trim();
+    const pais = document.getElementById("paisEditorial").value.trim();
+    const id = document.getElementById("idEditorial").value;
+
+    if (nombre === "" || pais === "") {
+        alert("Escribe el nombre y país");
+        return;
+    }
+
+    let url = "https://backend-biblioteca-two.vercel.app/api/editoriales/agregar";
+    let body = { Nombre: nombre, Pais: pais };
+
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/editoriales/editar";
+        body = { Id_editorial: id, Nombre: nombre, Pais: pais };
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+
+    if (id !== "") {
+        mostrarNotificacion("Editorial actualizada correctamente.");
+    } else {
+        mostrarNotificacion("Editorial agregada correctamente.");
+    }
+
+    limpiarFormulario();
+    cargarEditoriales();
+    
+    // ACTUALIZAR EL SELECT EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarEditoriales) {
+        window.parent.recuperarEditoriales();
+    }
+});
+
+// CARGAR EDITORIALES AL INICIAR
+cargarEditoriales();

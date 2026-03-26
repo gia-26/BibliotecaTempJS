@@ -22,6 +22,13 @@ function mostrarNotificacionError(mensaje) {
     }, 4000);
 }
 
+// Función para escapar HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 // CARGAR GÉNEROS
 async function cargarGeneros() {
     const res = await fetch("https://backend-biblioteca-two.vercel.app/api/generos");
@@ -32,9 +39,9 @@ async function cargarGeneros() {
     data.forEach(genero => {
         contenedor.innerHTML += `
         <div class="fila-item">
-            <span class="item-text">${genero.Nombre}</span>
+            <span class="item-text">${escapeHtml(genero.Nombre)}</span>
             <div class="acciones">
-                <button onclick="editarGenero('${genero.Id_genero}','${genero.Nombre}')" class="icon-btn">
+                <button onclick="editarGenero('${genero.Id_genero}','${escapeHtml(genero.Nombre)}')" class="icon-btn">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
                 <button onclick="eliminarGenero('${genero.Id_genero}')" class="icon-btn delete">
@@ -45,43 +52,9 @@ async function cargarGeneros() {
     });
 }
 
-cargarGeneros();
-
-// GUARDAR / EDITAR
-document.getElementById("formGenero").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const nombre = document.getElementById("nombreGenero").value.trim();
-    const id     = document.getElementById("idGenero").value;
-    const regex  = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
-
-    if (nombre === "") { alert("Escribe el nombre del género"); return; }
-    if (!regex.test(nombre)) { alert("Solo se permiten letras"); return; }
-
-    let url = "https://backend-biblioteca-two.vercel.app/api/generos/agregar";
-    if (id !== "") {
-        url = "https://backend-biblioteca-two.vercel.app/api/generos/editar";
-    }
-
-    await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id_genero: id, Nombre: nombre })
-    });
-
-    if (id !== "") {
-        mostrarNotificacion("Género actualizado correctamente.");
-    } else {
-        mostrarNotificacion("Género agregado correctamente.");
-    }
-
-    limpiarFormulario();
-    cargarGeneros();
-});
-
 // EDITAR
 function editarGenero(id, nombre) {
-    document.getElementById("idGenero").value     = id;
+    document.getElementById("idGenero").value = id;
     document.getElementById("nombreGenero").value = nombre;
     document.getElementById("tituloForm").textContent = "Editar género";
 }
@@ -105,11 +78,16 @@ async function eliminarGenero(id) {
 
     mostrarNotificacion("Género eliminado correctamente.");
     cargarGeneros();
+    
+    // ACTUALIZAR LOS SELECTS EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarGeneros) {
+        window.parent.recuperarGeneros();
+    }
 }
 
 // LIMPIAR
 function limpiarFormulario() {
-    document.getElementById("idGenero").value     = "";
+    document.getElementById("idGenero").value = "";
     document.getElementById("nombreGenero").value = "";
     document.getElementById("tituloForm").textContent = "Agregar género";
 }
@@ -117,7 +95,56 @@ function limpiarFormulario() {
 // CANCELAR
 document.getElementById("cancelarBtn").addEventListener("click", limpiarFormulario);
 
+// GUARDAR / EDITAR
+document.getElementById("formGenero").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombreGenero").value.trim();
+    const id = document.getElementById("idGenero").value;
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü' -]+$/u;
+
+    if (nombre === "") {
+        alert("Escribe el nombre del género");
+        return;
+    }
+    if (!regex.test(nombre)) {
+        alert("Solo se permiten letras");
+        return;
+    }
+
+    let url = "https://backend-biblioteca-two.vercel.app/api/generos/agregar";
+    let body = { Nombre: nombre };
+
+    if (id !== "") {
+        url = "https://backend-biblioteca-two.vercel.app/api/generos/editar";
+        body = { Id_genero: id, Nombre: nombre };
+    }
+
+    await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+    });
+
+    if (id !== "") {
+        mostrarNotificacion("Género actualizado correctamente.");
+    } else {
+        mostrarNotificacion("Género agregado correctamente.");
+    }
+
+    limpiarFormulario();
+    cargarGeneros();
+    
+    // ACTUALIZAR LOS SELECTS EN LA PÁGINA PRINCIPAL
+    if (window.parent && window.parent.recuperarGeneros) {
+        window.parent.recuperarGeneros();
+    }
+});
+
 // CERRAR MODAL CON LA X
 document.querySelector(".cerrar").addEventListener("click", function() {
     window.parent.closeModal('modal-generos');
 });
+
+// CARGAR GÉNEROS AL INICIAR
+cargarGeneros();
