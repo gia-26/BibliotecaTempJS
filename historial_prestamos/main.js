@@ -8,6 +8,18 @@ const librosDevueltos = document.getElementById("librosDevueltos");
 
 const prestamosContainer = document.getElementById("prestamosContainer");
 
+// Función para formatear fechas
+function formatearFecha(fechaISO) {
+  if (!fechaISO || fechaISO === "No devuelto") return fechaISO;
+  
+  const fecha = new Date(fechaISO);
+  const anio = fecha.getFullYear();
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  
+  return `${anio}-${mes}-${dia}`;
+}
+
 // CARGAR INFORMACIÓN DEL USUARIO
 function cargarUsuario() {
   const nombre = localStorage.getItem("nombre");
@@ -86,15 +98,15 @@ function cargarHistorial() {
           <div class="prestamo-info">
             <div class="info-item">
               <label>Fecha de Préstamo</label>
-              <span>${prestamo.fechaPrestamo}</span>
+              <span>${formatearFecha(prestamo.fechaPrestamo)}</span>
             </div>
             <div class="info-item">
               <label>Fecha Devolución Esperada</label>
-              <span>${prestamo.fechaDevolucion}</span>
+              <span>${formatearFecha(prestamo.fechaDevolucion)}</span>
             </div>
             <div class="info-item">
               <label>Fecha Devolución Real</label>
-              <span>${prestamo.fechaDevolucionReal || "No devuelto"}</span>
+              <span>${formatearFecha(prestamo.fechaDevolucionReal) || "No devuelto"}</span>
             </div>
             <div class="info-item">
               <label>Días</label>
