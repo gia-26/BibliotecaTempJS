@@ -44,17 +44,17 @@ const mostrarPrestamos = () => {
 }
 
 function mostrarTiposUsuarios() {
-  fetch("https://backend-biblioteca-two.vercel.app/api/tipo_usuarios")
-    .then((response) => response.json())
-    .then((tipos) => {
-      const slcTipoUsuario = document.getElementById("slcTipoUsuario");
-      if (slcTipoUsuario) {
-        slcTipoUsuario.innerHTML = "";
-        tipos.forEach((tipo) => {
-          slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+    fetch('https://backend-biblioteca-two.vercel.app/api/tipo_usuarios')
+        .then(response => response.json())
+        .then(tipos => {
+            const slcTipoUsuario = document.getElementById('slcTipoUsuario');
+            if (slcTipoUsuario) {
+                slcTipoUsuario.innerHTML = '';
+                tipos.forEach(tipo => {
+                    slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+                });
+            }
         });
-      }
-    });
 }
 
 function mostrarTiposPrestamos() {
