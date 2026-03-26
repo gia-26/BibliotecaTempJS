@@ -43,29 +43,28 @@ const mostrarPrestamos = () => {
     });
 }
 
-const mostrarTiposUsuarios = () => {
-  fetch('https://backend-biblioteca-two.vercel.app/api/usuarios/tipos')
-    .then(response => response.json())
-    .then(tipos => {
-      tipos.forEach(tipo => {
-        slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de usuario:', error);
-    });
+function mostrarTiposUsuarios() {
+    fetch('https://backend-biblioteca-two.vercel.app/api/tipo_usuarios')
+        .then(response => response.json())
+        .then(tipos => {
+            const slcTipoUsuario = document.getElementById('slcTipoUsuario');
+            if (slcTipoUsuario) {
+                slcTipoUsuario.innerHTML = '';
+                tipos.forEach(tipo => {
+                    slcTipoUsuario.innerHTML += `<option value="${tipo.Id_tipo_usuario}">${tipo.Tipo_usuario}</option>`;
+                });
+            }
+        });
 }
 
-const mostrarTiposPrestamos = () => {
-  fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
+function mostrarTiposPrestamos() {
+    fetch('https://backend-biblioteca-two.vercel.app/api/prestamos/tipos')
     .then(response => response.json())
     .then(tipos => {
-      tipos.forEach(tipo => {
-        slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching tipos de préstamo:', error);
+        slcTipoPrestamos.innerHTML = '';
+        tipos.forEach(tipo => {
+            slcTipoPrestamos.innerHTML += `<option value="${tipo.Id_tipo_prestamo}">${tipo.Tipo_prestamo}</option>`;
+        });
     });
 }
 
@@ -147,10 +146,10 @@ const buscarUsuario = () => {
   fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
     .then(response => response.json())
     .then(usuario => {
-      if (usuario && usuario.Nombre) {
-        nombreUsuario.value = usuario.Nombre;
+      if (usuario.NombreCompleto && usuario.Id_usuario) {
+        nombreUsuario.value = usuario.NombreCompleto;
         buscoUsuario = true;
-        idUsuarioBuscado = usuario.id;
+        idUsuarioBuscado = usuario.Id_usuario;
       } else {
         buscoUsuario = false;
         idUsuarioBuscado = '';
@@ -189,7 +188,7 @@ btnPrestar.addEventListener('click', () => {
           alert(result.mensaje);
           limpiar();
         } else {
-          alert(`Error al registrar el préstamo: ${result.mensaje || 'Error desconocido'}`);
+          alert(`Error al registrar el préstamo: ${result.error || 'Error desconocido'}`);
         }
     })
     .catch(error => {
