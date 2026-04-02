@@ -180,7 +180,7 @@ function crearTabla() {
                 <td style="${esCero ? 'color: #e67e22; font-weight: bold;' : ''}">${valor}</td>
                 ${esDiaConocido ? 
                     '<td style="color: #6A1B0B; font-weight: bold;">Dato real</td>' : 
-                    (esCero ? '<td style="color: #e67e22;">Sin préstamos (agotado)</td>' : '<td>Estimado</td>')}
+                    (esCero ? '<td style="color: #e67e22;">Sin préstamos</td>' : '<td>Estimado</td>')}
             </tr>
         `;
     }

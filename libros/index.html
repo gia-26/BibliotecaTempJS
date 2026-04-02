@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
@@ -36,22 +35,12 @@
         <span class="search-label">Buscar libro:</span>
 
         <select class="filter-select" id="filterSelect">
-          <option value="id_libro">ID del libro</option>
+          <option value="id">ID del libro</option>
           <option value="titulo">Título</option>
           <option value="isbn">ISBN</option>
         </select>
 
-        <input type="text" class="search-input" id="searchInput"
-               placeholder="Ingresa término de búsqueda...">
-
-        <button class="btn" id="btnBuscar">
-          <i class="fas fa-search"></i> Buscar
-        </button>
-
-        <button class="btn" id="btnLimpiar"
-                style="background-color:#6c757d;width:100px;height:40px;">
-          Limpiar
-        </button>
+        <input type="text" class="search-input" id="searchInput" placeholder="Ingresa término de búsqueda...">
       </div>
     </div>
 

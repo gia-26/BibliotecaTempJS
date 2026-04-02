@@ -52,6 +52,7 @@ const colocarDatos = (idPersonal, nombre, apellidoP, apellidoM, idRol, idTrabaja
     inpApellidoM.value = apellidoM;
     slcTiposRol.value = idRol;
     window.location.href = '#formPersonal';
+    btnGuardar.style.display = 'none';
 }
 
 btnEditar.addEventListener('click', () => {
@@ -61,6 +62,7 @@ btnEditar.addEventListener('click', () => {
 const editar = () => {
     const idPersonal = inpIdPersonal.value;
     const password = inpPassword.value;
+    const idRol = slcTiposRol.value;
     const passwordConfirm = inpPasswordConfirm.value;
     
     if (password !== passwordConfirm){
@@ -73,6 +75,7 @@ const editar = () => {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
             Id_personal: idPersonal,
+            Id_rol: idRol,
             password: password
         })
     })
@@ -116,12 +119,48 @@ const eliminarPersonal = (idPersonal) => {
     });
 }
 
+const buscarTrabajador = () => {
+    const noTrabajador = inpNoTrabajador.value.trim();
+    if (noTrabajador === '') {
+        alert('Por favor ingresa el número de trabajador para buscar.');
+        return;
+    }
+
+    fetch(`https://backend-biblioteca-two.vercel.app/api/personal/trabajador/${noTrabajador}`)
+    .then(response => response.json())
+    .then(Trabajador => {
+        if (!Trabajador.success) {
+            alert(Trabajador.message);
+            return;
+        }
+
+        console.log('Trabajador encontrado:', Trabajador.data);
+
+        inpNombre.value = Trabajador.data.Nombre;
+        inpApellidoP.value = Trabajador.data.Apellido_P;
+        inpApellidoM.value = Trabajador.data.Apellido_M;
+    })
+    .catch(error => {
+        console.error('Error al buscar el trabajador:', error);
+        alert('Error al buscar el trabajador.');
+    });
+
+}
+
+inpNoTrabajador.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        buscarTrabajador();
+    }
+});
+
 const guardar = () => {
     const noTrabajador = inpNoTrabajador.value.trim();
     const nombre = inpNombre.value.trim();
     const apellidoP = inpApellidoP.value.trim();
     const apellidoM = inpApellidoM.value.trim();
     const idRol = slcTiposRol.value;
+    const idPersonal = inpIdPersonal.value;
     const password = inpPassword.value;
     const passwordConfirm = inpPasswordConfirm.value;
     
@@ -135,22 +174,20 @@ const guardar = () => {
         return;
     }
     
-    fetch('https://backend-biblioteca-two.vercel.app/api/personal/agregar', {
+    fetch('https://backend-biblioteca-two.vercel.app/api/personal/guardar', {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
             Id_trabajador: noTrabajador,
-            Nombre: nombre,
-            Apellido_P: apellidoP,
-            Apellido_M: apellidoM,
             Id_rol: idRol,
-            password: password
+            password: password,
+            Id_personal: idPersonal
         })
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert(data.message);
+            alert(data.message + "\nEl ID del personal es: " + data.idPersonal);
             limpiar();
             cargarPersonal();
         } else {

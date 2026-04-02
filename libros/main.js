@@ -1,9 +1,9 @@
 const tablaLibros = document.getElementById("tablaLibros");
+const searchInput = document.getElementById("searchInput");
+const filterSelect = document.getElementById("filterSelect");
 const URL_BASE = "https://backend-biblioteca-two.vercel.app/";
 
-
 const cargarLibros = () => {
-
   fetch(`${URL_BASE}api/libros`)
     .then(res => res.json())
     .then(datos => {
@@ -41,6 +41,62 @@ const cargarLibros = () => {
         `;
       });
 
+    });
+}
+
+searchInput.addEventListener('input', () => {
+  buscarLibros();
+});
+
+const buscarLibros = () => {
+  const valor = searchInput.value.toLowerCase();
+  const tipo = filterSelect.value;
+
+  if (!valor) {
+    cargarLibros();
+    return;
+  }
+
+  fetch(`${URL_BASE}api/libros/buscar?tipo=${tipo}&valor=${encodeURIComponent(valor)}`)
+    .then(res => res.json())
+    .then(datos => {
+      const libros = datos.data || [];
+      tablaLibros.innerHTML = "";
+      console.log("Libros encontrados:", libros);
+      if (libros.length === 0) {
+        tablaLibros.innerHTML =
+          `<tr><td colspan="6">No se encontraron libros para "${valor}".</td></tr>`;
+        return;
+      }
+      libros.forEach(libro => {
+        tablaLibros.innerHTML += `
+          <tr>
+            <td>
+              <img src="${libro.Imagen}" class="book-image" alt="Imagen del libro ${libro.Titulo}">
+            </td>
+            <td>${libro.Id_libro}</td>
+            <td>${libro.Titulo}</td>
+            <td>${libro.Autor}</td>
+            <td>${libro.Genero}</td>
+            <td class="actions">
+              <button class="action-link action-edit"
+                onclick="abrirModal('./guardarLibros/index.html?id=${libro.Id_libro}')">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+
+              <button class="action-link action-delete"
+                onclick="eliminarLibro('${libro.Id_libro}')">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    })
+    .catch(err => {
+      console.error("Error al buscar libros:", err);
+      tablaLibros.innerHTML =
+        `<tr><td colspan="6">Ocurrió un error al buscar libros.</td></tr>`;
     });
 }
 
