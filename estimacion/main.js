@@ -6,7 +6,6 @@ const modalImageLibro = document.getElementById("bookCoverImage");
 const contenedorGrafica = document.getElementById('chartContainer');
 const contenedorTabla = document.getElementById('dataTableView');
 const URL_BASE = 'https://backend-biblioteca-two.vercel.app/';
-//const URL_BASE = 'http://localhost:3000/';
 
 let D1, D2;  // Préstamos del día 1 y día 4
 let t1 = 1, t4 = 4; // Días conocidos
@@ -241,7 +240,11 @@ function abrirModal(id, titulo, imagen) {
         .then(respuesta => respuesta.json())
         .then(datos => {
             if (!datos.prestamosDia1) {
-                alert('No hay suficientes datos para este libro');
+                mostrarAlerta({
+                    titulo: "Error",
+                    texto: "No hay suficientes datos para este libro",
+                    tipo: "error"
+                });
                 return;
             }
             
@@ -256,7 +259,11 @@ function abrirModal(id, titulo, imagen) {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al cargar los datos');
+            mostrarAlerta({
+                titulo: "Error",
+                texto: "Error al cargar los datos",
+                tipo: "error"
+            });
         });
 }
 

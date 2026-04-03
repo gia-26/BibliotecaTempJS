@@ -1,0 +1,30 @@
+.swal-minimal {
+  border-radius: 8px;
+  padding: 2em;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.swal-title-minimal {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.swal2-html-container {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.swal-btn-minimal {
+  border-radius: 10px; /* botón pill */
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.swal-btn-minimal:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(59, 36, 35, 0.2);
+}

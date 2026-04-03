@@ -66,7 +66,11 @@ const editar = () => {
     const passwordConfirm = inpPasswordConfirm.value;
     
     if (password !== passwordConfirm){
-        alert('Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Las contraseñas no coinciden. Por favor, verifica e intenta nuevamente.",
+            tipo: "error"
+        });
         return;
     }
 
@@ -82,47 +86,75 @@ const editar = () => {
     .then(response => response.json())
     .then(data => {
         if (data.success){
-            alert(data.message);
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: data.message,
+                tipo: "success"
+            });
             limpiar()
         } else {
-            alert('Error al actualizar el personal bibliotecario.');
+            mostrarAlerta({
+                titulo: "Error",
+                texto: 'Error al actualizar el personal bibliotecario.',
+                tipo: "error"
+            });
         }
         cargarPersonal();
     })
     .catch(error => {
         console.error('Error al actualizar el personal bibliotecario:', error);
-        alert('Error al actualizar el personal bibliotecario.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Error al actualizar el personal bibliotecario.',
+            tipo: "error"
+        });
     });
 }
 
 const eliminarPersonal = (idPersonal) => {
-    if (!confirm('¿Estás seguro de eliminar este personal?')) return;
-    
-    fetch('https://backend-biblioteca-two.vercel.app/api/personal/eliminar', {
-        method: 'PUT',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ Id_personal: idPersonal })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            cargarPersonal();
-            limpiar();
-        } else {
-            alert('Error al eliminar el personal.');
-        }
-    })
-    .catch(error => {
-        console.error('Error al eliminar personal:', error);
-        alert('Error al eliminar el personal.');
+    confirmarAccion("¿Estás seguro de eliminar este personal?", () => {
+        fetch('https://backend-biblioteca-two.vercel.app/api/personal/eliminar', {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ Id_personal: idPersonal })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarAlerta({
+                    titulo: "Éxito",
+                    texto: data.message,
+                    tipo: "success"
+                });
+                cargarPersonal();
+                limpiar();
+            } else {
+                mostrarAlerta({
+                    titulo: "Error",
+                    texto: 'Error al eliminar el personal.',
+                    tipo: "error"
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar personal:', error);
+            mostrarAlerta({
+                titulo: "Error",
+                texto: 'Error al eliminar el personal.',
+                tipo: "error"
+            });
+        });
     });
 }
 
 const buscarTrabajador = () => {
     const noTrabajador = inpNoTrabajador.value.trim();
     if (noTrabajador === '') {
-        alert('Por favor ingresa el número de trabajador para buscar.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Por favor ingresa el número de trabajador para buscar.',
+            tipo: "error"
+        });
         return;
     }
 
@@ -130,11 +162,15 @@ const buscarTrabajador = () => {
     .then(response => response.json())
     .then(Trabajador => {
         if (!Trabajador.success) {
-            alert(Trabajador.message);
+            mostrarAlerta({
+                titulo: "Error",
+                texto: Trabajador.message,
+                tipo: "error"
+            });
             return;
         }
 
-        console.log('Trabajador encontrado:', Trabajador.data);
+        //console.log('Trabajador encontrado:', Trabajador.data);
 
         inpNombre.value = Trabajador.data.Nombre;
         inpApellidoP.value = Trabajador.data.Apellido_P;
@@ -142,7 +178,11 @@ const buscarTrabajador = () => {
     })
     .catch(error => {
         console.error('Error al buscar el trabajador:', error);
-        alert('Error al buscar el trabajador.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Error al buscar el trabajador.',
+            tipo: "error"
+        });
     });
 
 }
@@ -165,12 +205,20 @@ const guardar = () => {
     const passwordConfirm = inpPasswordConfirm.value;
     
     if (!noTrabajador || !nombre || !apellidoP || !apellidoM || !idRol) {
-        alert('Por favor completa todos los campos.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Por favor completa todos los campos.',
+            tipo: "error"
+        });
         return;
     }
     
     if (password !== passwordConfirm) {
-        alert('Las contraseñas no coinciden.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Las contraseñas no coinciden.',
+            tipo: "error"
+        });
         return;
     }
     
@@ -187,16 +235,28 @@ const guardar = () => {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert(data.message + "\nEl ID del personal es: " + data.idPersonal);
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: data.message + "\nEl ID del personal es: " + data.idPersonal,
+                tipo: "success"
+            });
             limpiar();
             cargarPersonal();
         } else {
-            alert('Error al guardar el personal.');
+            mostrarAlerta({
+                titulo: "Error",
+                texto: 'Error al guardar el personal.',
+                tipo: "error"
+            });
         }
     })
     .catch(error => {
         console.error('Error al guardar personal:', error);
-        alert('Error al guardar el personal.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Error al guardar el personal.',
+            tipo: "error"
+        });
     });
 }
 
@@ -246,7 +306,11 @@ const buscarPersonal = () => {
     })
     .catch(error => {
         console.error('Error al buscar el personal bibliotecario:', error);
-        alert('Error al buscar el personal bibliotecario.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: 'Error al buscar el personal bibliotecario.',
+            tipo: "error"
+        });
     });
 }
 
@@ -413,23 +477,23 @@ function editarRol(id, nombre) {
 
 // ELIMINAR ROL
 async function eliminarRol(id) {
-    if (!confirm("¿Eliminar este tipo de rol?")) return;
-
-    const res = await fetch("https://backend-biblioteca-two.vercel.app/api/roles/eliminar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ Id_rol: id })
+    confirmarAccion("¿Eliminar este tipo de rol?", async () => {
+        const res = await fetch("https://backend-biblioteca-two.vercel.app/api/roles/eliminar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ Id_rol: id })
+        });
+    
+        const data = await res.json();
+    
+        if (!res.ok) {
+            mostrarNotificacionErrorRoles(data.error);
+            return;
+        }
+    
+        mostrarNotificacionRoles("Tipo de rol eliminado correctamente.");
+        cargarRolesSelect();
     });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        mostrarNotificacionErrorRoles(data.error);
-        return;
-    }
-
-    mostrarNotificacionRoles("Tipo de rol eliminado correctamente.");
-    cargarRolesSelect();
 }
 
 // LIMPIAR FORMULARIO DE ROLES

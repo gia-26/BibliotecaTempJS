@@ -102,26 +102,37 @@ const buscarLibros = () => {
 
 // ELIMINAR
 const eliminarLibro = (id) => {
-  if (!confirm("¿Estás seguro de que deseas eliminar este libro?")) {
-    return;
-  }
-
-  fetch(`${URL_BASE}api/libros/eliminar/${id}`, {
-    method: "DELETE"
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert(data.message || "Libro eliminado exitosamente.");
-      cargarLibros();
-    } else {
-      alert(data.error || "Error al eliminar el libro.");
-    }
-  })
-  .catch(err => {
-    console.error("Error al eliminar el libro:", err);
-    alert("Ocurrió un error al eliminar el libro.");
+  confirmarAccion("¿Estás seguro de que deseas eliminar este libro?", () => {
+    fetch(`${URL_BASE}api/libros/eliminar/${id}`, {
+      method: "DELETE"
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        mostrarAlerta({
+          titulo: "Éxito",
+          texto: data.message || "Libro eliminado exitosamente.",
+          tipo: "success"
+        });
+        cargarLibros();
+      } else {
+        mostrarAlerta({
+          titulo: "Error",
+          texto: data.error || "Error al eliminar el libro.",
+          tipo: "error"
+        });
+      }
+    })
+    .catch(err => {
+      console.error("Error al eliminar el libro:", err);
+      mostrarAlerta({
+        titulo: "Error",
+        texto: "Ocurrió un error al eliminar el libro.",
+        tipo: "error"
+      });
+    });
   });
+
 };
 
 // MODAL

@@ -43,7 +43,7 @@ fetch("/BibliotecaTempJS/header-dashboard.html")
         window.location.href = "/BibliotecaTempJS/login/";
         return;
       }
-      console.log("Token encontrado:", token);
+      //console.log("Token encontrado:", token);
       const rol = localStorage.getItem("rol");
       const nav = document.getElementById("opciones");
       const tituloCuenta = document.getElementById("tituloCuenta");
@@ -93,3 +93,52 @@ fetch("/BibliotecaTempJS/header-dashboard.html")
       }
     }
   });
+
+function mostrarAlerta({
+    titulo = "Mensaje",
+    texto = "",
+    tipo = "info", // success, error, warning, info, question
+    botonTexto = "Aceptar",
+    redireccion = null,
+    tiempo = null // opcional (ms)
+}) {
+    return Swal.fire({
+        title: titulo,
+        text: texto,
+        icon: tipo,
+        confirmButtonText: botonTexto,
+
+        background: "#ffffff",
+        color: "#3b2423",
+        confirmButtonColor: "#3b2423",
+
+        timer: tiempo,
+        showConfirmButton: tiempo ? false : true,
+
+        customClass: {
+            popup: 'swal-minimal',
+            title: 'swal-title-minimal',
+            confirmButton: 'swal-btn-minimal'
+        }
+    }).then(() => {
+        if (redireccion) {
+            window.location.href = redireccion;
+        }
+    });
+}
+
+function confirmarAccion(mensaje, callback) {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: mensaje,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3b2423"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            callback();
+        }
+    });
+}

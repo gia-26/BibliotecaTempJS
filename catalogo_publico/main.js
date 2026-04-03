@@ -171,7 +171,11 @@ const analizarConWitAI = async (texto) => {
 
   } catch (error) {
     console.error('Error:', error);
-    alert(texto);
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Ocurrió un error al procesar la búsqueda.",
+      tipo: "error"
+    });
     searchInput.value = texto;
   }
 };
@@ -209,7 +213,11 @@ recognition.onerror = function(event) {
   recognition.abort();
   
   if (event.error === 'not-allowed') {
-    alert('Por favor, permite el acceso al micrófono para usar búsqueda por voz');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, permite el acceso al micrófono para usar búsqueda por voz",
+      tipo: "error"
+    });
   }
 };
 

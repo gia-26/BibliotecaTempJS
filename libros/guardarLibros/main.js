@@ -54,19 +54,31 @@ const guaradarLibro = async () => {
         const maxSize = 2 * 1024 * 1024;
         
         if (!tiposPermitidos.includes(imagen.type)) {
-        alert('Formato de imagen no válido. Solo se permiten: JPG, JPEG, PNG');
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "Formato de imagen no válido. Solo se permiten: JPG, JPEG, PNG",
+          tipo: "error"
+        });
         inpImagen.focus();
         return false;
         }
         
         if (imagen.size > maxSize) {
-        alert('La imagen no puede exceder los 2MB');
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "La imagen no puede exceder los 2MB",
+          tipo: "error"
+        });
         inpImagen.focus();
         return false;
         }
     }
     else {
-        alert('La imagen es obligatoria');
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "La imagen es obligatoria",
+          tipo: "error"
+        });
         inpImagen.focus();
         return false;
     }
@@ -85,7 +97,11 @@ const guaradarLibro = async () => {
     const urlImagen = await subirimg(); // Subir imagen y obtener URL
 
     if (!urlImagen) {
-        alert('No se pudo subir la imagen. El libro no se guardará.');
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "No se pudo subir la imagen. El libro no se guardará.",
+          tipo: "error"
+        });
         loader.style.display = 'none';
         return;
     }
@@ -115,18 +131,30 @@ const guaradarLibro = async () => {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert(data.message);
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: data.message,
+                tipo: "success"
+            });
             limpiarFormulario();
             loader.style.display = 'none';
         }
         else {
-            alert('Error al guardar el libro: ' + data.message);
+            mostrarAlerta({
+                titulo: "Error",
+                texto: 'Error al guardar el libro: ' + data.message,
+                tipo: "error"
+            });
             loader.style.display = 'none';
         }
     })
     .catch(error => {
         console.error("Error al guardar el libro:", error);
-        alert('Ha ocurrido un error al guardar el libro. Por favor, inténtalo de nuevo.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ha ocurrido un error al guardar el libro. Por favor, inténtalo de nuevo.",
+            tipo: "error"
+        });
         loader.style.display = 'none';
     });
 }
@@ -146,96 +174,156 @@ const validarDatos = () => {
   
   // Validar título
   if (titulo === '') {
-    alert('El título es obligatorio');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El título es obligatorio",
+      tipo: "error"
+    });
     inpTitulo.focus();
     return false;
   }
   if (titulo.length < 5) {
-    alert('El título debe tener al menos 5 caracteres');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El título debe tener al menos 5 caracteres",
+      tipo: "error"
+    });
     inpTitulo.focus();
     return false;
   }
   if (titulo.length > 100) {
-    alert('El título no puede tener más de 100 caracteres');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El título no puede tener más de 100 caracteres",
+      tipo: "error"
+    });
     inpTitulo.focus();
     return false;
   }
   
   // Validar ISBN
   if (isbn === '') {
-    alert('El ISBN es obligatorio');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El ISBN es obligatorio",
+      tipo: "error"
+    });
     inpISBN.focus();
     return false;
   }
   
   // Validar edición
   if (edicion === '') {
-    alert('La edición es obligatoria');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "La edición es obligatoria",
+      tipo: "error"
+    });
     inpEdicion.focus();
     return false;
   }
   
   // Validar año de edición
   if (anioEdicion === '') {
-    alert('Debe seleccionar un año de edición');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Debe seleccionar un año de edición",
+      tipo: "error"
+    });
     slcAnioEdicion.focus();
     return false;
   }
   
   // Validar área de conocimiento
   if (areaConocimiento === '') {
-    alert('Debe seleccionar un área de conocimiento');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Debe seleccionar un área de conocimiento",
+      tipo: "error"
+    });
     slcAreaConocimiento.focus();
     return false;
   }
   
   // Validar género principal
   if (generoPrincipal === '') {
-    alert('Debe seleccionar un género principal');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Debe seleccionar un género principal",
+      tipo: "error"
+    });
     slcGeneroPrincipal.focus();
     return false;
   }
   
   // Validar autor principal
   if (autorPrincipal === '') {
-    alert('Debe seleccionar un autor principal');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Debe seleccionar un autor principal",
+      tipo: "error"
+    });
     slcAutorPrincipal.focus();
     return false;
   }
   
   // Validar editorial principal
   if (editorialPrincipal === '') {
-    alert('Debe seleccionar una editorial principal');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Debe seleccionar una editorial principal",
+      tipo: "error"
+    });
     slcEditoriales.focus();
     return false;
   }
   
   // Validar sinopsis
   if (sinopsis === '') {
-    alert('La sinopsis es obligatoria');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "La sinopsis es obligatoria",
+      tipo: "error"
+    });
     txtaSinopsis.focus();
     return false;
   }
   if (sinopsis.length < 10) {
-    alert('La sinopsis debe tener al menos 10 caracteres');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "La sinopsis debe tener al menos 10 caracteres",
+      tipo: "error"
+    });
     txtaSinopsis.focus();
     return false;
   }
   if (sinopsis.length > 2000) {
-    alert('La sinopsis no puede tener más de 2000 caracteres');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "La sinopsis no puede tener más de 2000 caracteres",
+      tipo: "error"
+    });
     txtaSinopsis.focus();
     return false;
   }
   
   // Validar número de ejemplares
   if (noEjemplares === '') {
-    alert('El número de ejemplares es obligatorio');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El número de ejemplares es obligatorio",
+      tipo: "error"
+    });
     inpNoEjemplares.focus();
     return false;
   }
   const numEjemplares = parseInt(noEjemplares);
   if (numEjemplares < 1 || numEjemplares > 100) {
-    alert('El número de ejemplares debe estar entre 1 y 100');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El número de ejemplares debe estar entre 1 y 100",
+      tipo: "error"
+    });
     inpNoEjemplares.focus();
     return false;
   }
@@ -326,12 +414,20 @@ btnSubgeneros.addEventListener('click', () => {
 
     // Verificar si el género ya fue agregado
     if (document.querySelector(`.tag[data-id="${id}"]`)) {
-        alert('Este subgénero ya ha sido agregado.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Este subgénero ya ha sido agregado.",
+            tipo: "error"
+        });
         return;
     }
 
     if (!id) {
-        alert('Por favor, selecciona un subgénero.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Por favor, selecciona un subgénero.",
+            tipo: "error"
+        });
         return;
     }
     if (subgeneros.size < 1)  divSubgenerosContainer.innerHTML = '';
@@ -352,12 +448,20 @@ btnCoautores.addEventListener('click', () => {
 
     // Verificar si el autor ya fue agregado
     if (document.querySelector(`.tag[data-id="${id}"]`)) {
-        alert('Este coautor ya ha sido agregado.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Este coautor ya ha sido agregado.",
+            tipo: "error"
+        });
         return;
     }
 
     if (!id) {
-        alert('Por favor, selecciona un coautor.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Por favor, selecciona un coautor.",
+            tipo: "error"
+        });
         return;
     }
     if (coautores.size < 1)  divCoautoresContainer.innerHTML = '';
@@ -378,11 +482,19 @@ btnEditorialesSecundarias.addEventListener('click', () => {
 
     // Verificar si la editorial ya fue agregada
     if (document.querySelector(`.tag[data-id="${id}"]`)) {
-        alert('Esta editorial secundaria ya ha sido agregada.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Esta editorial secundaria ya ha sido agregada.",
+            tipo: "error"
+        });
         return;
     }
     if (!id) {
-        alert('Por favor, selecciona una editorial secundaria.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Por favor, selecciona una editorial secundaria.",
+            tipo: "error"
+        });
         return;
     }
     if (editorialesSecundarias.size < 1)  divEditorialesContainer.innerHTML = '';
@@ -455,7 +567,11 @@ const subirimg = async () => {
     });
 
     if (!response.ok) {
-        alert("Fallo al subir la imagen");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Fallo al subir la imagen",
+            tipo: "error"
+        });
         return null;
     }
 
@@ -492,7 +608,11 @@ const cargarDatosLibro = (id) => {
      .then(response => response.json())
      .then(libro => {
         if (!libro.success) {
-            alert('Error al recuperar los datos del libro: ' + libro.message);
+            mostrarAlerta({
+                titulo: "Error",
+                texto: "Error al recuperar los datos del libro: " + libro.message,
+                tipo: "error"
+            });
             loader.style.display = 'none';
             return;
         }
@@ -558,7 +678,11 @@ const cargarDatosLibro = (id) => {
     .catch(error => {
         console.error('Error al recuperar los datos del libro:', error);
         loader.style.display = 'none';
-        alert('Ha ocurrido un error al cargar los datos del libro. Por favor, inténtalo de nuevo.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ha ocurrido un error al cargar los datos del libro. Por favor, inténtalo de nuevo.",
+            tipo: "error"
+        });
     });
 }
 
@@ -584,7 +708,11 @@ const actualizarLibro = async () => {
     if (file) {
         url = await subirimg(); // Subir nueva imagen y obtener URL
         if (!url) {
-            alert('No se pudo subir la imagen. El libro no se actualizará.');
+            mostrarAlerta({
+                titulo: "Error",
+                texto: "No se pudo subir la imagen. El libro no se actualizará.",
+                tipo: "error"
+            });
             loader.style.display = 'none';
             return;
         }
@@ -601,10 +729,18 @@ const actualizarLibro = async () => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Imagen anterior eliminada exitosamente');
+                        mostrarAlerta({
+                            titulo: "Éxito",
+                            texto: "Imagen anterior eliminada exitosamente",
+                            tipo: "success"
+                        });
                     }
                     else {
-                        alert('Error al eliminar la imagen anterior: ' + data.error);
+                        mostrarAlerta({
+                            titulo: "Error",
+                            texto: "Error al eliminar la imagen anterior: " + data.error,
+                            tipo: "error"
+                        });
                         return;
                     }
                 })
@@ -638,18 +774,30 @@ const actualizarLibro = async () => {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert(data.message);
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: data.message,
+                tipo: "success"
+            });
             limpiarFormulario();
             loader.style.display = 'none';
         }
         else {
-            alert('Error al editar el libro: ' + data.message);
+            mostrarAlerta({
+                titulo: "Error",
+                texto: 'Error al editar el libro: ' + data.message,
+                tipo: "error"
+            });
             loader.style.display = 'none';
         }
     })
     .catch(error => {
         console.error("Error al editar el libro:", error);
-        alert('Ha ocurrido un error al editar el libro. Por favor, inténtalo de nuevo.');
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ha ocurrido un error al editar el libro. Por favor, inténtalo de nuevo.",
+            tipo: "error"
+        });
         loader.style.display = 'none';
     });
 }

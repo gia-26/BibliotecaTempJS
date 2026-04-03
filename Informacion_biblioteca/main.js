@@ -37,35 +37,48 @@ document.getElementById("update-presentacion-form").addEventListener("submit", f
   const nuevoContenido = document.getElementById("presentacion-contenido").value;
 
   if (!nuevoContenido.trim()) {
-    alert("El campo no puede estar vacío");
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El campo no puede estar vacío",
+      tipo: "error"
+    });
     return;
   }
 
-  if (!confirm("¿Guardar cambios en ¿Quiénes Somos? ?")) return;
-
-  fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      quienesSomos: nuevoContenido
+  confirmarAccion("¿Guardar cambios en ¿Quiénes Somos?", () => {
+    fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quienesSomos: nuevoContenido
+      })
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    //alert("Presentación actualizada correctamente");
-    
-    // Recargar datos
-    fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
-      .then(res => res.json())
-      .then(data => {
-        presentacionTexto.textContent = data.quienesSomos;
+    .then(res => res.json())
+    .then(data => {
+      //alert("Presentación actualizada correctamente");
+      mostrarAlerta({
+        titulo: "Éxito",
+        texto: "Presentación actualizada correctamente",
+        tipo: "success"
       });
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    //alert("Error al actualizar la presentación");
+  
+      // Recargar datos
+      fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
+        .then(res => res.json())
+        .then(data => {
+          presentacionTexto.textContent = data.quienesSomos;
+        });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      mostrarAlerta({
+        titulo: "Error",
+        texto: "Error al actualizar la presentación",
+        tipo: "error"
+      });
+    });
   });
 });
 
@@ -76,35 +89,48 @@ document.getElementById("update-historia-form").addEventListener("submit", funct
   const nuevoContenido = document.getElementById("historia-contenido").value;
 
   if (!nuevoContenido.trim()) {
-    alert("El campo no puede estar vacío");
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El campo no puede estar vacío",
+      tipo: "error"
+    });
     return;
   }
 
-  if (!confirm("¿Guardar cambios en Nuestra Historia?")) return;
-
-  fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      historia: nuevoContenido
+  confirmarAccion("¿Guardar cambios en Nuestra Historia?", () => {
+    fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        historia: nuevoContenido
+      })
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    //alert("Historia actualizada correctamente");
-    
-    // Recargar datos
-    fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
-      .then(res => res.json())
-      .then(data => {
-        historiaTexto.textContent = data.historia;
+    .then(res => res.json())
+    .then(data => {
+      //alert("Historia actualizada correctamente");
+      mostrarAlerta({
+        titulo: "Éxito",
+        texto: "Historia actualizada correctamente",
+        tipo: "success"
       });
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert("Error al actualizar la historia");
+  
+      // Recargar datos
+      fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/informacion")
+        .then(res => res.json())
+        .then(data => {
+          historiaTexto.textContent = data.historia;
+        });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      mostrarAlerta({
+        titulo: "Error",
+        texto: "Error al actualizar la historia",
+        tipo: "error"
+      });
+    });
   });
 });
 
@@ -116,37 +142,50 @@ document.getElementById("update-mvo-form").addEventListener("submit", function(e
   const nuevoContenido = document.getElementById("mvo-contenido").value;
 
   if (!nuevoContenido.trim()) {
-    alert("El campo no puede estar vacío");
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El campo no puede estar vacío",
+      tipo: "error"
+    });
     return;
   }
 
-  if (!confirm(`¿Guardar cambios en ${seleccion}?`)) return;
-
-  fetch(`https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/${seleccion}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      [seleccion]: nuevoContenido
+  confirmarAccion(`¿Guardar cambios en ${seleccion}?`, () => {
+    fetch(`https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/${seleccion}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        [seleccion]: nuevoContenido
+      })
     })
-  })
-  .then(res => res.json())
-  .then(data => {
-    //alert(`${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`);
-    
-    // Recargar datos de MVO
-    fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/mvo")
-      .then(res => res.json())
-      .then(data => {
-        misionTexto.textContent = data.mision;
-        visionTexto.textContent = data.vision;
-        objetivoTexto.textContent = data.objetivo;
+    .then(res => res.json())
+    .then(data => {
+      //alert(`${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`);
+      mostrarAlerta({
+        titulo: "Éxito",
+        texto: `${seleccion.charAt(0).toUpperCase() + seleccion.slice(1)} actualizado correctamente`,
+        tipo: "success"
       });
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert(`Error al actualizar ${seleccion}`);
+  
+      // Recargar datos de MVO
+      fetch("https://backend-biblioteca-two.vercel.app/api/informacion_biblioteca/mvo")
+        .then(res => res.json())
+        .then(data => {
+          misionTexto.textContent = data.mision;
+          visionTexto.textContent = data.vision;
+          objetivoTexto.textContent = data.objetivo;
+        });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      mostrarAlerta({
+        titulo: "Error",
+        texto: `Error al actualizar ${seleccion}`,
+        tipo: "error"
+      });
+    });
   });
 });
 

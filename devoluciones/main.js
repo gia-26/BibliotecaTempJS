@@ -101,50 +101,70 @@ const cargarMultas = () => {
 }
 
 const devolver = (idPrestamo) => {
-  if (!confirm("¿Está seguro de que desea devolver este préstamo?"))
-    return;
-  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/devolver", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: idPrestamo })
-  })
-    .then(response => response.json())
-    .then(result => {
-      console.log("RESULTADO DEVOLUCIÓN:", result);
-      if (result.success) {
-        if (searchInput.value.trim() !== "") buscarPrestamos();
-        else mostrarDevolcuiones();
-        alert(result.mensaje);
-      }
-      else
-        alert("Error al devolver el préstamo: " + result.error);
+  confirmarAccion("¿Está seguro de que desea devolver este préstamo?", () => {
+    fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/devolver", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: idPrestamo })
     })
-    .catch(error => {
-      console.error("Error al devolver el préstamo:", error);
-    });
+      .then(response => response.json())
+      .then(result => {
+        console.log("RESULTADO DEVOLUCIÓN:", result);
+        if (result.success) {
+          if (searchInput.value.trim() !== "") buscarPrestamos();
+          else mostrarDevolcuiones();
+          mostrarAlerta({
+            titulo: "Éxito",
+            texto: result.mensaje,
+            tipo: "success"
+          });
+        }
+        else
+          mostrarAlerta({
+            titulo: "Error",
+            texto: result.error || "Error desconocido",
+            tipo: "error"
+          });
+      })
+      .catch(error => {
+        console.error("Error al devolver el préstamo:", error);
+      });
+  });
 }
 
 const renovar = (idPrestamo, idUsuario) => {
-  if (!confirm("¿Está seguro de que desea renovar este préstamo?"))
-    return;
-  fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/renovar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ idPrestamo, idUsuario})
-  })
-    .then(response => response.json())
-    .then(result => {
-      console.log("RESULTADO RENOVACIÓN:", result);
-      if (result.success) {
-        mostrarDevolcuiones();
-        alert(result.mensaje);
-      }
-      else
-        alert("Error al renovar el préstamo: " + result.mensaje);
+  confirmarAccion("¿Está seguro de que desea renovar este préstamo?", () => {
+    fetch("https://backend-biblioteca-two.vercel.app/api/prestamos/renovar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idPrestamo, idUsuario})
     })
-    .catch(error => {
-      alert("Error al renovar el préstamo:", error);
-    });
+      .then(response => response.json())
+      .then(result => {
+        console.log("RESULTADO RENOVACIÓN:", result);
+        if (result.success) {
+          mostrarDevolcuiones();
+          mostrarAlerta({
+            titulo: "Éxito",
+            texto: result.mensaje,
+            tipo: "success"
+          });
+        }
+        else
+          mostrarAlerta({
+            titulo: "Error",
+            texto: result.error || "Error desconocido",
+            tipo: "error"
+          });
+      })
+      .catch(error => {
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "Error al renovar el préstamo.",
+          tipo: "error"
+        });
+      });
+  });
 }
 
 mostrarDevolcuiones();

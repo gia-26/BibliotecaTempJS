@@ -48,7 +48,11 @@ btnGenerar.addEventListener('click', (e) => {
 
   // 3. VALIDACIÓN 
   if (fIni > fFin) {
-    alert("La fecha de inicio no puede ser mayor que la fecha fin.");
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "La fecha de inicio no puede ser mayor que la fecha fin.",
+      tipo: "error"
+    });
     return;
   }
 

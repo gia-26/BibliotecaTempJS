@@ -70,7 +70,11 @@ function mostrarTiposPrestamos() {
 
 const seleccionarEjemplar = (Id_libro, Titulo, Id_Ejemplar, Estado) => {
   if (Estado === 'Prestado') {
-    alert('Este ejemplar ya está prestado. Por favor, selecciona otro.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Este ejemplar ya está prestado. Por favor, selecciona otro.",
+      tipo: "error"
+    });
     return;
   }
   location.href = '#formPrestamo';
@@ -143,6 +147,7 @@ inpIdUsuario.addEventListener('keypress', (event) => {
 });
 
 const buscarUsuario = () => {
+  console.log(`Buscando usuario con ID: ${inpIdUsuario.value} y tipo: ${slcTipoUsuario.value}`);
   fetch(`https://backend-biblioteca-two.vercel.app/api/usuarios/buscar?id=${inpIdUsuario.value}&tipo=${slcTipoUsuario.value}`)
     .then(response => response.json())
     .then(usuario => {
@@ -154,7 +159,11 @@ const buscarUsuario = () => {
         buscoUsuario = false;
         idUsuarioBuscado = '';
         nombreUsuario.value = '';
-        alert('Usuario no encontrado');
+        mostrarAlerta({
+          titulo: "Error",
+          texto: "Usuario no encontrado",
+          tipo: "error"
+        });
       }
     })
     .catch(error => {
@@ -185,10 +194,18 @@ btnPrestar.addEventListener('click', () => {
     .then(result => {
         if (result.success) {
           mostrarPrestamos();
-          alert(result.mensaje);
+          mostrarAlerta({
+            titulo: "Éxito",
+            texto: result.mensaje,
+            tipo: "success"
+          });
           limpiar();
         } else {
-          alert(`Error al registrar el préstamo: ${result.error || 'Error desconocido'}`);
+          mostrarAlerta({
+            titulo: "Error",
+            texto: `${result.error || 'Error desconocido'}`,
+            tipo: "error"
+          });
         }
     })
     .catch(error => {
@@ -198,12 +215,20 @@ btnPrestar.addEventListener('click', () => {
 
 const validarBuscarUsuario = () => {
   if (!buscoUsuario) {
-    alert('Falta buscar el usuario. Ingresa su ID y da enter');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Falta buscar el usuario. Ingresa su ID y da enter",
+      tipo: "error"
+    });
     return false;
   }
 
   if (inpIdUsuario.value.trim() !== idUsuarioBuscado) {
-    alert('El ID del usuario no coincide con el buscado.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "El ID del usuario no coincide con el buscado.",
+      tipo: "error"
+    });
     return false;
   }
   return true;
@@ -211,23 +236,43 @@ const validarBuscarUsuario = () => {
 
 const validarPrestamo = (idUser, idEjemplar, idBibliotecario, idTipoPrestamo, idTipoUsuario) => {
   if (!idUser) {
-    alert('Por favor, ingresa el ID del usuario.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, ingresa el ID del usuario.",
+      tipo: "error"
+    });
     return false;
   }
   if (!idEjemplar) {
-    alert('Por favor, selecciona un ejemplar.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, selecciona un ejemplar.",
+      tipo: "error"
+    });
     return false;
   }
   if (!idBibliotecario) {
-    alert('Por favor, ingresa el ID del bibliotecario.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, ingresa el ID del bibliotecario.",
+      tipo: "error"
+    });
     return false;
   }
   if (!idTipoPrestamo) {
-    alert('Por favor, selecciona el tipo de préstamo.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, selecciona el tipo de préstamo.",
+      tipo: "error"
+    } );
     return false;
   }
   if (!idTipoUsuario) {
-    alert('Por favor, selecciona el tipo de usuario.');
+    mostrarAlerta({
+      titulo: "Error",
+      texto: "Por favor, selecciona el tipo de usuario.",
+      tipo: "error"
+    });
     return false;
   }
   return true
@@ -286,9 +331,17 @@ document.addEventListener('click', async (e) => {
     const result = await response.json();
     
     if (!result.success) {
-      alert(result.mensaje); // Mensaje de restricción — Paso 5
+      mostrarAlerta({
+        titulo: "Error",
+        texto: result.mensaje,
+        tipo: "error"
+      });
     } else {
-      alert(result.mensaje);
+      mostrarAlerta({
+        titulo: "Éxito",
+        texto: result.mensaje,
+        tipo: "success"
+      });
       slcTipoPrestamos.innerHTML = ''; // ✅ limpiar select
       mostrarTiposPrestamos();         // ✅ recargar select
     }

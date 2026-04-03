@@ -40,7 +40,11 @@ document.getElementById('profile-form').addEventListener('submit', function (e) 
     const tel = document.getElementById("telefono").value.trim();
 
     if (!/^[0-9]{10}$/.test(tel)) {
-        alert("El teléfono debe tener exactamente 10 números.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "El teléfono debe tener exactamente 10 números.",
+            tipo: "error"
+        });
         return;
     }
 
@@ -55,14 +59,26 @@ document.getElementById('profile-form').addEventListener('submit', function (e) 
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            alert("Teléfono actualizado correctamente.");
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: "Teléfono actualizado correctamente.",
+                tipo: "success"
+            });
         } else {
-            alert(data.message || "Error al actualizar teléfono.");
+            mostrarAlerta({
+                titulo: "Error",
+                texto: data.message || "Error al actualizar teléfono.",
+                tipo: "error"
+            });
         }
     })
     .catch(err => {
         console.error(err);
-        alert("Ocurrió un error al actualizar el teléfono.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ocurrió un error al actualizar el teléfono.",
+            tipo: "error"
+        });
     });
 });
 
@@ -74,17 +90,29 @@ document.getElementById('password-form').addEventListener('submit', function (e)
     const confirmar = document.getElementById("confirm-password").value.trim();
 
     if (!actual || !nueva || !confirmar) {
-        alert("Por favor, completa todos los campos.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Por favor, completa todos los campos.",
+            tipo: "error"
+        });
         return;
     }
 
     if (nueva.length < 8) {
-        alert("La nueva contraseña debe tener mínimo 8 caracteres.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "La nueva contraseña debe tener mínimo 8 caracteres.",
+            tipo: "error"
+        });
         return;
     }
 
     if (nueva !== confirmar) {
-        alert("Las contraseñas no coinciden.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Las contraseñas no coinciden.",
+            tipo: "error"
+        });
         return;
     }
 
@@ -99,15 +127,27 @@ document.getElementById('password-form').addEventListener('submit', function (e)
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            alert("Contraseña actualizada correctamente.");
+            mostrarAlerta({
+                titulo: "Éxito",
+                texto: "Contraseña actualizada correctamente.",
+                tipo: "success"
+            });
             document.getElementById('password-form').reset();
         } else {
-            alert(data.message || "Error al cambiar contraseña.");
+            mostrarAlerta({
+                titulo: "Error",
+                texto: data.message || "Error al cambiar contraseña.",
+                tipo: "error"
+            });
         }
     })
     .catch(err => {
         console.error(err);
-        alert("Ocurrió un error al cambiar la contraseña.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ocurrió un error al cambiar la contraseña.",
+            tipo: "error"
+        });
     });
 });
 

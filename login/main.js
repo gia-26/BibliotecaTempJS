@@ -33,7 +33,11 @@ const iniciarSesion = () => {
     const passwordIngresada = inputPassword.value;
     
     if (!sesionSeleccionada || !usuarioIngresado || !passwordIngresada) {
-        alert("Por favor, completa todos los campos.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Por favor, completa todos los campos.",
+            tipo: "error"
+        });
         return;
     }
 
@@ -59,15 +63,27 @@ const iniciarSesion = () => {
             localStorage.setItem("nombre", data.usuario.nombre);
             localStorage.setItem("rol", data.usuario.rol);
             localStorage.setItem("token", data.token);
-            window.location.href = "/BibliotecaTempJS/dashboard/";
-            alert("¡Inicio de sesión exitoso!");
+            mostrarAlerta({
+                titulo: "Inicio de sesión exitoso",
+                texto: "Bienvenido al sistema SisGPL",
+                tipo: "success",
+                redireccion: "/BibliotecaTempJS/dashboard/"
+            });
         } else {
             console.log(data);
-            alert(data.message || data.error || "Credenciales incorrectas. Inténtalo de nuevo.");
+            mostrarAlerta({
+                titulo: "Error",
+                texto: data.message || data.error || "Credenciales incorrectas. Inténtalo de nuevo.",
+                tipo: "error"
+            });
         }
     })
     .catch(error => {
         console.error("Error:", error);
-        alert("Ocurrió un error al intentar iniciar sesión.");
+        mostrarAlerta({
+            titulo: "Error",
+            texto: "Ocurrió un error al intentar iniciar sesión.",
+            tipo: "error"
+        });
     });
 }
