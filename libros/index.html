@@ -83,6 +83,13 @@
 
   <script src="../main.js"></script>
   <script src="main.js"></script>
-
+  <script>
+    function closeAllModals() {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        modals[i].style.display = 'none';
+      }
+    }
+  </script>
 </body>
 </html>
