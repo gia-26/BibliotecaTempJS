@@ -6,13 +6,17 @@
   <title>Agregar Libro - Biblioteca UTHH</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="../alert.css">
+  <link rel="stylesheet" href="../../alert.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <main>
     <div class="form-section">
-      <h3 class="section-title" id="title">Agregar Libro</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; border-bottom: 1px solid #ccc;">
+        <h3 class="section-title" id="title">Agregar Libro</h3>
+        <button style="border: none; width: 10%; height: 15%; background-color: transparent; font-size: large; cursor: pointer;" onclick="window.parent.closeAllModals()">&times;</button>
+      </div>
+
       <div class="book-form">
         
         <div class="form-group">
@@ -287,6 +291,7 @@
     </div>
   </div>
 
+  <script src="../../main.js"></script>
   <script src="main.js"></script>
 
   <script>
@@ -298,14 +303,14 @@ function closeModal(modalId) {
   document.getElementById(modalId).style.display = 'none';
 }
 
-window.onclick = function(event) {
+function closeAllModals() {
   const modals = document.getElementsByClassName('modal');
   for (let i = 0; i < modals.length; i++) {
-    if (event.target == modals[i]) {
-      modals[i].style.display = 'none';
-    }
+    modals[i].style.display = 'none';
   }
 }
+
+window.onclick = closeAllModals;
 </script>
 </body>
 </html>
