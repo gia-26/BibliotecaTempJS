@@ -41,7 +41,7 @@ function editarTipoPrestamo(id, nombre) {
 // ELIMINAR
 async function eliminarTipoPrestamo(id) {
   if (!confirm("¿Eliminar este tipo de préstamo?")) return;
-  await fetch(
+  const res = await fetch(
     "https://backend-biblioteca-two.vercel.app/api/tipos_prestamo/eliminar",
     {
       method: "POST",
@@ -49,12 +49,17 @@ async function eliminarTipoPrestamo(id) {
       body: JSON.stringify({ Id_tipo_prestamo: id }),
     },
   );
-  mostrarNotificacion("Tipo de préstamo eliminado correctamente.");
-  cargarTiposPrestamo();
+  const data = await res.json();
 
-  if (window.parent && window.parent.mostrarTiposPrestamos) {
-    window.parent.mostrarTiposPrestamos();
+  if (data.success === false || data.error) {
+    mostrarNotificacion(data.message || "No se puede eliminar: tiene préstamos asociados.");
+  } else {
+    mostrarNotificacion("Tipo de préstamo eliminado correctamente.");
+    if (window.parent && window.parent.mostrarTiposPrestamos) {
+      window.parent.mostrarTiposPrestamos();
+    }
   }
+  cargarTiposPrestamo();
 }
 
 // LIMPIAR
