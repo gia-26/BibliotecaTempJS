@@ -1,108 +1,98 @@
 import { test, expect } from '@playwright/test';
 
-test('Eliminación de Tipo de Préstamo', async ({ page }) => {
+test('Restricción de Eliminación de Tipo de Préstamo', async ({ page }) => {
   await test.step('Iniciar sesión y acceder al módulo de préstamo', async () => {
     await page.goto('http://localhost/BibliotecaTempJS/login/');
+    await page.locator('#sesion').selectOption('ROL003');
+    await page.locator('#usuario').fill('PER004');
+    await page.locator('#password').fill('pasS123$');
+    await page.locator('#btnEntrar').click();
 
-    await page.getByPlaceholder('Ingresa tu usuario').fill('PER002');
-    await page.getByPlaceholder('Ingresa tu contraseña').fill('pasS123$');
-    await page.getByRole('button', { name: 'Entrar' }).click();
+    // Esperar el SweetAlert y hacer clic en Aceptar
+    await page.locator('.swal2-popup').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('.swal2-confirm').click();
 
-    await page.getByRole('link', { name: 'Ver préstamos' }).click();
+    // Esperar la redirección al dashboard
+    await page.waitForFunction(
+      () => window.location.href.includes('/dashboard/'),
+      { timeout: 15000 }
+    );
+    await page.waitForTimeout(2000);
 
-    await expect(page).toHaveURL('http://localhost/BibliotecaTempJS/prestamos/');
+    // Navegar al módulo de préstamos
+    await page.locator('a[href="/BibliotecaTempJS/prestamos/"]').click();
+    await page.waitForTimeout(2000);
   });
 
   await test.step('Seleccionar el ícono de ajuste de los tipos de préstamos', async () => {
     await page.locator('button.config-btn[title="Configurar tipos de préstamo"]').click();
+    await page.waitForTimeout(2000);
     await expect(page.locator('#modal-tipos-prestamo')).toBeVisible();
   });
 
-  await test.step('Seleccionar un tipo con préstamos activos (TP001)', async () => {
-    const filaTp001 = page
-      .locator('#modal-tipos-prestamo .modal-table tbody tr')
-      .filter({ hasText: 'TP001' });
+  // Referencia al iframe del modal
+  const iframe = page.frameLocator('#modal-tipos-prestamo iframe');
+  await iframe.locator('.modal-container').waitFor({ state: 'visible', timeout: 8000 });
 
-    await expect(filaTp001).toBeVisible();
-    await filaTp001.click();
-
-    await expect(filaTp001).toHaveClass('selected-row');
-    await expect(filaTp001).toContainText('Domicilio');
+  await test.step('Seleccionar un tipo con préstamos activos', async () => {
+    const tipoDomicilio = iframe.locator('#listaTiposPrestamo .fila-genero').filter({ hasText: 'Domicilio' });
+    await expect(tipoDomicilio).toBeVisible({ timeout: 8000 });
   });
 
   await test.step('Intentar eliminar el tipo seleccionado', async () => {
-    const filaTp001 = page
-      .locator('#modal-tipos-prestamo .modal-table tbody tr')
-      .filter({ hasText: 'TP001' });
-
-    const btnEliminar = filaTp001.locator('button.btn-delete');
-
+    const btnEliminar = iframe.locator('#listaTiposPrestamo .fila-genero')
+      .filter({ hasText: 'Domicilio' })
+      .locator('.icon-btn.delete');
     await expect(btnEliminar).toBeVisible();
-    await expect(btnEliminar).toBeEnabled();
-
+    page.once('dialog', async dialog => {
+      console.log(`   Confirm: "${dialog.message()}"`);
+      await dialog.accept();
+    });
     await btnEliminar.click();
-
-    // El sistema NO usa dialog nativo, así que solo validamos que el modal siga abierto
-    await expect(page.locator('#modal-tipos-prestamo')).toBeVisible();
-
-    // Y que el registro siga existiendo
-    await expect(filaTp001).toBeVisible();
+    await page.waitForTimeout(2000);
   });
 
-  await test.step('Visualizar mensaje o restricción en la interfaz', async () => {
-    // Si tu sistema muestra mensaje visual, ajusta estos selectores según tu HTML real
-    const posiblesMensajes = page.locator(
-      '.alert-danger, .alert, .error, .mensaje-error, .toast, .toast-error, .swal2-popup'
-    );
-
-    // Esta validación no obliga a que exista mensaje;
-    // solo comprueba que el modal no desapareció y la fila sigue presente
-    await expect(page.locator('#modal-tipos-prestamo')).toBeVisible();
-
-    const filaTp001 = page
-      .locator('#modal-tipos-prestamo .modal-table tbody tr')
-      .filter({ hasText: 'TP001' });
-
-    await expect(filaTp001).toBeVisible();
-
-    // Si quieres, luego aquí puedes activar validación exacta del mensaje:
-    // await expect(posiblesMensajes.first()).toBeVisible();
+  await test.step('Visualizar mensaje en la interfaz', async () => {
+    const mensaje = iframe.locator('#mensajeExito');
+    await expect(mensaje).toBeVisible({ timeout: 8000 });
+    const textoMensaje = await mensaje.textContent();
   });
 
-  await test.step('Verificar que TP001 NO fue eliminado del sistema', async () => {
-    const filaTp001 = page
-      .locator('#modal-tipos-prestamo .modal-table tbody tr')
-      .filter({ hasText: 'TP001' });
-
-    await expect(filaTp001).toBeVisible();
-    await expect(filaTp001).toContainText('TP001');
-    await expect(filaTp001).toContainText('Domicilio');
+  await test.step('Verificar registro en el sistema', async () => {
+    await iframe.locator('#listaTiposPrestamo').waitFor({ state: 'visible' });
+    const domicilioExiste = await iframe.locator('#listaTiposPrestamo .fila-genero')
+      .filter({ hasText: 'Domicilio' })
+      .count();
+    expect(domicilioExiste).toBeGreaterThan(0);
   });
 
-  await test.step('Consultar que los préstamos activos continúan sin alteraciones', async () => {
-    const btnCerrarModal = page.locator('#modal-tipos-prestamo .close');
-
-    await expect(btnCerrarModal).toBeVisible();
-    await btnCerrarModal.click();
-
-    await expect(page.locator('#modal-tipos-prestamo')).toBeHidden();
-
-    await expect(
-      page.locator('#tblEjemplares .status-badge').filter({ hasText: 'Prestado' }).first()
-    ).toBeVisible();
+  // Cerrar modal
+  await test.step('Cerrar modal de tipos de préstamo', async () => {
+    await iframe.locator('.cerrar-modal').click();
+    await page.waitForTimeout(1000);
   });
 
-  await test.step('Verificar que el tipo sigue disponible para nuevos préstamos', async () => {
+  await test.step('Consultar préstamos activos asociados', async () => {
+    const prestamosActivos = page.locator('#tblEjemplares .status-badge').filter({ hasText: 'Prestado' });
+    const cantidad = await prestamosActivos.count();
+    expect(cantidad).toBeGreaterThan(0);
+  });
+
+  await test.step('Intentar registrar un nuevo préstamo usando ese tipo existente', async () => {
     const selectTipo = page.locator('#slcTipoPrestamos');
-
     await expect(selectTipo).toBeVisible();
+    const opcionDomicilio = selectTipo.locator('option').filter({ hasText: 'Domicilio' });
+    await expect(opcionDomicilio).toHaveCount(1);
     await selectTipo.selectOption({ label: 'Domicilio' });
-    await expect(selectTipo).toHaveValue('TP001');
+    const valorSeleccionado = await selectTipo.inputValue();
   });
 
   await test.step('Verificar integridad del sistema', async () => {
     await expect(page.locator('#formPrestamo')).toBeVisible();
+    await expect(page.locator('#tblEjemplares')).toBeVisible();
     await expect(page.locator('#btnPrestar')).toBeVisible();
-    await expect(page.locator('#tblEjemplares tr').first()).toBeVisible();
+    await expect(page.locator('#inpIdUsuario')).toBeVisible();
+    await expect(page.locator('#slcTipoPrestamos')).toBeVisible();
   });
+
 });
