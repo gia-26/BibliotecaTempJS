@@ -1,36 +1,45 @@
 import { test, expect } from '@playwright/test';
 
 test('PS-04 - Validación de renovación y límite de préstamo LIB001', async ({ page, context }) => {
+  // Tiempo de espera amplio para procesos locales
   test.setTimeout(180000); 
 
   const URL_LOGIN = 'http://localhost/BibliotecaTempJS/login/';
 
   // --- PASO 1, 2 Y 3: BIBLIOTECARIO (PER004) ---
   await test.step('1-3. Iniciar sesión y realizar primera renovación', async () => {
-    await page.goto(URL_LOGIN);
+    await page.goto(URL_LOGIN, { waitUntil: 'networkidle' });
     
-    await page.waitForSelector('#sesion option[value="ROL002"]', { state: 'attached' });
-    await page.locator('#sesion').selectOption('ROL002'); 
+    // Esperar y seleccionar rol
+    const selectSesion = page.locator('#sesion');
+    await selectSesion.waitFor({ state: 'visible' });
+    await selectSesion.selectOption('ROL002'); 
+    
     await page.locator('#usuario').fill('PER004');
     await page.locator('#password').fill('pasS123$');
     await page.locator('#btnEntrar').click();
     
+    // Confirmar bienvenida y esperar que el modal desaparezca totalmente
     await page.locator('button.swal2-confirm').click();
     await page.locator('.swal2-container').waitFor({ state: 'hidden' });
 
+    // Ir a Devoluciones
     await page.locator('a#devoluciones').click();
-    await page.waitForSelector('#tblPrestamos tr', { state: 'visible' });
+    await page.waitForSelector('#tblPrestamos tr', { state: 'visible', timeout: 15000 });
 
+    // Filtrar búsqueda para ALU007
     await page.locator('#filtroSelect').selectOption('idUsuario');
     await page.locator('#searchInput').fill('ALU007');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1500); // Pausa para el filtrado JS
 
     const fila = page.locator('#tblPrestamos tr', { hasText: 'ALU007' }).filter({ hasText: 'LIB001' }).first();
     const fechaAntigua = await fila.locator('td').nth(5).innerText();
     
+    // Ejecutar Primera Renovación
     await fila.locator('button').last().click();
     await page.locator('button.swal2-confirm', { hasText: /Sí|Si/ }).click();
     
+    // Aceptar éxito
     await page.locator('button.swal2-confirm', { hasText: 'Aceptar' }).click();
     await page.locator('.swal2-container').waitFor({ state: 'hidden' });
 
@@ -40,11 +49,13 @@ test('PS-04 - Validación de renovación y límite de préstamo LIB001', async (
 
   // --- PASO 4, 5 Y 6: ALUMNO (ALU007) ---
   await test.step('4-6. Verificar historial como Alumno', async () => {
-    // Logout y redirección forzada para evitar "Target page closed"
+    // Logout y forzar recarga limpia
     await page.locator('#btnSalir, .fa-sign-out-alt').first().click();
-    await page.goto(URL_LOGIN);
+    await page.waitForTimeout(2000); // Pequeño respiro para el servidor
+    await page.goto(URL_LOGIN, { waitUntil: 'load' });
     
-    await page.waitForSelector('#sesion option[value="TU001"]', { state: 'attached' });
+    // Asegurar que el select esté listo antes de actuar
+    await page.waitForSelector('#sesion option[value="TU001"]', { timeout: 10000 });
     await page.locator('#sesion').selectOption('TU001'); 
     
     await page.locator('#usuario').fill('ALU007');
@@ -54,17 +65,19 @@ test('PS-04 - Validación de renovación y límite de préstamo LIB001', async (
     await page.locator('button.swal2-confirm').click();
     await page.locator('.swal2-container').waitFor({ state: 'hidden' });
 
+    // Ver historial (botón azul)
     await page.locator('a.btn', { hasText: /préstamos|prestamos/i }).first().click();
     await expect(page.locator('table')).toContainText('LIB001');
     await expect(page.locator('table')).toContainText('Activo');
   });
 
-  // --- PASO 7: VALIDAR LÍMITE DE RENOVACIÓN ---
+  // --- PASO 7: VALIDAR LÍMITE DE RENOVACIÓN (BLOQUEO) ---
   await test.step('7. Intentar renovar nuevamente (Bloqueo)', async () => {
     await page.locator('#btnSalir, .fa-sign-out-alt').first().click();
+    await page.waitForTimeout(2000);
     await page.goto(URL_LOGIN);
     
-    await page.waitForSelector('#sesion option[value="ROL002"]', { state: 'attached' });
+    await page.waitForSelector('#sesion option[value="ROL002"]');
     await page.locator('#sesion').selectOption('ROL002');
     await page.locator('#usuario').fill('PER004');
     await page.locator('#password').fill('pasS123$');
@@ -79,10 +92,11 @@ test('PS-04 - Validación de renovación y límite de préstamo LIB001', async (
 
     const fila = page.locator('#tblPrestamos tr', { hasText: 'ALU007' }).filter({ hasText: 'LIB001' }).first();
     
+    // Intento de segunda renovación
     await fila.locator('button').last().click();
     await page.locator('button.swal2-confirm', { hasText: /Sí|Si/ }).click();
     
-    // Verificación de Alerta de Error por Límite Alcanzado
+    // Validar alerta de error de SweetAlert
     await expect(page.locator('.swal2-error, .swal2-html-container')).toBeVisible();
     await page.locator('button.swal2-confirm').click(); 
     await page.locator('.swal2-container').waitFor({ state: 'hidden' });
@@ -91,9 +105,10 @@ test('PS-04 - Validación de renovación y límite de préstamo LIB001', async (
   // --- PASO 8 Y 9: REPORTE JEFE (PER002) ---
   await test.step('8-9. Generar reporte como Jefe', async () => {
     await page.locator('#btnSalir, .fa-sign-out-alt').first().click();
+    await page.waitForTimeout(2000);
     await page.goto(URL_LOGIN);
     
-    await page.waitForSelector('#sesion option[value="ROL003"]', { state: 'attached' });
+    await page.waitForSelector('#sesion option[value="ROL003"]');
     await page.locator('#sesion').selectOption('ROL003'); 
     await page.locator('#usuario').fill('PER002');
     await page.locator('#password').fill('pasS123$');
@@ -104,7 +119,7 @@ test('PS-04 - Validación de renovación y límite de préstamo LIB001', async (
 
     await page.locator('a#reportes').click();
     
-    // Ajustado según el Index de Reportes enviado
+    // Selectores según tu index de reportes
     await page.locator('#tipo_reporte').selectOption('prestamos');
     await page.locator('#fecha_inicio').fill('2026-01-01');
     await page.locator('#fecha_fin').fill('2026-04-30');
