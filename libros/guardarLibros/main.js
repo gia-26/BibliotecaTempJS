@@ -142,7 +142,7 @@ const guaradarLibro = async () => {
         else {
             mostrarAlerta({
                 titulo: "Error",
-                texto: 'Error al guardar el libro: ' + data.error,
+                texto: 'Error al guardar el libro: ' + data.message,
                 tipo: "error"
             });
             loader.style.display = 'none';
@@ -586,10 +586,17 @@ const limpiarFormulario = () => {
     inpTitulo.value = '';
     inpISBN.value = '';
     inpEdicion.value = '';
+    slcAnioEdicion.value = '';
+    slcAreaConocimiento.value = '';
+    slcGeneroPrincipal.value = '';
+    slcSubgeneros.value = '';
+    slcAutorPrincipal.value = '';
+    slcCoautores.value = '';
+    slcEditoriales.value = '';
+    slcEditorialesSecundarias.value = '';
     txtaSinopsis.value = '';
-    inpNoEjemplares.value = '1';
+    inpNoEjemplares.value = '';
     inpImagen.value = '';
-    document.getElementById('imagePreview').style.backgroundImage = 'none';
     divSubgenerosContainer.innerHTML = '<div class="empty-state">No hay subgéneros agregados.</div>';
     divCoautoresContainer.innerHTML = '<div class="empty-state">No hay coautores agregados.</div>';
     divEditorialesContainer.innerHTML = '<div class="empty-state">No hay editoriales secundarias agregadas.</div>';
@@ -778,7 +785,7 @@ const actualizarLibro = async () => {
         else {
             mostrarAlerta({
                 titulo: "Error",
-                texto: 'Error al editar el libro: ' + data.error,
+                texto: 'Error al editar el libro: ' + data.message,
                 tipo: "error"
             });
             loader.style.display = 'none';
