@@ -153,7 +153,7 @@ const renovar = (idPrestamo, idUsuario) => {
         else
           mostrarAlerta({
             titulo: "Error",
-            texto: result.error || "Error desconocido",
+            texto: result.mensaje || "Error desconocido",
             tipo: "error"
           });
       })
