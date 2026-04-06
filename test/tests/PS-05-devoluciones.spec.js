@@ -2,15 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test('PS-05 - Actualización de datos de libro existente', async ({ page }) => {
 
-  // Aumentamos el tiempo a 2 minutos para evitar fallos por lentitud del servidor local (XAMPP)
+  // Tiempo de espera de 2 minutos para lidiar con la carga de XAMPP/Localhost
   test.setTimeout(120000);
 
-  // ─────────────────────────────────────────────
-  // PASO 1 – Ingresar al sistema
-  // ─────────────────────────────────────────────
-  await test.step('1. Ingresar al sistema con usuario válido', async () => {
+  // 1. LOGIN
+  await test.step('1. Ingresar al sistema', async () => {
     await page.goto('http://localhost/BibliotecaTempJS/login/');
-    
     await page.locator('#sesion').selectOption('ROL003');
     await page.locator('#usuario').fill('PER002');
     await page.locator('#password').fill('pasS123$');
@@ -18,94 +15,85 @@ test('PS-05 - Actualización de datos de libro existente', async ({ page }) => {
 
     // Esperar y cerrar la alerta de bienvenida
     const btnAceptar = page.locator('button.swal2-confirm');
-    await btnAceptar.waitFor({ state: 'visible' });
+    await btnAceptar.waitFor({ state: 'visible', timeout: 10000 });
     await btnAceptar.click();
     await expect(page.locator('.swal2-popup')).toBeHidden();
   });
 
-  // ─────────────────────────────────────────────
-  // PASO 2 y 3 – Acceder y Buscar
-  // ─────────────────────────────────────────────
-  await test.step('2 y 3. Acceder al módulo Libros y buscar LIB009', async () => {
-    // Ir a Libros
+  // 2 y 3. NAVEGACIÓN Y BÚSQUEDA
+  await test.step('2 y 3. Acceder a Libros y buscar LIB009', async () => {
     await page.getByRole('link', { name: /Libros/i }).first().click();
     
-    // Configurar búsqueda
+    // Aseguramos que el filtro esté en ID antes de escribir
     await page.locator('#filterSelect').selectOption('id');
     await page.locator('#searchInput').fill('LIB009');
     
-    // Verificar que aparezca en la tabla
-    await expect(page.locator('#tablaLibros')).toContainText('LIB009');
+    // Esperamos a que la fila con el ID aparezca en la tabla
+    const fila = page.locator('#tablaLibros tr', { hasText: 'LIB009' });
+    await expect(fila).toBeVisible({ timeout: 15000 });
   });
 
-  // ─────────────────────────────────────────────
-  // PASO 4 – Abrir Modal de Edición
-  // ─────────────────────────────────────────────
+  // 4. SELECCIONAR EDITAR (CORRECCIÓN CRÍTICA)
   await test.step('4. Seleccionar la opción Editar del libro LIB009', async () => {
     const filaLibro = page.locator('#tablaLibros tr', { hasText: 'LIB009' });
     
-    // Clic en el icono del lápiz (usamos .first() por si hay duplicados ocultos)
-    await filaLibro.locator('.fa-pen-to-square, .btn-editar').first().click();
+    // Intentamos hacer clic en el botón de editar usando varios selectores posibles
+    // Esto evita el fallo si la clase del icono cambia ligeramente
+    const btnEditar = filaLibro.locator('.fa-pen-to-square, .fa-edit, .btn-editar, button i').first();
     
-    // Validar que el modal principal se visualiza
+    await btnEditar.waitFor({ state: 'visible' });
+    await btnEditar.click();
+    
+    // Validamos que el modal se abrió
     await expect(page.locator('#modalLibros')).toBeVisible();
   });
 
-  // ─────────────────────────────────────────────
-  // PASO 5 – Modificar datos (Dentro del IFRAME con esperas)
-  // ─────────────────────────────────────────────
+  // 5. MODIFICAR DATOS (DENTRO DEL IFRAME)
   await test.step('5. Modificar campos dentro del Iframe', async () => {
-    // Definir el frame
     const frame = page.frameLocator('#modalIframe');
 
-    // ESPERA ACTIVA: Antes de escribir, esperamos a que el input sea visible
-    // Esto evita el Timeout si el Iframe tarda en cargar el HTML interno
+    // Esperamos a que el contenido del iframe cargue realmente
     const inputTitulo = frame.locator('#inpTitulo');
-    await inputTitulo.waitFor({ state: 'visible', timeout: 15000 });
+    await inputTitulo.waitFor({ state: 'visible', timeout: 20000 });
 
-    // Llenar datos con los IDs reales de tu HTML
+    // Limpiamos y llenamos los campos con los IDs de tu HTML
+    await inputTitulo.clear();
     await inputTitulo.fill('Programación Avanzada');
+    
     await frame.locator('#slcAnioEdicion').selectOption({ label: '2023' });
+
+    await frame.locator('#inpNoEjemplares').clear();
     await frame.locator('#inpNoEjemplares').fill('1');
   });
 
-  // ─────────────────────────────────────────────
-  // PASO 6 – Guardar cambios
-  // ─────────────────────────────────────────────
+  // 6. GUARDAR CAMBIOS
   await test.step('6. Presionar el botón Guardar cambios', async () => {
     const frame = page.frameLocator('#modalIframe');
-
-    // Clic en Guardar
+    
+    // Clic en el botón Guardar del formulario
     await frame.locator('#btnGuardar').click();
 
-    // El SweetAlert suele aparecer en la página principal, no dentro del frame
+    // Confirmar el mensaje de éxito (SweetAlert suele estar en la página padre)
     const swalAceptar = page.locator('button.swal2-confirm');
     await swalAceptar.waitFor({ state: 'visible' });
     await swalAceptar.click();
     
-    // Esperar a que el modal se cierre
+    // Esperar a que el modal desaparezca para continuar
     await expect(page.locator('#modalLibros')).toBeHidden();
   });
 
-  // ─────────────────────────────────────────────
-  // PASO 7 y 8 – Verificación y Persistencia
-  // ─────────────────────────────────────────────
-  await test.step('7 y 8. Verificar actualización y recarga', async () => {
-    // Verificar en la tabla directamente
+  // 7, 8 y 9. VERIFICACIÓN Y CIERRE
+  await test.step('7, 8 y 9. Verificar cambios y cerrar sesión', async () => {
+    // Verificación en caliente
     await expect(page.locator('#tablaLibros')).toContainText('Programación Avanzada');
 
-    // Recargar página para asegurar que se guardó en la Base de Datos
+    // Recarga (Paso 8 del plan)
     await page.reload();
     await page.locator('#searchInput').fill('LIB009');
     await expect(page.locator('#tablaLibros')).toContainText('Programación Avanzada');
     await expect(page.locator('#tablaLibros')).toContainText('2023');
-  });
 
-  // ─────────────────────────────────────────────
-  // PASO 9 – Cerrar sesión
-  // ─────────────────────────────────────────────
-  await test.step('9. Cerrar sesión', async () => {
-    // Selector flexible para el botón de salir (clase de font-awesome o ID)
+    // Cerrar sesión
     const btnSalir = page.locator('.fa-sign-out-alt, .fa-door-open, #btnSalir').first();
     await btnSalir.click();
     
