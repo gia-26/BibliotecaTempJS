@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') !== 'ROL003') {
+  location.href = '../index.html';
+}
+
 const presentacionTexto = document.getElementById("presentacion-texto");
 const historiaTexto = document.getElementById("historia-texto");
 const misionTexto = document.getElementById("mision-texto");

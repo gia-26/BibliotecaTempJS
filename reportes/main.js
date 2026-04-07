@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') !== 'ROL003') {
+  location.href = '../index.html';
+}
+
 const tipoReporte = document.getElementById('tipo_reporte');
 const fechaInicio = document.getElementById('fecha_inicio');
 const fechaFin = document.getElementById('fecha_fin');

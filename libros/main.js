@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') !== 'ROL003' && localStorage.getItem('rol') !== 'ROL002') {
+  location.href = '../index.html';
+}
+
 const tablaLibros = document.getElementById("tablaLibros");
 const searchInput = document.getElementById("searchInput");
 const filterSelect = document.getElementById("filterSelect");

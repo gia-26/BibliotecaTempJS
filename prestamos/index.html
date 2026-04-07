@@ -136,6 +136,14 @@
   <script>
     // Funciones para abrir y cerrar modales
     function openModal(modalId) {
+      if (localStorage.getItem('rol') !== 'ROL003') {
+        mostrarAlerta({
+          titulo: "Acceso denegado",
+          texto: "No tienes permiso para configurar los tipos de usuario o préstamo.",
+          tipo: "error",
+        });
+        return;
+      }
       document.getElementById(modalId).style.display = 'block';
     }
 

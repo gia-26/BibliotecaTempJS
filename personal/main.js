@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') !== 'ROL003') {
+  location.href = '../index.html';
+}
+
 const tblPersonal = document.getElementById('tblPersonal');
 const slcTiposRol = document.getElementById('slcTiposRol');
 const inpNoTrabajador = document.getElementById('noTrabajador');

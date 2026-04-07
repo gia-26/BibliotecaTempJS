@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') !== 'ROL003') {
+  location.href = '../index.html';
+}
+
 const tblLibros = document.getElementById("tblLibros");
 const modal = document.getElementById("modalOverlay");
 const modalTitle = document.getElementById("modalBookTitle");

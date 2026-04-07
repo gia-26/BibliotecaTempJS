@@ -40,12 +40,6 @@ const iniciarSesion = () => {
         });
         return;
     }
-
-    const usuario = {
-        sesion: sesionSeleccionada,
-        idUsuario: usuarioIngresado,
-        password: passwordIngresada
-    };
     
     fetch("https://backend-biblioteca-two.vercel.app/api/login", {
         method: "POST",

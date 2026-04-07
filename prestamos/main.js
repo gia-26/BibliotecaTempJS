@@ -1,3 +1,10 @@
+if (!localStorage.getItem('token')) {
+  location.href = '../index.html';
+}
+else if (localStorage.getItem('rol') === 'Trabajador' || localStorage.getItem('rol') === 'Alumno' ) {
+  location.href = '../index.html';
+}
+
 const tblEjemplares = document.getElementById('tblEjemplares');
 const slcTipoUsuario = document.getElementById('slcTipoUsuario');
 const slcTipoPrestamos = document.getElementById('slcTipoPrestamos');
