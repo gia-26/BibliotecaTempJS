@@ -238,7 +238,6 @@ function cambiarVista(vista, boton) {
 }
 
 function abrirModal(id, titulo, imagen) {
-    modal.style.display = "flex";
     modalTitle.textContent = titulo;
     modalID.textContent = `ID: ${id}`;
     modalImageLibro.src = imagen;
@@ -252,17 +251,18 @@ function abrirModal(id, titulo, imagen) {
                     texto: "No hay suficientes datos para este libro",
                     tipo: "error"
                 });
-                return;
             }
-            
-            D1 = datos.prestamosDia1;
-            D2 = datos.prestamosDia4;
-            
-            crearGrafica();
-            crearTabla();
-            
-            document.getElementById('chartContainer').style.display = 'block';
-            document.getElementById('dataTableView').style.display = 'none';
+            else {
+                modal.style.display = "flex";
+                D1 = datos.prestamosDia1;
+                D2 = datos.prestamosDia4;
+                
+                crearGrafica();
+                crearTabla();
+                
+                document.getElementById('chartContainer').style.display = 'block';
+                document.getElementById('dataTableView').style.display = 'none';
+            }
         })
         .catch(error => {
             console.error('Error:', error);
