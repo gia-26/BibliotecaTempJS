@@ -43,7 +43,7 @@ function cargarLibros() {
 // Calcular la constante k (puede ser negativa si hay decrecimiento)
 // k = ln(D2/D1) / (t4 - t1)
 function calcularK() {
-    if (D2 == 0) D2 = 0.000000000001;
+    if (D2 == 0) D2 = 1; //0.000000000001
     return Math.log(D2 / D1) / (t4 - t1);
 }
 
